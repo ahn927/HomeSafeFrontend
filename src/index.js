@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import Map from "./map";
 
 class App extends React.Component {
     state = {
@@ -8,6 +9,7 @@ class App extends React.Component {
         errorMessage: null
     };
 
+    
     componentDidMount() {
         window.navigator.geolocation.getCurrentPosition(
             position => {
@@ -20,8 +22,7 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <h1>your location is :</h1>
-                <h3>lat: {this.state.lat} <br /> long:{this.state.long}</h3>
+                <Map/>
             </div>
         )
     }
