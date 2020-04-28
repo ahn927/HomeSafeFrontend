@@ -1,23 +1,21 @@
 import React from 'react'
+import { Formik } from 'formik'
+import * as Yup from "yup"
+import { Divider, Button, Label, Form } from 'semantic-ui-react'
 
 import auth from './_services/auth'
 
 class LoginPage extends React.Component {
+
     render() {
         return (
             <div className="LoginPage">
                 <h1>Login page</h1>
-                <h3>Enter your user name and password here!</h3>
-                <p>TODO: add username and password inputfield</p>
-                <button onClick={
-                    () => {
-                        this.props.history.push("/")
-                    }
-                }>cancel</button>
-
-                <button onClick={
-                    () => {
-                        auth.login('test', 'test')
+                <Formik
+                    initialValues={{ username: "", password: "" }}
+                    onSubmit={(values, { setSubmitting }) => {
+                        // submitting event here.
+                        auth.login(values.username, values.password)
                             .then(
                                 user => {
                                     this.props.history.push("/dashboard")
@@ -26,8 +24,74 @@ class LoginPage extends React.Component {
                                     console.log(error)
                                 }
                             )
-                    }
-                }>login</button>
+                    }}
+                    validationSchema={Yup.object().shape({
+                        username: Yup.string()
+                            .required("Required"),
+                        password: Yup.string()
+                            .required("No password provided.")
+                            .min(4, "Password is too short - should be 4 chars minimum.")
+                            .matches(/(?=.*[0-9])/, "Password must contain a number.")
+                    })}
+                >
+                    {props => {
+                        const {
+                            values,
+                            touched,
+                            errors,
+                            isSubmitting,
+                            handleChange,
+                            handleBlur,
+                            handleSubmit
+                        } = props;
+                        return (
+                            <div>
+                                <Form onSubmit={handleSubmit}>
+                                    <div>
+                                        <label htmlFor="username">User Name</label>
+                                        <input
+                                            name="username"
+                                            type="text"
+                                            placeholder="Enter your user name"
+                                            value={values.username}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            className={errors.username && touched.username && "error"} />
+                                        {errors.username && touched.username && (
+                                            <Label basic color='red' pointing>
+                                                {errors.username}
+                                            </Label>
+                                        )}
+                                    </div>
+                                    <Divider />
+                                    <div>
+
+                                        <label htmlFor="email">Password</label>
+                                        <input
+                                            name="password"
+                                            type="password"
+                                            placeholder="Enter your password"
+                                            value={values.password}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            className={errors.password && touched.password && "error"}
+                                        />
+                                        {errors.password && touched.password && (
+                                            <Label basic color='red' pointing>
+                                                {errors.password}
+                                            </Label>
+                                        )}
+                                    </div>
+                                    <Divider />
+                                    <Button type="submit" disabled={isSubmitting}>
+                                        Login
+                                    </Button>
+                                </Form>
+                            </div>
+                        )
+                    }}
+
+                </Formik>
             </div>
         )
     }

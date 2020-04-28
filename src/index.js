@@ -20,7 +20,6 @@ class App extends React.Component {
 
         return (
             <div className="App">
-                <h3>Welcome</h3>
                 <Switch>
                     <Route exact path="/" component={HomePage} />
                     <Route exact path="/login" component={LoginPage} />
