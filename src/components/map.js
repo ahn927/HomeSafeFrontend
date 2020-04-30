@@ -31,9 +31,10 @@ class Map extends Component {
                 {
                         'type': 'Feature',
                         'properties': {
+                        'title': 'BCIT School',
+                        'link': "weeee",
                         'description':
-                        '<strong>BCIT</strong><p><a href="https://www.bcit.ca/" target="_blank" title="Opens in a new window">BCIT Link</a> This is bcit, scam skool</p>',
-                        'icon': 'lodging'
+                        '<strong>BCIT</strong><p><a href="https://www.bcit.ca/" target="_blank" title="Opens in a new window">BCIT Link</a> This is bcit, scam skool</p>'
                     },
                     'geometry': {
                         'type': 'Point',
@@ -43,9 +44,10 @@ class Map extends Component {
                 {
                     'type': 'Feature',
                     'properties': {
+                    'title': 'NEAR BCIT THING',
+                    'link': "wee2",
                     'description':
-                    '<strong>Near BCIT</strong><p> somewhere near bcit <a href="http://madmens5finale.eventbrite.com/" target="_blank" title="Opens in a new window">website link</a>, description string</p>',
-                    'icon': 'theatre'
+                    '<strong>Near BCIT</strong><p> somewhere near bcit <a href="http://madmens5finale.eventbrite.com/" target="_blank" title="Opens in a new window">website link</a>, description string</p>'
                     },
                     'geometry': {
                     'type': 'Point',
@@ -56,54 +58,70 @@ class Map extends Component {
         };
 
         map.on('load', function() {		
-			map.addSource('places', {
-			'type': 'geojson',
-            'data': {
-				'type': 'FeatureCollection',
-                'features': data.features
-			}
-            });
+			// map.addSource('places', {
+			// 'type': 'geojson',
+            // 'data': {
+			// 	'type': 'FeatureCollection',
+            //     'features': data.features
+			// }
+            // });
 
-            map.addLayer({
-                'id': 'places',
-                'type': 'symbol',
-                'source': 'places',
-                'layout': {
-                    'icon-image': '{icon}-15',
-                    'icon-allow-overlap': true
-                }
-            });
+            // map.addLayer({
+            //     'id': 'places',
+            //     'type': 'symbol',
+            //     'source': 'places',
+            //     'layout': {
+            //         'icon-image': '{icon}-15',
+            //         'icon-allow-overlap': true
+            //     }
+            // });
+            data.features.forEach(function(marker) {
+
+                // create a HTML element for each feature
+                var el = document.createElement('div');
+                el.className = 'marker';
+              
+                // make a marker for each feature and add to the map
+                new mapboxgl.Marker(el)
+                  .setLngLat(marker.geometry.coordinates)
+                  .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+                  .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>' + '<p>' + marker.properties.link + '</p>'))
+                  .addTo(map);
+              });
+
+
+
         });
 
         
         // When a click event occurs on a feature in the places layer, open a popup at the
         // location of the feature, with description HTML from its properties.
-        map.on('click', 'places', function (e) {
-            var coordinates = e.features[0].geometry.coordinates.slice();
-            var description = e.features[0].properties.description;
+        // map.on('click', 'places', function (e) {
+        //     var coordinates = e.features[0].geometry.coordinates.slice();
+        //     var description = e.features[0].properties.description;
 
-            // Ensure that if the map is zoomed out such that multiple
-            // copies of the feature are visible, the popup appears
-            // over the copy being pointed to.
-            while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-                coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-            }
+        //     // Ensure that if the map is zoomed out such that multiple
+        //     // copies of the feature are visible, the popup appears
+        //     // over the copy being pointed to.
+        //     while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        //         coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        //     }
 
-            new mapboxgl.Popup()
-                .setLngLat(coordinates)
-                .setHTML(description)
-                .addTo(map);
-        });
+        //     new mapboxgl.Popup()
+        //         .setLngLat(coordinates)
+        //         .setHTML(description)
+        //         .addTo(map);
+        // });
 
-        // Change the cursor to a pointer when the mouse is over the places layer.
-        map.on('mouseenter', 'places', function () {
-            map.getCanvas().style.cursor = 'pointer';
-        });
+        // // Change the cursor to a pointer when the mouse is over the places layer.
+        // map.on('mouseenter', 'places', function () {
+        //     map.getCanvas().style.cursor = 'pointer';
+        // });
 
-        // Change it back to a pointer when it leaves.
-        map.on('mouseleave', 'places', function () {
-            map.getCanvas().style.cursor = '';
-        });
+        // // Change it back to a pointer when it leaves.
+        // map.on('mouseleave', 'places', function () {
+        //     map.getCanvas().style.cursor = '';
+        // });
     }
 
     render() {
