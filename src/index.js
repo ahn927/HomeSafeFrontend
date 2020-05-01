@@ -1,14 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom";
-<<<<<<< HEAD
 import Map from "./components/map";
-=======
 import { BrowserRouter, Route, Switch, Router } from 'react-router-dom';
-
-
 import { Segment, Container } from 'semantic-ui-react'
-
-
 import HomePage from "./home.page";
 import LoginPage from "./login.page";
 import dashboardPage from "./dashboard.page";
@@ -16,11 +10,9 @@ import ProtectedRoute from "./_helpers/protected.route";
 import configureFakeBackend from './_helpers/fake-backend';
 import Navbar from './_components/navbar';
 
->>>>>>> luca/authentication
-
 class App extends React.Component {
 
-    
+
     componentDidMount() {
         configureFakeBackend();
 
@@ -28,10 +20,6 @@ class App extends React.Component {
     render() {
 
         return (
-<<<<<<< HEAD
-            <div>
-                <Map/>
-=======
             <div className="App">
                 <Container>
                     <Navbar></Navbar>
@@ -44,9 +32,9 @@ class App extends React.Component {
                             component={dashboardPage} />
                         <Route path="*" component={() => "404 NOT FOUND"} />
                     </Switch>
+                    <Map />
 
                 </Container>
->>>>>>> luca/authentication
             </div>
         )
     }
