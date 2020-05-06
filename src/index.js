@@ -9,10 +9,12 @@ import LoginPage from "./_pages/login.page";
 import dashboardPage from "./_pages/dashboard.page";
 import ProtectedRoute from "./_helpers/protected.route";
 import configureFakeBackend from './_helpers/fake-backend';
+import ListingPage from './_pages/listing/listing.page';
 
 import * as routes from './_constants/routes'
 
 import Navbar from './_components/navbar';
+import Footer from './_components/footer';
 
 class App extends React.Component {
 
@@ -30,6 +32,8 @@ class App extends React.Component {
                     <Switch>
                         <Route exact path={routes.HOME} component={HomePage} />
                         <Route exact path={routes.LOGIN} component={LoginPage} />
+                        <Route exact path={routes.LISTING} component={ListingPage} />
+
                         <ProtectedRoute
                             exact
                             path={routes.DASHBOARD}
@@ -37,6 +41,7 @@ class App extends React.Component {
                         <Route path="*" component={() => "404 NOT FOUND"} />
                     </Switch>
                 </Container>
+                <Footer></Footer>
             </div>
         )
     }

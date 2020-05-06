@@ -19,7 +19,6 @@ class Navbar extends React.Component {
 
     componentDidUpdate() {
         this.setState({ currentuser: auth.currentUserValue })
-        console.log('yo')
     }
 
     render() {
@@ -36,7 +35,30 @@ class Navbar extends React.Component {
                         href='/'
                     />
 
+                    <Menu.Item
+                        name='FAQ'
+                        active={activeItem === 'faq'}
+                        onClick={this.handleItemClick}
+                        href={routes.FAQ}
+                    />
+
+                    <Menu.Item
+                        name='reviews'
+                        active={activeItem === 'reviews'}
+                        onClick={this.handleItemClick}
+                        href={routes.REVIEWS}
+                    />
+
                     <Menu.Menu position='right'>
+                        {
+                            <Menu.Item
+                                name='Book a Room'
+                                active={activeItem === 'bookAroom'}
+                                onClick={this.handleItemClick}
+                                href={routes.LISTING}
+                            >
+                            </Menu.Item>
+                        }
                         {
                             // User logged-in already & display user's name
                             currentUser &&

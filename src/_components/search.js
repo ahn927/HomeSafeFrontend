@@ -38,7 +38,7 @@ class Search extends React.Component {
                                     <Form.Group widths='equal'>
                                         <div className="checkinDate">
                                             <label htmlFor="checkinDate">Checkin Date</label>
-                                            <input
+                                            <Form.Input
                                                 name="checkinDate"
                                                 type="text"
                                                 placeholder="Checkin Date"
@@ -49,7 +49,7 @@ class Search extends React.Component {
 
                                         <div className="checkoutDate">
                                             <label htmlFor="checkoutDate">Checkout Date</label>
-                                            <input
+                                            <Form.Input
                                                 name="checkoutDate"
                                                 type="text"
                                                 placeholder="Checkout Date"
@@ -60,7 +60,7 @@ class Search extends React.Component {
 
                                         <div className="school">
                                             <label htmlFor="school">School</label>
-                                            <input
+                                            <Form.Input
                                                 name="school"
                                                 type="text"
                                                 placeholder="School"
@@ -71,7 +71,7 @@ class Search extends React.Component {
 
                                         <div className="city">
                                             <label htmlFor="city">City</label>
-                                            <input
+                                            <Form.Input
                                                 name="city"
                                                 type="text"
                                                 placeholder="City"
@@ -84,7 +84,7 @@ class Search extends React.Component {
 
                                         <div className="maxRent">
                                             <label htmlFor="maxRent">Max Rent</label>
-                                            <input
+                                            <Form.Input
                                                 name="maxRent"
                                                 type="text"
                                                 placeholder="Max Rent"
@@ -95,7 +95,7 @@ class Search extends React.Component {
 
                                         <div className="minRent">
                                             <label htmlFor="minRent">Min Rent</label>
-                                            <input
+                                            <Form.Input
                                                 name="minRent"
                                                 type="text"
                                                 placeholder="Min Rent"
@@ -106,7 +106,7 @@ class Search extends React.Component {
 
                                         <div className="gender">
                                             <label htmlFor="gender">Gender</label>
-                                            <input
+                                            <Form.Input
                                                 name="gender"
                                                 type="text"
                                                 placeholder="Gender"
@@ -116,7 +116,7 @@ class Search extends React.Component {
                                         </div>
                                     </Form.Group>
                                     <Button type="submit">
-                                        Search
+                                        Book a Room
                                     </Button>
                                 </Form>
                             </div>
