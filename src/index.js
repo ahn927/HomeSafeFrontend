@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Map from "./components/map";
+import Map from "./components/map/map";
+import StripeComponent from "./components/stripe/StripeComponent";
 
 class App extends React.Component {
     state = {
@@ -22,7 +23,8 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <Map/>
+                {/* <Map/> */}
+                <StripeComponent/>
             </div>
         )
     }

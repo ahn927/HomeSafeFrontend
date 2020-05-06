@@ -57,6 +57,7 @@ class Map extends Component {
             ]
         };
 
+
         map.on('load', function() {		
 			// map.addSource('places', {
 			// 'type': 'geojson',
