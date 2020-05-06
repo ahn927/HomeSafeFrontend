@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Map from "./components/map";
+import Map from "./_components/map/map";
 import { BrowserRouter, Route, Switch, Router } from 'react-router-dom';
 import { Segment, Container } from 'semantic-ui-react'
 
