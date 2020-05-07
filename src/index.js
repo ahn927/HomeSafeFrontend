@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Map from "./_components/map/map";
+
 import { BrowserRouter, Route, Switch, Router } from 'react-router-dom';
 import { Segment, Container } from 'semantic-ui-react'
 
@@ -11,10 +11,12 @@ import ProtectedRoute from "./_helpers/protected.route";
 import configureFakeBackend from './_helpers/fake-backend';
 import ListingPage from './_pages/listing/listing.page';
 
+
 import * as routes from './_constants/routes'
 
 import Navbar from './_components/navbar';
 import Footer from './_components/footer';
+
 
 class App extends React.Component {
 

@@ -1,8 +1,10 @@
-import React, {Component} from "react";
+import React from "react";
 import mapboxgl from 'mapbox-gl';
 import './mapstyle.css';
 
-class Map extends Component {
+mapboxgl.accessToken = 'pk.eyJ1IjoibWFwbGVzdG9yeTEyMyIsImEiOiJjazloam1pZHMwejFiM2xvNDVhdHE5eHNyIn0.ON5FdVNTkBiVc1iUkgHhVw';
+
+class Map extends React.Component {
     constructor(props) {
         super(props);
         //sets initial coordinates view to vancouver
@@ -15,7 +17,6 @@ class Map extends Component {
 
 
     componentDidMount() {
-        mapboxgl.accessToken = 'pk.eyJ1IjoibWFwbGVzdG9yeTEyMyIsImEiOiJjazloam1pZHMwejFiM2xvNDVhdHE5eHNyIn0.ON5FdVNTkBiVc1iUkgHhVw';
         const map = new mapboxgl.Map({
             container: this.mapContainer,
             style: 'mapbox://styles/mapbox/streets-v11',
@@ -24,7 +25,7 @@ class Map extends Component {
         });
 
         //adds controls to map
-        map.addControl(new mapboxgl.NavigationControl());
+        //map.addControl(new mapboxgl.NavigationControl());
  
         const data = {
             'features': [

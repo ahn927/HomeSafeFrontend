@@ -5,8 +5,10 @@ import { Divider, Header, Icon, Table, Grid, Image, Button } from 'semantic-ui-r
 import auth from '../../_services/auth'
 import Search from '../../_components/search'
 import * as Images from '../../_constants/images';
+import Map from '../../_components/map/map';
 
 import PropertyList from './propertyList'
+
 
 class ListingPage extends React.Component {
 
@@ -36,8 +38,7 @@ class ListingPage extends React.Component {
                 <h1>Listing page</h1>
                 <Search onClickSearch={this.handleSearch} />
                 <PropertyList properties={sample} />
-
-
+                <Map/>
             </div>
         );
     }

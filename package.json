@@ -8,15 +8,15 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
-    "mapbox-gl": "^1.10.0",
     "formik": "^2.1.4",
+    "mapbox-gl": "^1.10.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
-    "stripe": "^8.48.0",
     "rxjs": "^6.5.5",
     "semantic-ui-react": "^0.88.2",
+    "stripe": "^8.48.0",
     "yup": "^0.28.4"
   },
   "scripts": {
