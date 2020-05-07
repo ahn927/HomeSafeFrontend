@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Map from "./_components/map/map";
+
 import { BrowserRouter, Route, Switch, Router } from 'react-router-dom';
 import { Segment, Container } from 'semantic-ui-react'
 
@@ -10,11 +10,13 @@ import dashboardPage from "./_pages/dashboard.page";
 import ProtectedRoute from "./_helpers/protected.route";
 import configureFakeBackend from './_helpers/fake-backend';
 import ListingPage from './_pages/listing/listing.page';
+import PropertyPage from './_pages/property/property.page'
 
 import * as routes from './_constants/routes'
 
 import Navbar from './_components/navbar';
 import Footer from './_components/footer';
+
 
 class App extends React.Component {
 
@@ -33,6 +35,7 @@ class App extends React.Component {
                         <Route exact path={routes.HOME} component={HomePage} />
                         <Route exact path={routes.LOGIN} component={LoginPage} />
                         <Route exact path={routes.LISTING} component={ListingPage} />
+                        <Route exact path={routes.PROPERTY} component={PropertyPage} />
 
                         <ProtectedRoute
                             exact
@@ -47,4 +50,8 @@ class App extends React.Component {
     }
 }
 
-ReactDOM.render(<BrowserRouter><App /></BrowserRouter>, document.getElementById("root"));
+ReactDOM.render(
+    <BrowserRouter>
+        <App />
+    </BrowserRouter>,
+    document.getElementById("root"));

@@ -7,3 +7,4 @@ export const OUR_STORY = '/ourstory';
 export const FAQ = '/faq';
 export const REVIEWS = '/reviews';
 export const LISTING = '/listing';
+export const PROPERTY = '/property/:id'
