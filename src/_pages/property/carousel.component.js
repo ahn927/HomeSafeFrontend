@@ -18,13 +18,20 @@ class CarouselComponent extends React.Component {
     handleClose = () => this.setState({ modalOpen: false })
 
     render() {
-        let imageStyle = { maxHeight: "300px", objectFit: "cover" };
+        let imageStyleBanner = { maxHeight: "300px", objectFit: "cover" };
         let imageArray = this.state.propertyImages;
         let items = [];
+        let itemsLarge = [];
+        let imageStyleLarge = { height: "100px", width: 'auto' };
         imageArray.forEach(img => {
             items.push(
                 <div>
-                    <img src={img} style={imageStyle} />
+                    <img src={img} style={imageStyleBanner} />
+                </div>
+            )
+            itemsLarge.push(
+                <div>
+                    <img src={img} style={imageStyleLarge} />
                 </div>
             )
         })
@@ -62,7 +69,7 @@ class CarouselComponent extends React.Component {
                             selectedItem={this.state.clickedImageIndex}
                             onClickItem={e => handelClickItem(e)}
                         >
-                            {items}
+                            {itemsLarge}
                         </Carousel>
                     </Modal.Content>
                     <Modal.Actions>
