@@ -4,8 +4,10 @@ import * as Yup from "yup"
 import { Divider, Button, Label, Form } from 'semantic-ui-react'
 import classNames from "classnames"
 import DatePicker from "react-datepicker"
+import Select from 'react-select'
  
 import "react-datepicker/dist/react-datepicker.css"
+import countries from "../../resources/countries.json"
 
 const InputFeedback = ({ error }) =>
   error ? <div className={classNames("input-feedback")}>{error}</div> : null;
@@ -66,6 +68,33 @@ const RadioButton = ({
     );
   };
 
+  class MySelect extends React.Component {
+    handleChange = v => {
+      // this is going to call setFieldValue and manually update values.topcis
+      this.props.onChange('nationality', v.value);
+    };
+  
+    handleBlur = () => {
+      // this is going to call setFieldTouched and manually update touched.topcis
+      this.props.onBlur('nationality', true);
+    };
+  
+    render() {
+      return (
+        <div style={{ margin: '1rem 0' }}>
+          <Select
+            id="nationality"
+            options={countries}
+            multi={false}
+            onChange={this.handleChange}
+            onBlur={this.handleBlur}
+            value={this.props.value}
+          />
+        </div>
+      );
+    }
+  }
+
 class GuestForm extends React.Component {
 
     state = {
@@ -118,7 +147,6 @@ class GuestForm extends React.Component {
                     phoneNumber: Yup.string()
                         .required("Required")
                         .matches(/(^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$)/, "Must be a valid phone number."),
-
                     gender: Yup.string()
                         .required("Required")
                         .matches(/([A-Za-z])/,"Must be a valid city"),
@@ -127,7 +155,7 @@ class GuestForm extends React.Component {
                         .matches(/([A-Za-z])/,"Must be a valid country"),
                     reasonForStay: Yup.string()
                         .required("Required")
-                        .matches(/([A-Za-z])/,"Must be a valid city"),
+                        .matches(/([A-Za-z0-9,.])/,"Invalid character.[A-Za-z0-9,.]"),
                     heardAbout: Yup.string()
                         .required("Must state where you heard about this service.")
                 })}
@@ -140,7 +168,9 @@ class GuestForm extends React.Component {
                         isSubmitting,
                         handleChange,
                         handleBlur,
-                        handleSubmit
+                        handleSubmit,
+                        setFieldValue,
+                        setFieldTouched
                     } = props;
                     return (
                         <div>
@@ -273,6 +303,13 @@ class GuestForm extends React.Component {
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         className={errors.nationality && touched.nationality && "error"}
+                                    />
+                                    <MySelect
+                                        value={values.nationality}
+                                        onChange={setFieldValue}
+                                        onBlur={setFieldTouched}
+                                        error={errors.nationality}
+                                        touched={touched.nationality}
                                     />
                                     {errors.nationality && touched.nationality && (
                                         <Label basic color='red' pointing>

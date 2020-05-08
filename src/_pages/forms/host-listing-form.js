@@ -75,9 +75,9 @@ const RadioButton = ({
   ];
 
   class MySelect extends React.Component {
-    handleChange = value => {
+    handleChange = v => {
       // this is going to call setFieldValue and manually update values.topcis
-      this.props.onChange('nearestSchool', value);
+      this.props.onChange('nearestSchool', v.value);
     };
   
     handleBlur = () => {
@@ -144,11 +144,11 @@ class HostListingForm extends React.Component {
                 }}
                 validationSchema={Yup.object().shape({
                     host: Yup.string()
-                        .matches(/([A-Za-z0-9.,]*)/, "Invalid character."),
+                        .matches(/([A-Za-z0-9.,]*)/, "Invalid character.[A-Za-z0-9,.]"),
                     neighbourhood: Yup.string()
-                        .matches(/([A-Za-z0-9.,]*)/, "Invalid character."),
+                        .matches(/([A-Za-z0-9.,]*)/, "Invalid character.[A-Za-z0-9,.]"),
                     house: Yup.string()
-                        .matches(/([A-Za-z0-9.,]*)/, "Invalid character."),
+                        .matches(/([A-Za-z0-9.,]*)/, "Invalid character.[A-Za-z0-9,.]"),
                     roomType: Yup.string()
                         .required("Required"),
                     washroomAvail: Yup.string()

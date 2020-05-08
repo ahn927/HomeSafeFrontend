@@ -78,9 +78,9 @@ const RadioButton = ({
   ];
 
   class MySelect extends React.Component {
-    handleChange = value => {
+    handleChange = v => {
       // this is going to call setFieldValue and manually update values.topcis
-      this.props.onChange('city', value);
+      this.props.onChange('city', v.value);
     };
   
     handleBlur = () => {
