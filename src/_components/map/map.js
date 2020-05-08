@@ -1,6 +1,7 @@
 import React from "react";
 import mapboxgl from 'mapbox-gl';
 import './mapstyle.css';
+import MapboxGeocoder from 'mapbox-gl-geocoder';
 
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFwbGVzdG9yeTEyMyIsImEiOiJjazloam1pZHMwejFiM2xvNDVhdHE5eHNyIn0.ON5FdVNTkBiVc1iUkgHhVw';
 
@@ -11,10 +12,10 @@ class Map extends React.Component {
         this.state = {
             lng: -123.1207,
             lat: 49.2827,
-            zoom: 11
+            zoom: 11,
+            results: null
         };
     }
-
 
     componentDidMount() {
         const map = new mapboxgl.Map({
@@ -26,7 +27,27 @@ class Map extends React.Component {
 
         //adds controls to map
         //map.addControl(new mapboxgl.NavigationControl());
- 
+
+        var geocoder = new MapboxGeocoder({
+            accessToken: mapboxgl.accessToken,
+            marker: {
+                color: 'orange'
+            },
+            mapboxgl: map
+        });
+
+        geocoder.on('result', async function(resultJSON) {
+            // can also use an api call like such:
+            // const result = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/Los%20Angeles.json?access_token=${mapboxgl.accessToken}`);
+            // const body = await result.json();
+            // console.log(body);
+            console.log(resultJSON);
+        })
+        
+
+
+        //map.addControl(geocoder);
+
         const data = {
             'features': [
                 {
@@ -64,7 +85,7 @@ class Map extends React.Component {
 
                 // create a HTML element for each feature
                 var el = document.createElement('div');
-                el.className = 'marker';
+                el.className = 'custom-marker';
               
                 // make a marker for each feature and add to the map
                 new mapboxgl.Marker(el)

@@ -11,9 +11,11 @@ import PropertyList from './propertyList'
 
 
 class ListingPage extends React.Component {
-
     state = {
-        searchValue: null,
+        lat: null,
+        long: null,
+        errorMessage: null,
+        searchValue: null
     }
 
     handleSearch = (searchValue) => {

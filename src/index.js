@@ -10,7 +10,7 @@ import dashboardPage from "./_pages/dashboard.page";
 import ProtectedRoute from "./_helpers/protected.route";
 import configureFakeBackend from './_helpers/fake-backend';
 import ListingPage from './_pages/listing/listing.page';
-
+import Map from './_components/map/map';
 
 import * as routes from './_constants/routes'
 
@@ -22,31 +22,32 @@ class App extends React.Component {
 
 
     componentDidMount() {
-        configureFakeBackend();
-
+        //configureFakeBackend();
     }
     render() {
 
         return (
             <div className="App">
-                <Container>
-                    <Navbar></Navbar>
-                    <Switch>
-                        <Route exact path={routes.HOME} component={HomePage} />
-                        <Route exact path={routes.LOGIN} component={LoginPage} />
-                        <Route exact path={routes.LISTING} component={ListingPage} />
+                <BrowserRouter>
+                    <Container>
+                        <Navbar></Navbar>
+                        <Switch>
+                            <Route exact path={routes.HOME} component={HomePage} />
+                            <Route exact path={routes.LOGIN} component={LoginPage} />
+                            <Route exact path={routes.LISTING} component={ListingPage} />
 
-                        <ProtectedRoute
-                            exact
-                            path={routes.DASHBOARD}
-                            component={dashboardPage} />
-                        <Route path="*" component={() => "404 NOT FOUND"} />
-                    </Switch>
-                </Container>
-                <Footer></Footer>
+                            <ProtectedRoute
+                                exact
+                                path={routes.DASHBOARD}
+                                component={dashboardPage} />
+                            <Route path="*" component={() => "404 NOT FOUND"} />
+                        </Switch>
+                    </Container>
+                    <Footer></Footer>
+                </BrowserRouter>   
             </div>
         )
     }
 }
 
-ReactDOM.render(<BrowserRouter><App /></BrowserRouter>, document.getElementById("root"));
+ReactDOM.render(<App />, document.querySelector("#root"));
