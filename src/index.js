@@ -10,6 +10,9 @@ import dashboardPage from "./_pages/dashboard.page";
 import ProtectedRoute from "./_helpers/protected.route";
 import configureFakeBackend from './_helpers/fake-backend';
 import ListingPage from './_pages/listing/listing.page';
+import HostPersonalForm from './_pages/forms/host-personal-form';
+import HostListingForm from './_pages/forms/host-listing-form';
+import GuestForm from './_pages/forms/guest-form';
 
 import * as routes from './_constants/routes'
 
@@ -33,6 +36,9 @@ class App extends React.Component {
                         <Route exact path={routes.HOME} component={HomePage} />
                         <Route exact path={routes.LOGIN} component={LoginPage} />
                         <Route exact path={routes.LISTING} component={ListingPage} />
+                        <Route exact path={routes.HOSTPERSONAL} component={HostPersonalForm} />
+                        <Route exact path={routes.HOSTLISTING} component={HostListingForm} />
+                        <Route exact path={routes.GUESTPERSONAL} component={GuestForm} />
 
                         <ProtectedRoute
                             exact
