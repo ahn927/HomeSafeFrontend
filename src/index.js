@@ -11,6 +11,7 @@ import ProtectedRoute from "./_helpers/protected.route";
 import configureFakeBackend from './_helpers/fake-backend';
 import ListingPage from './_pages/listing/listing.page';
 import Map from './_components/map/map';
+import Search from './_components/map/search'
 
 import * as routes from './_constants/routes'
 
@@ -28,6 +29,7 @@ class App extends React.Component {
 
         return (
             <div className="App">
+                <Search></Search>
                 <BrowserRouter>
                     <Container>
                         <Navbar></Navbar>
@@ -44,7 +46,7 @@ class App extends React.Component {
                         </Switch>
                     </Container>
                     <Footer></Footer>
-                </BrowserRouter>   
+                </BrowserRouter>
             </div>
         )
     }
