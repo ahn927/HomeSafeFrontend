@@ -1,8 +1,9 @@
 import React, { Component, createRef } from 'react'
+import { useParams } from 'react-router-dom'
 
 import {
     Card, Grid, Container, List, Divider, Header, Icon, Button, Label, Form, Sticky, Rail,
-    Ref,
+    Ref, Segment, Image,
 } from 'semantic-ui-react'
 import { Formik } from 'formik'
 import * as Yup from "yup"
@@ -12,14 +13,72 @@ import * as images from '../../_constants/images'
 
 class PropertyPage extends React.Component {
 
-    // state = {
-    //     propertyId: null
-    // }
+    tempData = {
+        "propertyId": 1,
+        "price": 1000.99,
+        "hostDescription": "george is a ….",
+        "propertyDescription": "this suite ...",
+        "neighbourhoodDescription": "down in the slums..",
+        "roomType": "single",
+        "washroomType": "private",
+        "genderPreference": "male",
+        "pets": true,
+        "utilities": true,
+        "closestSchool": "bcit",
+        "streetNumber": 1535,
+        "street": "30th ave",
+        "unitNumber": "5",
+        "city": "vancouver",
+        "province": "BC",
+        "country": "Canada",
+        "latitude": -125.235093235,
+        "longitude": 49.2523535353,
+        "images": [
+            images.TEMPLATE_HOUSE1,
+            images.TEMPLATE_HOUSE2,
+            images.TEMPLATE_HOUSE3,
+        ]
+    }
 
-    // componentDidMount() {
-    //     let { id } = useParams();
-    //     this.setState({ propertyId: id });
-    // }
+    state = {
+        propertyId: null,
+        property: {
+            "propertyId": 1,
+            "price": 1000.99,
+            "hostDescription": "george is a ….",
+            "propertyDescription": "this suite ...",
+            "neighbourhoodDescription": "down in the slums..",
+            "roomType": "single",
+            "washroomType": "private",
+            "genderPreference": "male",
+            "pets": true,
+            "utilities": true,
+            "closestSchool": "bcit",
+            "streetNumber": 1535,
+            "street": "30th ave",
+            "unitNumber": "5",
+            "city": "vancouver",
+            "province": "BC",
+            "country": "Canada",
+            "latitude": -125.235093235,
+            "longitude": 49.2523535353,
+            "images": [
+                images.TEMPLATE_HOUSE1,
+                images.TEMPLATE_HOUSE2,
+                images.TEMPLATE_HOUSE3,
+            ]
+        }
+    }
+
+
+    componentDidMount() {
+        // let { id } = useParams();
+
+        this.setState({
+            // propertyId: id,
+            // property: tempData //TODO: Replace this line by fetch call to backend.
+        });
+    }
 
     contextRef = createRef()
 
@@ -48,38 +107,41 @@ class PropertyPage extends React.Component {
     }
 
     rendernapshotInfo() {
-
+        let property = this.state.property;
+        console.log(property)
         return (
             <div>
                 <Container>
-                    <div class="d-flex justify-content-between">
+                    <div className="d-flex justify-content-between">
                         <div></div>
                         <Card className="mx-2">
                             <Card.Content>
                                 <List divided relaxed>
-                                    {this.renderListItem('wifi', 'Wifi Provided')}
+                                    {property.utilities && this.renderListItem('wifi', 'Utilities Provided')}
+                                    {!property.utilities && this.renderListItem('wifi', 'Utilities Not Provided')}
                                 </List>
                             </Card.Content>
                         </Card>
                         <Card className="mx-2">
                             <Card.Content>
                                 <List divided relaxed>
-                                    {this.renderListItem('bed', 'Private Room')}
-                                    {this.renderListItem('bath', 'Private Bathroom')}
+                                    {this.renderListItem('bed', property.roomType)}
+                                    {this.renderListItem('bath', property.washroomType)}
                                 </List>
                             </Card.Content>
                         </Card>
                         <Card className="mx-2">
                             <Card.Content>
                                 <List divided relaxed>
-                                    {this.renderListItem('paw', 'Pets Allowed')}
+                                    {property.pets && this.renderListItem('paw', 'Pets Allowed')}
+                                    {!property.pets && this.renderListItem('paw', 'Pets  Not Allowed')}
                                 </List>
                             </Card.Content>
                         </Card>
                         <Card className="mx-2">
                             <Card.Content>
                                 <List divided relaxed>
-                                    {this.renderListItem('female', 'Female Only')}
+                                    {this.renderListItem('users', property.genderPreference)}
                                 </List>
                             </Card.Content>
                         </Card>
@@ -92,7 +154,7 @@ class PropertyPage extends React.Component {
 
     renderDivdingHeader(icon, text) {
         return (
-            <Header icon={icon} as='h3' dividing>
+            <Header as='h3' dividing>
                 {/* <Icon Icon name={icon} /> */}
                 {text}
             </Header>
@@ -111,7 +173,7 @@ class PropertyPage extends React.Component {
                     checkinDate: Yup.string()
                         .required("Required"),
                     checkoutDate: Yup.string()
-                        .required("No password provided.")
+                        .required("Required")
                 })}
             >
                 {props => {
@@ -174,57 +236,52 @@ class PropertyPage extends React.Component {
     }
 
     render() {
+        let property = this.state.property;
+        if (!this.state.property) {
+            console.log(this.state.property)
+            return (<div></div>)
+        }
         return (
             <div>
                 <CarouselComponent />
                 {this.rendernapshotInfo()}
 
-                <Container>
-                    <Ref innerRef={this.contextRef}>
-
-                        <Grid>
-                            <Grid.Row>
-                                <Grid.Column width={10}>
-
-                                    {this.renderDivdingHeader('home', 'Room Information')}
-                            4 fully furnished rooms in shared home in Fort Langley available for rent. The home is on acreage with plenty of space for outdoor activities and is a short distance from Fort Langley. Master Bedroom is available and has en suite. Close to Trinity Western University, Walnut grove, and Golden Ears Bridge. Nearby schools include Topham Elementary, Ecole des Voyageurs, Alex Hope Elementary, and Walnut Grove Secondary School. Nearest public transit is a 20 minute walk.
-                            {this.renderDivdingHeader('id badge', 'Host Information')}
-                            4 fully furnished rooms in shared home in Fort Langley available for rent. The home is on acreage with plenty of space for outdoor activities and is a short distance from Fort Langley. Master Bedroom is available and has en suite. Close to Trinity Western University, Walnut grove, and Golden Ears Bridge. Nearby schools include Topham Elementary, Ecole des Voyageurs, Alex Hope Elementary, and Walnut Grove Secondary School. Nearest public transit is a 20 minute walk.
-                            {this.renderDivdingHeader('home', 'Map')}
-                                    <img src={images.TEMPLATE_IMAGE} />
-                                    {this.renderDivdingHeader('home', 'Points of Interests')}
-
-                                </Grid.Column>
-                                <Grid.Column width={6}>
-                                    <Rail>
-                                        <Sticky context={this.contextRef}>
-                                            <Card className="mt-3">
-                                                <Card.Content>
-                                                    <Card.Header>$1000 <span className="font-weight-light">/month</span></Card.Header>
-                                                    <span className="font-weight-light">smaller text will go here.</span>
-                                                    <Divider></Divider>
 
 
-                                                    <Header as="p" block>
-                                                        <Icon Icon circular color='green' name='clipboard check' size='small' verticalAlign='middle' />
-                                        Verified Host
-                                        <Header.Subheader>This host is verifed by HomeSafe by conducting host background check.</Header.Subheader>
-                                                    </Header>
-                                                    <Divider></Divider>
-                                                    {this.renderForm()}
-                                                </Card.Content>
-                                            </Card>
-                                        </Sticky>
-                                    </Rail>
+                <Grid columns="2">
+                    <Grid.Column >
+                        <Ref innerRef={this.contextRef}>
+                            <div>
+                                {this.renderDivdingHeader('home', 'Room Information')}
+                                <p>{property.propertyDescription}</p>
+                                {this.renderDivdingHeader('id badge', 'Host Information')}
+                                <p>{property.hostDescription}</p>
+                                {this.renderDivdingHeader('home', 'Map')}
+                                <Image src={images.TEMPLATE_IMAGE} />
+                                {this.renderDivdingHeader('home', 'Points of Interests')}
 
-
-                                </Grid.Column>
-
-                            </Grid.Row>
-                        </Grid>
-                    </Ref>
-
-                </Container>
+                                <Rail position='right'>
+                                    <Sticky active={true} context={this.contextRef}>
+                                        <Card className="mt-3">
+                                            <Card.Content>
+                                                <Card.Header>$ {property.price} <span className="font-weight-light">/month</span></Card.Header>
+                                                <span className="font-weight-light">smaller text will go here.</span>
+                                                <Divider></Divider>
+                                                <Header as="p" block>
+                                                    <Icon circular color='green' name='clipboard check' size='small' verticalalign='middle' />
+                                                    Verified Host
+                                                    <Header.Subheader>This host is verifed by HomeSafe by conducting host background check.</Header.Subheader>
+                                                </Header>
+                                                <Divider></Divider>
+                                                {this.renderForm()}
+                                            </Card.Content>
+                                        </Card>
+                                    </Sticky>
+                                </Rail>
+                            </div>
+                        </Ref>
+                    </Grid.Column>
+                </Grid>
             </div>
 
         )

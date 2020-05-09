@@ -23,14 +23,14 @@ class CarouselComponent extends React.Component {
         let items = [];
         let itemsLarge = [];
         let imageStyleLarge = { height: "100px", width: 'auto' };
-        imageArray.forEach(img => {
+        imageArray.forEach((img, key) => {
             items.push(
-                <div>
+                <div key={key}>
                     <img src={img} style={imageStyleBanner} />
                 </div>
             )
             itemsLarge.push(
-                <div>
+                <div key={key}>
                     <img src={img} style={imageStyleLarge} />
                 </div>
             )
@@ -73,7 +73,7 @@ class CarouselComponent extends React.Component {
                         </Carousel>
                     </Modal.Content>
                     <Modal.Actions>
-                        <Button color='white' inverted onClick={_ => this.handleClose()}>
+                        <Button color='grey' inverted onClick={_ => this.handleClose()}>
                             <Icon name='delete' /> Close
                         </Button>
                     </Modal.Actions>

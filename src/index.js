@@ -6,7 +6,7 @@ import { Segment, Container } from 'semantic-ui-react'
 
 import HomePage from "./_pages/home/home.page";
 import LoginPage from "./_pages/login.page";
-import dashboardPage from "./_pages/dashboard.page";
+import dashboardPage from "./_pages/dashboard/dashboard.page";
 import ProtectedRoute from "./_helpers/protected.route";
 import configureFakeBackend from './_helpers/fake-backend';
 import ListingPage from './_pages/listing/listing.page';
@@ -35,7 +35,7 @@ class App extends React.Component {
                         <Route exact path={routes.HOME} component={HomePage} />
                         <Route exact path={routes.LOGIN} component={LoginPage} />
                         <Route exact path={routes.LISTING} component={ListingPage} />
-                        <Route exact path={routes.PROPERTY} component={PropertyPage} />
+                        <Route exact path={routes.PROPERTY + '/:id'} component={PropertyPage} />
 
                         <ProtectedRoute
                             exact

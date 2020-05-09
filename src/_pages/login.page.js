@@ -2,7 +2,7 @@ import React from 'react'
 import { Formik } from 'formik'
 import * as Yup from "yup"
 import { Divider, Button, Label, Form } from 'semantic-ui-react'
-
+import * as routes from '../_constants/routes'
 import auth from '../_services/auth'
 
 class LoginPage extends React.Component {
@@ -18,7 +18,8 @@ class LoginPage extends React.Component {
                         auth.login(values.username, values.password)
                             .then(
                                 user => {
-                                    this.props.history.push("/dashboard")
+                                    this.props.history.push(routes.DASHBOARD)
+                                    window.location.reload();
                                 },
                                 error => {
                                     console.log(error)
@@ -83,7 +84,7 @@ class LoginPage extends React.Component {
                                         )}
                                     </div>
                                     <Divider />
-                                    <Button type="submit" disabled={isSubmitting}>
+                                    <Button type="submit" >
                                         Login
                                     </Button>
                                 </Form>
