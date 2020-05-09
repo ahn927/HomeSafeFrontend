@@ -14,7 +14,7 @@ class Navbar extends React.Component {
     // handleLogin = (e) => this.props.history.push("/login")
     handleLogout = (e) => {
         auth.logout()
-        this.props.history.push("/")
+        window.location.reload()
     }
 
     componentDidUpdate() {
@@ -62,7 +62,10 @@ class Navbar extends React.Component {
                         {
                             // User logged-in already & display user's name
                             currentUser &&
-                            <Menu.Item name='currentuserName'>
+                            <Menu.Item
+                                name='currentuserName'
+                                href={routes.DASHBOARD}
+                            >
                                 <Icon name='user' />
                                 {`${currentUser.firstName} ${currentUser.lastName}`}
                             </Menu.Item>

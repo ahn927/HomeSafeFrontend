@@ -62,13 +62,13 @@ class dashboardPage extends React.Component {
                 <p>Your background check status is Verified.</p>
                 <h4>rooom list</h4>
                 <SortableTable properties={userInfo.properties}></SortableTable>
-                <button onClick={
+                {/* <button onClick={
                     () => {
                         auth.logout()
                         this.props.history.push("/")
                         window.location.reload();
                     }
-                }>logout</button>
+                }>logout</button> */}
             </div>
         )
     }
