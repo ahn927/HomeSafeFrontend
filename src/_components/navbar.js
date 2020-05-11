@@ -27,10 +27,16 @@ class Navbar extends React.Component {
         return (
             <div>
                 <Menu stackable size='large'>
-                    <Menu.Item header>HomeSafe</Menu.Item>
                     <Menu.Item
-                        name='aboutUs'
-                        active={activeItem === 'aboutUs'}
+                        header
+                        name='HomeSafe'
+                        active={activeItem === 'HomeSafe'}
+                        onClick={this.handleItemClick}
+                        href={routes.HOME}
+                    />
+                    <Menu.Item
+                        name='Our Story'
+                        active={activeItem === 'Our Story'}
                         onClick={this.handleItemClick}
                         href={routes.ABOUTUS}
                     />

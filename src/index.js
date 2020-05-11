@@ -11,6 +11,8 @@ import ProtectedRoute from "./_helpers/protected.route";
 import configureFakeBackend from './_helpers/fake-backend';
 import ListingPage from './_pages/listing/listing.page';
 import PropertyPage from './_pages/property/property.page'
+import FaqPage from './_pages/faq/faq.page'
+import ReviewPage from './_pages/review/review.page'
 
 import AboutUsPage from './_pages/aboutus/aboutus.page'
 import HostPersonalForm from './_pages/forms/host-personal-form';
@@ -43,8 +45,9 @@ class App extends React.Component {
                         <Route exact path={routes.LISTING} component={ListingPage} />
                         <Route exact path={routes.PROPERTY + '/:id'} component={PropertyPage} />
                         <Route exact path={routes.ABOUTUS} component={AboutUsPage} />
-
-                        <Route exact path={routes.HOSTPERSONAL} component={HostPersonalForm} />
+                        <Route exact path={routes.FAQ} component={FaqPage} />
+                        <Route exact path={routes.REVIEWS} component={ReviewPage} />
+                        <Route exact path={routes.BECOME_HOST} component={HostPersonalForm} />
                         <Route exact path={routes.HOSTLISTING} component={HostListingForm} />
                         <Route exact path={routes.GUESTPERSONAL} component={GuestForm} />
 
