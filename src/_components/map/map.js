@@ -30,23 +30,27 @@ class Map extends React.Component {
 
         var geocoder = new MapboxGeocoder({
             accessToken: mapboxgl.accessToken,
-            marker: {
-                color: 'orange'
-            },
-            mapboxgl: map
+            mapboxgl: mapboxgl
         });
+        
+        //creates a marker for dynamically searched locations
+        var markerHTML = document.createElement('div');
+            markerHTML.id = 'current-marker';
+        let currentMarker = new mapboxgl.Marker(markerHTML);
 
         geocoder.on('result', async function(resultJSON) {
-            // can also use an api call like such:
-            // const result = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/Los%20Angeles.json?access_token=${mapboxgl.accessToken}`);
-            // const body = await result.json();
-            // console.log(body);
             console.log(resultJSON);
+            
+            //removes previous marker if exist, then adds the new one to map
+            currentMarker.remove();
+            currentMarker.setLngLat(resultJSON.result.center);
+            currentMarker.addTo(map);
+            
         })
         
 
 
-        //map.addControl(geocoder);
+        map.addControl(geocoder);
 
         const data = {
             'features': [
