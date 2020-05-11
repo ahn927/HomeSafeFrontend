@@ -16,6 +16,8 @@ import AboutUsPage from './_pages/aboutus/aboutus.page'
 import HostPersonalForm from './_pages/forms/host-personal-form';
 import HostListingForm from './_pages/forms/host-listing-form';
 import GuestForm from './_pages/forms/guest-form';
+import Map from './_components/map/map';
+import Search from './_components/map/search'
 
 import * as routes from './_constants/routes'
 
@@ -28,34 +30,35 @@ class App extends React.Component {
 
 
     componentDidMount() {
-        configureFakeBackend();
-
+        //configureFakeBackend();
     }
     render() {
 
         return (
             <div className="App">
-                <Container>
-                    <Navbar></Navbar>
-                    <Switch>
-                        <Route exact path={routes.HOME} component={HomePage} />
-                        <Route exact path={routes.LOGIN} component={LoginPage} />
-                        <Route exact path={routes.LISTING} component={ListingPage} />
-                        <Route exact path={routes.PROPERTY + '/:id'} component={PropertyPage} />
-                        <Route exact path={routes.ABOUTUS} component={AboutUsPage} />
+                <BrowserRouter>
+                    <Container>
+                        <Navbar></Navbar>
+                        <Switch>
+                            <Route exact path={routes.HOME} component={HomePage} />
+                            <Route exact path={routes.LOGIN} component={LoginPage} />
+                            <Route exact path={routes.LISTING} component={ListingPage} />
+                            <Route exact path={routes.PROPERTY + '/:id'} component={PropertyPage} />
+                            <Route exact path={routes.ABOUTUS} component={AboutUsPage} />
 
-                        <Route exact path={routes.HOSTPERSONAL} component={HostPersonalForm} />
-                        <Route exact path={routes.HOSTLISTING} component={HostListingForm} />
-                        <Route exact path={routes.GUESTPERSONAL} component={GuestForm} />
+                            <Route exact path={routes.HOSTPERSONAL} component={HostPersonalForm} />
+                            <Route exact path={routes.HOSTLISTING} component={HostListingForm} />
+                            <Route exact path={routes.GUESTPERSONAL} component={GuestForm} />
 
-                        <ProtectedRoute
-                            exact
-                            path={routes.DASHBOARD}
-                            component={dashboardPage} />
-                        <Route path="*" component={() => "404 NOT FOUND"} />
-                    </Switch>
-                </Container>
-                <Footer></Footer>
+                            <ProtectedRoute
+                                exact
+                                path={routes.DASHBOARD}
+                                component={dashboardPage} />
+                            <Route path="*" component={() => "404 NOT FOUND"} />
+                        </Switch>
+                    </Container>
+                    <Footer></Footer>
+                </BrowserRouter>
             </div>
         )
     }
@@ -66,3 +69,4 @@ ReactDOM.render(
         <App />
     </BrowserRouter>,
     document.getElementById("root"));
+ReactDOM.render(<App />, document.querySelector("#root"));

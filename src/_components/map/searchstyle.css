@@ -1,0 +1,68 @@
+* {
+    box-sizing: border-box;
+}
+
+.react-geocoder {
+    position: relative;
+    width: 300px;
+}
+
+.react-geocoder input {
+    /* width: 100%;
+    font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif; */
+    position:relative;
+    font-weight:400;
+    font-style:normal;
+    display:-webkit-inline-box;
+    display:-ms-inline-flexbox;
+    display:inline-flex;
+    color:rgba(0,0,0,.87);
+}
+
+.react-geocoder>input{
+    margin:0;
+    max-width:100%;
+    -webkit-box-flex:1;
+    -ms-flex:1 0 auto;
+    flex:1 0 auto;
+    outline:0;
+    -webkit-tap-highlight-color:rgba(255,255,255,0);
+    text-align:left;
+    line-height:1.21428571em;
+    font-family:Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+    padding:.67857143em 1em;
+    background:#fff;
+    border:1px solid rgba(34,36,38,.15);
+    color:rgba(0,0,0,.87);
+    border-radius:.28571429rem;
+    -webkit-transition:border-color .1s ease,-webkit-box-shadow .1s ease;
+    transition:border-color .1s ease,-webkit-box-shadow .1s ease;
+    transition:box-shadow .1s ease,border-color .1s ease;
+    transition:box-shadow .1s ease,border-color .1s ease,-webkit-box-shadow .1s ease;
+    -webkit-box-shadow:none;
+    box-shadow:none
+}
+
+.react-geocoder-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 1;
+    background-color: white;
+    border: 1px solid black;
+    padding:.67857143em 1em;
+    width: 100%;
+    border:1px solid rgba(34,36,38,.15);
+    border-radius: .28571429rem;
+    box-shadow:0 1px 2px 0 rgba(34,36,38,.15)
+}
+
+.react-geocoder-item {
+    border-bottom: 1px solid rgba(34,36,38,.15);
+    padding:.67857143em 1em;
+}
+
+.react-geocoder-item:hover {
+    background: rgba(0,0,0,.03);
+    border-bottom: 1px solid rgba(34,36,38,.15);
+}
