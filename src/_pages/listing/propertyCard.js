@@ -13,6 +13,7 @@ class PropertyCard extends React.Component {
 
     render() {
         let property = this.props.property;
+        console.log(property);
         return (
             <Card >
                 <Card.Content>
@@ -22,9 +23,9 @@ class PropertyCard extends React.Component {
                                 <Image src={images.TEMPLATE_IMAGE} />
                             </Grid.Column>
                             <Grid.Column width={8}>
-                                <Card.Header>{property.address}</Card.Header>
+                                {/* <Card.Header>{property.unitNumber}</Card.Header> */}
                                 <Card.Meta>
-                                    <span >{property.roomType}</span>
+                                    {/* <span >{property.roomType}</span> */}
                                 </Card.Meta>
                                 <Card.Description>
                                     Wifi, private bathroom, no pets, female only.

@@ -29,7 +29,7 @@ class App extends React.Component {
 
         return (
             <div className="App">
-                <Search></Search>
+                {/* <Search></Search> */}
                 <BrowserRouter>
                     <Container>
                         <Navbar></Navbar>
