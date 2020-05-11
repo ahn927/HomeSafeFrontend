@@ -32,7 +32,7 @@ class Navbar extends React.Component {
                         name='aboutUs'
                         active={activeItem === 'aboutUs'}
                         onClick={this.handleItemClick}
-                        href='/'
+                        href={routes.ABOUTUS}
                     />
 
                     <Menu.Item

@@ -10,3 +10,5 @@ class OurStoryPage extends React.Component {
         )
     }
 }
+
+export default OurStoryPage

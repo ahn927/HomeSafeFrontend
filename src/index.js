@@ -12,6 +12,8 @@ import configureFakeBackend from './_helpers/fake-backend';
 import ListingPage from './_pages/listing/listing.page';
 import PropertyPage from './_pages/property/property.page'
 
+import AboutUsPage from './_pages/aboutus/aboutus.page'
+
 import * as routes from './_constants/routes'
 
 import Navbar from './_components/navbar';
@@ -36,6 +38,8 @@ class App extends React.Component {
                         <Route exact path={routes.LOGIN} component={LoginPage} />
                         <Route exact path={routes.LISTING} component={ListingPage} />
                         <Route exact path={routes.PROPERTY + '/:id'} component={PropertyPage} />
+                        <Route exact path={routes.ABOUTUS} component={AboutUsPage} />
+
 
                         <ProtectedRoute
                             exact
