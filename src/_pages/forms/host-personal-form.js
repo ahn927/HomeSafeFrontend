@@ -258,8 +258,7 @@ class HostPersonalForm extends React.Component {
                                             onBlur={handleBlur}
                                             className={errors.address && touched.address && "error"}
                                         />
-                                        <Search
-                                            onSelected={}
+                                        <Search />
                                         />
                                         {errors.address && touched.address && (
                                             <Label basic color='red' pointing>
