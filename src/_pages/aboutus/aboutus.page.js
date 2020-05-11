@@ -5,16 +5,10 @@ import {
     Divider,
     Grid,
     Header,
-    Icon,
     Image,
-    List,
-    Menu,
-    Responsive,
     Segment,
-    Sidebar,
-    Visibility,
 } from 'semantic-ui-react'
-
+import PageHeader from '../../_components/pageHeader'
 import InstagramGallery from '../../_components/instagramGallery/InstagramGallery'
 import * as images from '../../_constants/images'
 import * as routes from '../../_constants/routes'
@@ -28,8 +22,11 @@ class Aboutus extends React.Component {
     render() {
         return (
             <div>
-
                 <Segment style={{ padding: '8em 0em' }} vertical>
+                    <PageHeader
+                        icon={null}
+                        text='OurStory' >
+                    </PageHeader>
                     <Grid container stackable verticalAlign='middle'>
                         <Grid.Row>
                             <Grid.Column width={8}>

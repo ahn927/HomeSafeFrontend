@@ -6,7 +6,7 @@ import auth from '../../_services/auth'
 import Search from '../../_components/search'
 import * as Images from '../../_constants/images';
 import Map from '../../_components/map/map';
-
+import PageHeader from '../../_components/pageHeader'
 import PropertyList from './propertyList'
 
 
@@ -37,7 +37,10 @@ class ListingPage extends React.Component {
         }
         return (
             <div>
-                <h1>Listing page</h1>
+                <PageHeader
+                    icon={null}
+                    text='Search' >
+                </PageHeader>
                 <Search onClickSearch={this.handleSearch} />
                 <PropertyList properties={sample} />
                 {/* <Map/> */}

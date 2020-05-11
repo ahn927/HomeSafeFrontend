@@ -1,5 +1,6 @@
 import React from 'react'
-import { Accordion, Icon } from 'semantic-ui-react'
+import { Accordion, Icon, Grid, Button } from 'semantic-ui-react'
+import PageHeader from '../../_components/pageHeader'
 
 import AccordionComponent from './accordionComponent'
 
@@ -113,67 +114,82 @@ class FaqPage extends React.Component {
         const { activeIndex } = this.state
 
         return (
-            <div>FAQs page
+            <div>
+                <PageHeader
+                    icon={null}
+                    text='FAQ' >
+                    <div>
+                        <p>
+                            Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+                        </p>
+                    </div>
+                </PageHeader>
+
+
                 <Accordion >
-                    <Accordion.Title
-                        active={activeIndex === 0}
-                        index={0}
-                        onClick={this.handleClick}
-                    >
-                        <h3>
-                            <Icon name='dropdown' />
+                    <div className="my-5">
+                        <Accordion.Title
+                            active={activeIndex === 0}
+                            index={0}
+                            onClick={this.handleClick}
+                        >
+                            <h3>
+                                <Icon name='dropdown' />
                             Before You Book
                         </h3>
-                    </Accordion.Title>
-                    <Accordion.Content active={activeIndex === 0} className="mx-4">
-                        <AccordionComponent questions={beforeYouBook} />
+                        </Accordion.Title>
+                        <Accordion.Content active={activeIndex === 0} className="mx-4">
+                            <AccordionComponent questions={beforeYouBook} />
+                        </Accordion.Content>
+                    </div><div className="my-5">
 
-                    </Accordion.Content>
-
-                    <Accordion.Title
-                        active={activeIndex === 1}
-                        index={1}
-                        onClick={this.handleClick}
-                    >
-                        <h3>
-                            <Icon name='dropdown' />
+                        <Accordion.Title
+                            active={activeIndex === 1}
+                            index={1}
+                            onClick={this.handleClick}
+                        >
+                            <h3>
+                                <Icon name='dropdown' />
                             Booking Your Room
                         </h3>
-                    </Accordion.Title>
-                    <Accordion.Content active={activeIndex === 1} className="mx-4">
-                        <AccordionComponent questions={bookingYourRoom} />
+                        </Accordion.Title>
+                        <Accordion.Content active={activeIndex === 1} className="mx-4">
+                            <AccordionComponent questions={bookingYourRoom} />
 
-                    </Accordion.Content>
+                        </Accordion.Content>
+                    </div><div className="my-5">
 
-                    <Accordion.Title
-                        active={activeIndex === 2}
-                        index={2}
-                        onClick={this.handleClick}
-                    >
-                        <h3>
-                            <Icon name='dropdown' />
+                        <Accordion.Title
+                            active={activeIndex === 2}
+                            index={2}
+                            onClick={this.handleClick}
+                        >
+                            <h3>
+                                <Icon name='dropdown' />
                             During Your Stay
                         </h3>
-                    </Accordion.Title>
-                    <Accordion.Content active={activeIndex === 2} className="mx-4">
-                        <AccordionComponent questions={duringYourStay} />
+                        </Accordion.Title>
+                        <Accordion.Content active={activeIndex === 2} className="mx-4">
+                            <AccordionComponent questions={duringYourStay} />
 
-                    </Accordion.Content>
+                        </Accordion.Content>
+                    </div><div className="my-5">
 
-                    <Accordion.Title
-                        active={activeIndex === 3}
-                        index={3}
-                        onClick={this.handleClick}
-                    >
-                        <h3>
-                            <Icon name='dropdown' />
+                        <Accordion.Title
+                            active={activeIndex === 3}
+                            index={3}
+                            onClick={this.handleClick}
+                        >
+                            <h3>
+                                <Icon name='dropdown' />
                             Common Questions
                         </h3>
-                    </Accordion.Title>
-                    <Accordion.Content active={activeIndex === 3} className="mx-4">
-                        <AccordionComponent questions={commonQuestions} />
+                        </Accordion.Title>
+                        <Accordion.Content active={activeIndex === 3} className="mx-4">
+                            <AccordionComponent questions={commonQuestions} />
+                        </Accordion.Content>
+                    </div>
 
-                    </Accordion.Content>
                 </Accordion>
             </div>
         )
