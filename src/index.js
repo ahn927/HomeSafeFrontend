@@ -38,26 +38,6 @@ class App extends React.Component {
 
         return (
             <div className="App">
-<<<<<<< HEAD
-                {/* <Search></Search> */}
-                <BrowserRouter>
-                    <Container>
-                        <Navbar></Navbar>
-                        <Switch>
-                            <Route exact path={routes.HOME} component={HomePage} />
-                            <Route exact path={routes.LOGIN} component={LoginPage} />
-                            <Route exact path={routes.LISTING} component={ListingPage} />
-
-                            <ProtectedRoute
-                                exact
-                                path={routes.DASHBOARD}
-                                component={dashboardPage} />
-                            <Route path="*" component={() => "404 NOT FOUND"} />
-                        </Switch>
-                    </Container>
-                    <Footer></Footer>
-                </BrowserRouter>
-=======
                 <Container>
                     <Navbar></Navbar>
                     <Switch>
@@ -80,7 +60,6 @@ class App extends React.Component {
                     </Switch>
                 </Container>
                 <Footer></Footer>
->>>>>>> b6ff9267790b14a1360e7d81618cd53cdbcc50c7
             </div>
         )
     }
