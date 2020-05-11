@@ -3,12 +3,13 @@ import { useParams } from 'react-router-dom'
 
 import {
     Card, Grid, Container, List, Divider, Header, Icon, Button, Label, Form, Sticky, Rail,
-    Ref, Segment, Image, Message, Table
+    Ref, Segment, Image, Message, Table, Modal
 } from 'semantic-ui-react'
 import { Formik } from 'formik'
 import * as Yup from "yup"
 
 import CarouselComponent from './carousel.component'
+import * as routes from '../../_constants/routes'
 import * as images from '../../_constants/images'
 
 import auth from '../../_services/auth'
@@ -19,6 +20,8 @@ class PropertyPage extends React.Component {
 
     state = {
         propertyId: null,
+        modalOpen: false,
+        bookError: '',
         property: {
             "propertyId": 1,
             "price": 1000.99,
@@ -74,6 +77,10 @@ class PropertyPage extends React.Component {
     }
 
     contextRef = createRef()
+
+    handleOpen = () => this.setState({ modalOpen: true })
+
+    handleClose = () => this.setState({ modalOpen: false })
 
     renderHostMessage() {
         const currentUser = auth.currentUserValue;
@@ -201,7 +208,14 @@ class PropertyPage extends React.Component {
             <Formik
                 initialValues={{ checkinDate: "", checkoutDate: "" }}
                 onSubmit={(values, { setSubmitting }) => {
-                    // submitting event here.
+                    if (!auth.currentUserValue) {
+                        this.setState({ bookError: 'You have not logged in.' })
+                        this.handleOpen();
+                    }
+                    if (!auth.currentUserValue.isTenant) {
+                        this.setState({ bookError: 'You need a tenant account to book a room.' })
+                        this.handleOpen();
+                    }
 
                 }}
                 validationSchema={Yup.object().shape({
@@ -324,6 +338,21 @@ class PropertyPage extends React.Component {
                         </Ref>
                     </Grid.Column>
                 </Grid>
+
+                <Modal >
+                    <Modal.Header>Select a Photo</Modal.Header>
+                    <Modal.Content image>
+                        <Image wrapped size='medium' src='https://react.semantic-ui.com/images/avatar/large/rachel.png' />
+                        <Modal.Description>
+                            <Header>Default Profile Image</Header>
+                            <p>
+                                We've found the following gravatar image associated with your e-mail
+                                address.
+                            </p>
+                            <p>Is it okay to use this photo?</p>
+                        </Modal.Description>
+                    </Modal.Content>
+                </Modal>
             </div>
 
         )
