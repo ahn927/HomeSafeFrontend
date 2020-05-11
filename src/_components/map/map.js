@@ -38,7 +38,11 @@ class Map extends React.Component {
             markerHTML.id = 'current-marker';
         let currentMarker = new mapboxgl.Marker(markerHTML);
 
-        geocoder.on('result', async function(resultJSON) {
+        geocoder.on('result', async function (resultJSON) {
+            // can also use an api call like such:
+            // const result = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/Los%20Angeles.json?access_token=${mapboxgl.accessToken}`);
+            // const body = await result.json();
+            // console.log(body);
             console.log(resultJSON);
             
             //removes previous marker if exist, then adds the new one to map
@@ -47,7 +51,7 @@ class Map extends React.Component {
             currentMarker.addTo(map);
             
         })
-        
+
 
 
         map.addControl(geocoder);
@@ -55,12 +59,12 @@ class Map extends React.Component {
         const data = {
             'features': [
                 {
-                        'type': 'Feature',
-                        'properties': {
+                    'type': 'Feature',
+                    'properties': {
                         'title': 'BCIT School',
                         'link': "weeee",
                         'description':
-                        '<strong>BCIT</strong><p><a href="https://www.bcit.ca/" target="_blank" title="Opens in a new window">BCIT Link</a> This is bcit, scam skool</p>'
+                            '<strong>BCIT</strong><p><a href="https://www.bcit.ca/" target="_blank" title="Opens in a new window">BCIT Link</a> This is bcit, scam skool</p>'
                     },
                     'geometry': {
                         'type': 'Point',
@@ -70,34 +74,34 @@ class Map extends React.Component {
                 {
                     'type': 'Feature',
                     'properties': {
-                    'title': 'NEAR BCIT THING',
-                    'link': "wee2",
-                    'description':
-                    '<strong>Near BCIT</strong><p> somewhere near bcit <a href="http://madmens5finale.eventbrite.com/" target="_blank" title="Opens in a new window">website link</a>, description string</p>'
+                        'title': 'NEAR BCIT THING',
+                        'link': "wee2",
+                        'description':
+                            '<strong>Near BCIT</strong><p> somewhere near bcit <a href="http://madmens5finale.eventbrite.com/" target="_blank" title="Opens in a new window">website link</a>, description string</p>'
                     },
                     'geometry': {
-                    'type': 'Point',
-                    'coordinates': [-123.00775451274126, 49.24972688317919]
+                        'type': 'Point',
+                        'coordinates': [-123.00775451274126, 49.24972688317919]
                     }
                 }
             ]
         };
 
 
-        map.on('load', function() {		
-            data.features.forEach(function(marker) {
+        map.on('load', function () {
+            data.features.forEach(function (marker) {
 
                 // create a HTML element for each feature
                 var el = document.createElement('div');
                 el.className = 'custom-marker';
-              
+
                 // make a marker for each feature and add to the map
                 new mapboxgl.Marker(el)
-                  .setLngLat(marker.geometry.coordinates)
-                  .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-                  .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>' + '<p>' + marker.properties.link + '</p>'))
-                  .addTo(map);
-              });
+                    .setLngLat(marker.geometry.coordinates)
+                    .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
+                        .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>' + '<p>' + marker.properties.link + '</p>'))
+                    .addTo(map);
+            });
 
 
 
@@ -108,7 +112,7 @@ class Map extends React.Component {
     render() {
         return (
             <div>
-                <div ref={el => this.mapContainer = el} className="mapContainer"/>
+                <div ref={el => this.mapContainer = el} className="mapContainer" />
             </div>
         )
     }

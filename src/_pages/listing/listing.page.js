@@ -40,7 +40,7 @@ class ListingPage extends React.Component {
                 <h1>Listing page</h1>
                 <Search onClickSearch={this.handleSearch} />
                 <PropertyList properties={sample} />
-                <Map/>
+                {/* <Map/> */}
             </div>
         );
     }
