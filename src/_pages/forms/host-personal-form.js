@@ -108,6 +108,10 @@ class MySelect extends React.Component {
 
 class HostPersonalForm extends React.Component {
 
+    state = {
+        geoResult: null
+    }
+
     render() {
         return (
             <div>
@@ -249,7 +253,7 @@ class HostPersonalForm extends React.Component {
                                     <Divider />
                                     <div>
                                         <label htmlFor="address">Address</label>
-                                        <input
+                                        {/* <input
                                             name="address"
                                             type="text"
                                             placeholder="Enter your address"
@@ -257,14 +261,21 @@ class HostPersonalForm extends React.Component {
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             className={errors.address && touched.address && "error"}
-                                        />
-                                        <Search />
-                                        />
-                                        {errors.address && touched.address && (
+                                        /> */}
+                                        <Search handleOnSelect={(result) => {
+                                            console.log('result', result)
+
+                                            this.setState({ geoResult: result })
+                                            console.log('statet', this.state)
+                                        }} />
+                                        {this.state.geoResult &&
+                                            <p><small>You selected: </small><br />{this.state.geoResult.place_name}</p>
+                                        }
+                                        {/* {errors.address && touched.address && (
                                             <Label basic color='red' pointing>
                                                 {errors.address}
                                             </Label>
-                                        )}
+                                        )} */}
                                     </div>
                                     <Divider />
                                     <div>

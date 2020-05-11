@@ -29,6 +29,8 @@ class Search extends React.Component {
         this.setState({ viewport });
         console.log('viewport:', viewport)
         console.log('Selected: ', item)
+        this.props.handleOnSelect(item);
+
     }
 
     render() {
