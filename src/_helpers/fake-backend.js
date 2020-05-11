@@ -15,12 +15,18 @@ function configureFakeBackend() {
                     const user = users.find(x => x.username === params.username && x.password === params.password);
                     if (!user) return error('Username or password is incorrect');
                     return ok({
-                        id: user.id,
+                        userId: user.id,
+                        credentialUserName: 'credentialUserName',
                         username: user.username,
                         firstName: user.firstName,
                         lastName: user.lastName,
+                        isLandlord: true,
+                        isAdmin: false,
+                        isTenant: false,
+                        isVerifiedByStaff: false,
                         token: 'fake-jwt-token'
                     });
+
                 }
 
                 // get users - secure

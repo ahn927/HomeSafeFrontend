@@ -53,15 +53,13 @@ class Map extends React.Component {
             
         })
 
-
-
         map.addControl(geocoder);
-
 
         const data = {
             'features' : []
         }
 
+        //makes each property into a geojson object
         this.state.properties.forEach(function(property) {
             console.log(property);
             let feature = {

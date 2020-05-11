@@ -14,7 +14,7 @@ class Navbar extends React.Component {
     // handleLogin = (e) => this.props.history.push("/login")
     handleLogout = (e) => {
         auth.logout()
-        this.props.history.push("/")
+        window.location.reload()
     }
 
     componentDidUpdate() {
@@ -27,12 +27,18 @@ class Navbar extends React.Component {
         return (
             <div>
                 <Menu stackable size='large'>
-                    <Menu.Item header>HomeSafe</Menu.Item>
                     <Menu.Item
-                        name='aboutUs'
-                        active={activeItem === 'aboutUs'}
+                        header
+                        name='HomeSafe'
+                        active={activeItem === 'HomeSafe'}
                         onClick={this.handleItemClick}
-                        href='/'
+                        href={routes.HOME}
+                    />
+                    <Menu.Item
+                        name='Our Story'
+                        active={activeItem === 'Our Story'}
+                        onClick={this.handleItemClick}
+                        href={routes.ABOUTUS}
                     />
 
                     <Menu.Item
@@ -62,7 +68,10 @@ class Navbar extends React.Component {
                         {
                             // User logged-in already & display user's name
                             currentUser &&
-                            <Menu.Item name='currentuserName'>
+                            <Menu.Item
+                                name='currentuserName'
+                                href={routes.DASHBOARD}
+                            >
                                 <Icon name='user' />
                                 {`${currentUser.firstName} ${currentUser.lastName}`}
                             </Menu.Item>
