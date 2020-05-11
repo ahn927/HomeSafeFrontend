@@ -13,11 +13,15 @@ import ListingPage from './_pages/listing/listing.page';
 import PropertyPage from './_pages/property/property.page'
 
 import AboutUsPage from './_pages/aboutus/aboutus.page'
+import HostPersonalForm from './_pages/forms/host-personal-form';
+import HostListingForm from './_pages/forms/host-listing-form';
+import GuestForm from './_pages/forms/guest-form';
 
 import * as routes from './_constants/routes'
 
 import Navbar from './_components/navbar';
 import Footer from './_components/footer';
+
 
 
 class App extends React.Component {
@@ -40,6 +44,9 @@ class App extends React.Component {
                         <Route exact path={routes.PROPERTY + '/:id'} component={PropertyPage} />
                         <Route exact path={routes.ABOUTUS} component={AboutUsPage} />
 
+                        <Route exact path={routes.HOSTPERSONAL} component={HostPersonalForm} />
+                        <Route exact path={routes.HOSTLISTING} component={HostListingForm} />
+                        <Route exact path={routes.GUESTPERSONAL} component={GuestForm} />
 
                         <ProtectedRoute
                             exact
