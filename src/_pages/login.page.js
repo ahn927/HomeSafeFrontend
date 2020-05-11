@@ -3,7 +3,7 @@ import { Formik } from 'formik'
 import * as Yup from "yup"
 import { Divider, Button, Label, Form } from 'semantic-ui-react'
 
-import auth from './_services/auth'
+import auth from '../_services/auth'
 
 class LoginPage extends React.Component {
 

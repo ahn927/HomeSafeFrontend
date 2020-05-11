@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Menu, Icon } from 'semantic-ui-react'
 
+import * as routes from '../_constants/routes'
+
 import auth from '../_services/auth'
 
 class Navbar extends React.Component {
@@ -10,14 +12,13 @@ class Navbar extends React.Component {
     handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
     // handleLogin = (e) => this.props.history.push("/login")
-    hnadleLogout = (e) => {
+    handleLogout = (e) => {
         auth.logout()
         this.props.history.push("/")
     }
 
     componentDidUpdate() {
         this.setState({ currentuser: auth.currentUserValue })
-        console.log('yo')
     }
 
     render() {
@@ -33,20 +34,33 @@ class Navbar extends React.Component {
                         onClick={this.handleItemClick}
                         href='/'
                     />
+
                     <Menu.Item
-                        name='jobs'
-                        active={activeItem === 'jobs'}
+                        name='FAQ'
+                        active={activeItem === 'faq'}
                         onClick={this.handleItemClick}
-                        href='/'
+                        href={routes.FAQ}
                     />
+
                     <Menu.Item
-                        name='locations'
-                        active={activeItem === 'locations'}
+                        name='reviews'
+                        active={activeItem === 'reviews'}
                         onClick={this.handleItemClick}
-                        href='/'
+                        href={routes.REVIEWS}
                     />
+
                     <Menu.Menu position='right'>
                         {
+                            <Menu.Item
+                                name='Book a Room'
+                                active={activeItem === 'bookAroom'}
+                                onClick={this.handleItemClick}
+                                href={routes.LISTING}
+                            >
+                            </Menu.Item>
+                        }
+                        {
+                            // User logged-in already & display user's name
                             currentUser &&
                             <Menu.Item name='currentuserName'>
                                 <Icon name='user' />
@@ -54,21 +68,30 @@ class Navbar extends React.Component {
                             </Menu.Item>
                         }
                         {
+                            // User logged-in already & display logout button
                             currentUser &&
                             <Menu.Item
                                 name='logout'
                                 active={activeItem === 'logout'}
-                                onClick={this.hnadleLogout}
-                            // href='/login'
+                                onClick={this.handleLogout}
                             />
                         }
                         {
+                            // User not logged-in & disaply become host button
+                            !currentUser &&
+                            <Menu.Item
+                                name='becomeHost'
+                                active={activeItem === 'becomeHost'}
+                                href={routes.BECOME_HOST}
+                            />
+                        }
+                        {
+                            // User not logged-in & disaply login button
                             !currentUser &&
                             <Menu.Item
                                 name='login'
                                 active={activeItem === 'login'}
-                                onClick={this.handleLogin}
-                                href='/login'
+                                href={routes.LOGIN}
                             />
                         }
 

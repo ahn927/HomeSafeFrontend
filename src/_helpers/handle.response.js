@@ -1,4 +1,4 @@
-import auth from './_services/auth'
+import auth from '../_services/auth'
 
 function handleResponse(response) {
     return response.text().then(text => {
