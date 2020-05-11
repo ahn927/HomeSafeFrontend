@@ -4,6 +4,7 @@ import * as Yup from "yup"
 import { Divider, Button, Label, Form } from 'semantic-ui-react'
 import classNames from "classnames"
 import PageHeader from '../../_components/pageHeader'
+import Search from '../../_components/map/search'
 
 import Select from 'react-select'
 
@@ -256,6 +257,9 @@ class HostPersonalForm extends React.Component {
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             className={errors.address && touched.address && "error"}
+                                        />
+                                        <Search
+                                            onSelected={}
                                         />
                                         {errors.address && touched.address && (
                                             <Label basic color='red' pointing>
