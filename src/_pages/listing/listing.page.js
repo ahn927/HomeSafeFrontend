@@ -27,19 +27,18 @@ class ListingPage extends React.Component {
         const result = await fetch(`https://localhost:5001/api/properties`);
         const json = await result.json();
         this.setState({data: json});
-        console.log(this.state.data);
     }
 
     render() {
 
-        if(!this.state.data) return <h1>page not found</h1>
+        if(this.state.data.length < 1) return <h1>page not found</h1>
         
         return (
             <div>
                 <h1>Listing page</h1>
                 <Search onClickSearch={this.handleSearch} />
                 <PropertyList properties={this.state.data} />
-                {/* <Map/> */}
+                <Map properties={this.state.data}/> 
             </div>
         );
     }

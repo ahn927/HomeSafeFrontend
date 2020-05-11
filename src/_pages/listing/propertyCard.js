@@ -5,6 +5,10 @@ import * as images from '../../_constants/images'
 
 
 class PropertyCard extends React.Component {
+    state = {
+        property : this.props.property
+    }
+
     item = {
         header: '',
         description: '',
@@ -12,8 +16,7 @@ class PropertyCard extends React.Component {
     };
 
     render() {
-        let property = this.props.property;
-        console.log(property);
+        if(!this.state.property) return <p></p>
         return (
             <Card >
                 <Card.Content>
@@ -23,12 +26,12 @@ class PropertyCard extends React.Component {
                                 <Image src={images.TEMPLATE_IMAGE} />
                             </Grid.Column>
                             <Grid.Column width={8}>
-                                {/* <Card.Header>{property.unitNumber}</Card.Header> */}
+                                <Card.Header>{this.state.property.unitNumber}</Card.Header>
                                 <Card.Meta>
-                                    {/* <span >{property.roomType}</span> */}
+                                    <span >{this.state.property.roomType}</span>
                                 </Card.Meta>
                                 <Card.Description>
-                                    Wifi, private bathroom, no pets, female only.
+                                    {this.state.property.propertyDescription}
                     </Card.Description>
                             </Grid.Column>
                         </Grid.Row>

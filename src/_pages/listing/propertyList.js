@@ -36,7 +36,6 @@ class PropertyList extends React.Component {
     renderList() {
         let cards = [];
         let { currentPage, propertiesPerPage, properties } = this.state
-        console.log("propertylist" + properties);
         for (let i = 0; i < propertiesPerPage; i++) {
             cards.push(
                 <PropertyCard property={properties[i + (currentPage - 1) * propertiesPerPage]} />

@@ -13,7 +13,8 @@ class Map extends React.Component {
             lng: -123.1207,
             lat: 49.2827,
             zoom: 11,
-            results: null
+            results: null,
+            properties: this.props.properties
         };
     }
 
@@ -56,37 +57,27 @@ class Map extends React.Component {
 
         map.addControl(geocoder);
 
-        const data = {
-            'features': [
-                {
-                    'type': 'Feature',
-                    'properties': {
-                        'title': 'BCIT School',
-                        'link': "weeee",
-                        'description':
-                            '<strong>BCIT</strong><p><a href="https://www.bcit.ca/" target="_blank" title="Opens in a new window">BCIT Link</a> This is bcit, scam skool</p>'
-                    },
-                    'geometry': {
-                        'type': 'Point',
-                        'coordinates': [-123.00111682335785, 49.2480164213475]
-                    }
-                },
-                {
-                    'type': 'Feature',
-                    'properties': {
-                        'title': 'NEAR BCIT THING',
-                        'link': "wee2",
-                        'description':
-                            '<strong>Near BCIT</strong><p> somewhere near bcit <a href="http://madmens5finale.eventbrite.com/" target="_blank" title="Opens in a new window">website link</a>, description string</p>'
-                    },
-                    'geometry': {
-                        'type': 'Point',
-                        'coordinates': [-123.00775451274126, 49.24972688317919]
-                    }
-                }
-            ]
-        };
 
+        const data = {
+            'features' : []
+        }
+
+        this.state.properties.forEach(function(property) {
+            console.log(property);
+            let feature = {
+                'type' : 'Feature',
+                'properties': {
+                    'title': property.unitNumber + ' ' + property.streetNumber + ' ' + property.street,
+                    'description': property.propertyDescription
+                    //add whatever extra fields you need here e.g vip code, country etc 
+                },
+                'geometry': {
+                    'type': 'Point',
+                    'coordinates': [property.longitude, property.latitude]
+                }
+            }   
+            data.features.push(feature);
+        });
 
         map.on('load', function () {
             data.features.forEach(function (marker) {
@@ -99,10 +90,9 @@ class Map extends React.Component {
                 new mapboxgl.Marker(el)
                     .setLngLat(marker.geometry.coordinates)
                     .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-                        .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>' + '<p>' + marker.properties.link + '</p>'))
+                        .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.propertyDescription + '</p>'))
                     .addTo(map);
             });
-
 
 
         });
