@@ -1,14 +1,13 @@
 import React from 'react'
 import { Formik, Field } from 'formik'
 import * as Yup from "yup"
-import { Divider, Button, Label, Form } from 'semantic-ui-react'
+import { Divider, Button, Label, Form, Dropdown } from 'semantic-ui-react'
 import classNames from "classnames"
 import PageHeader from '../../_components/pageHeader'
 import Search from '../../_components/map/search'
 
 import Select from 'react-select'
 
-//import { RadioButton, RadioButtonGroup, MySelect } from '../_services/form-options';
 
 const InputFeedback = ({ error }) =>
     error ? <div className={classNames("input-feedback")}>{error}</div> : null;
@@ -70,13 +69,13 @@ const RadioButtonGroup = ({
 };
 
 const options = [
-    { value: 'Vancouver', label: 'Vancouver' },
-    { value: 'Richmond', label: 'Richmond' },
-    { value: 'Surrey', label: 'Surrey' },
-    { value: 'Burnaby', label: 'Burnaby' },
-    { value: 'Coquitlam', label: 'Coquitlam' },
-    { value: 'Port Moody', label: 'Port Moody' },
-    { value: 'New Westminster', label: 'New Westminster' },
+    { key: 'Vancouver', value: 'Vancouver', label: 'Vancouver' },
+    { key: 'Richmond', value: 'Richmond', label: 'Richmond' },
+    { key: 'Surrey', value: 'Surrey', label: 'Surrey' },
+    { key: 'Burnaby', value: 'Burnaby', label: 'Burnaby' },
+    { key: 'Coquitlam', value: 'Coquitlam', label: 'Coquitlam' },
+    { key: 'Port Moody', value: 'Port Moody', label: 'Port Moody' },
+    { key: 'New Westminster', value: 'New Westminster', label: 'New Westminster' },
 ];
 
 class MySelect extends React.Component {
@@ -108,9 +107,18 @@ class MySelect extends React.Component {
 
 class HostPersonalForm extends React.Component {
 
-    state = {
-        geoResult: null
-    }
+    constructor(props) {
+        super(props);
+        this.state = {
+            geoResult: null
+        }
+
+        this.handleChange = this.handleChange.bind(this);
+      }
+    
+      handleChange(event) {
+        this.setState({geoResult: event.target.value});
+      }
 
     render() {
         return (
@@ -266,6 +274,7 @@ class HostPersonalForm extends React.Component {
                                             console.log('result', result)
 
                                             this.setState({ geoResult: result })
+                                            //this.handleChange(values.address, this.state.geoResult);
                                             console.log('statet', this.state)
                                         }} />
                                         {this.state.geoResult &&
@@ -280,12 +289,28 @@ class HostPersonalForm extends React.Component {
                                     <Divider />
                                     <div>
                                         <label htmlFor="city">City</label>
-                                        <MySelect
+                                        {/**<MySelect
                                             value={values.city}
                                             onChange={setFieldValue}
                                             onBlur={setFieldTouched}
                                             error={errors.city}
                                             touched={touched.city}
+                                        />
+                                        <Dropdown
+                                            placeholder='Select a City'
+                                            fluid
+                                            selection
+                                            options={options}
+                                            value={values.city}
+                                        />*/}
+                                        <input
+                                            name="city"
+                                            type="text"
+                                            placeholder="Enter your city"
+                                            value={values.address}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            className={errors.city && touched.city && "error"}
                                         />
                                         {errors.city && touched.city && (
                                             <Label basic color='red' pointing>

@@ -3,8 +3,8 @@ import { Formik, Field } from 'formik'
 import * as Yup from "yup"
 import { Divider, Button, Label, Form } from 'semantic-ui-react'
 import classNames from "classnames"
-import DatePicker from "react-datepicker"
 import Select from 'react-select'
+import PageHeader from '../../_components/pageHeader'
  
 import "react-datepicker/dist/react-datepicker.css"
 import countries from "../../resources/countries.json"
@@ -110,13 +110,16 @@ class GuestForm extends React.Component {
     render() {
         return (
         <div>
-            <h1>Guest Information</h1>
+            <PageHeader
+                icon={null}
+                text='Become A Guest' >
+            </PageHeader>
             <Formik
                 initialValues={{ firstName: "",
                                  lastName: "",
                                  email: "",
                                  phoneNumber: "",  
-                                 dateOfBirth: new Date(),                               
+                                 dateOfBirth: "",                               
                                  gender: "",
                                  nationality: "",
                                  reasonForStay: "",
@@ -147,6 +150,8 @@ class GuestForm extends React.Component {
                     phoneNumber: Yup.string()
                         .required("Required")
                         .matches(/(^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$)/, "Must be a valid phone number."),
+                    dateOfBirth: Yup.string()
+                        .required("Required"),
                     gender: Yup.string()
                         .required("Required")
                         .matches(/([A-Za-z])/,"Must be a valid city"),
@@ -248,11 +253,15 @@ class GuestForm extends React.Component {
                                 <Divider />
                                 <div>
                                     <label htmlFor="dateOfBirth">Date Of Birth</label><br />
-                                    <DatePicker
-                                        selected={this.state.startDate}
-                                        onChange={this.handleChange}
+                                    <input
+                                        name="dateOfBirth"
+                                        type="date"
+                                        placeholder={(new Date()).toDateString()}
+                                        value={values.dateOfBirth}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
                                         className={errors.dateOfBirth && touched.dateOfBirth && "error"}
-                                    /><br />
+                                    />
                                     {errors.dateOfBirth && touched.dateOfBirth && (
                                         <Label basic color='red' pointing>
                                             {errors.dateOfBirth}
@@ -298,7 +307,7 @@ class GuestForm extends React.Component {
                                     <input
                                         name="nationality"
                                         type="text"
-                                        placeholder="Enter your nationality"
+                                        placeholder="Choose your country below"
                                         value={values.nationality}
                                         onChange={handleChange}
                                         onBlur={handleBlur}

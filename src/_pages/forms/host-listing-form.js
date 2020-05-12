@@ -4,6 +4,7 @@ import * as Yup from "yup"
 import { Divider, Button, Label, Form } from 'semantic-ui-react'
 import Select from 'react-select'
 import Base64Converter from '../../_components/imageconvert/base64-converter'
+import PageHeader from '../../_components/pageHeader'
 
 import classNames from "classnames"
 
@@ -118,7 +119,10 @@ class HostListingForm extends React.Component {
     render() {
         return (
         <div>
-            <h1>Listing Information</h1>
+            <PageHeader
+                icon={null}
+                text='List A Room' >
+            </PageHeader>
             <Formik
                 initialValues={{ host: "",
                                  neighbourhood: "",
