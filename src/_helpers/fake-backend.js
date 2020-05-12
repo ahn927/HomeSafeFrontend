@@ -1,6 +1,7 @@
 function configureFakeBackend() {
     let users = [
-        { id: 1, username: 'test', password: 'test123', firstName: 'Test', lastName: 'User' }
+        { id: 1, username: 'test', password: 'test123', firstName: 'Test', lastName: 'User', isLandlord: true, isAdmin: false, isTenant: false, isVerifiedByStaff: true },
+        { id: 2, username: 'test', password: 'test123', firstName: 'Test', lastName: 'User', isLandlord: false, isAdmin: false, isTenant: true, isVerifiedByStaff: false },
     ];
     let realFetch = window.fetch;
     window.fetch = function (url, opts) {
