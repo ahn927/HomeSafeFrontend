@@ -9,7 +9,7 @@ class PropertyList extends React.Component {
     state = {
         properties: this.props.properties,
         currentPage: 1,
-        proopertiesPerPage: 10,
+        propertiesPerPage: 10,
         selectedProperty: null
     }
 
@@ -20,8 +20,8 @@ class PropertyList extends React.Component {
 
 
     renderPagination() {
-        let { currentPage, proopertiesPerPage, properties } = this.state
-        let totalPages = Math.ceil(properties.length / proopertiesPerPage)
+        let { currentPage, propertiesPerPage, properties } = this.state
+        let totalPages = Math.ceil(properties.length / propertiesPerPage)
 
         return (
             <Pagination
@@ -35,12 +35,13 @@ class PropertyList extends React.Component {
 
     renderList() {
         let cards = [];
-        let { currentPage, proopertiesPerPage, properties } = this.state
-        for (let i = 0; i < proopertiesPerPage; i++) {
+        let { currentPage, propertiesPerPage, properties } = this.state
+        for (let i = 0; i < propertiesPerPage; i++) {
             cards.push(
-                <PropertyCard property={properties[i + (currentPage - 1) * proopertiesPerPage]} />
+                <PropertyCard property={properties[i + (currentPage - 1) * propertiesPerPage]} />
             )
         }
+    
         return cards;
     }
 

@@ -15,26 +15,24 @@ class ListingPage extends React.Component {
         lat: null,
         long: null,
         errorMessage: null,
-        searchValue: null
+        searchValue: null,
+        data:[]
     }
 
     handleSearch = (searchValue) => {
         this.setState({ searchValue: searchValue });
     };
 
+    async componentDidMount() {
+        const result = await fetch(`https://localhost:5001/api/properties`);
+        const json = await result.json();
+        this.setState({data: json});
+    }
+
     render() {
-        let sample = [];
-        for (var i = 0; i < 100; i++) {
-            sample.push(
-                {
-                    address: `address no. ${i}`,
-                    roomType: 'studio',
-                    price: 1000,
-                    pets: false,
-                    bathroom: 'private'
-                }
-            )
-        }
+
+        if(this.state.data.length < 1) return <h1>page not found</h1>
+        
         return (
             <div>
                 <PageHeader
@@ -42,8 +40,8 @@ class ListingPage extends React.Component {
                     text='Search' >
                 </PageHeader>
                 <Search onClickSearch={this.handleSearch} />
-                <PropertyList properties={sample} />
-                {/* <Map/> */}
+                <PropertyList properties={this.state.data} />
+                <Map properties={this.state.data}/> 
             </div>
         );
     }

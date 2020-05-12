@@ -1,6 +1,6 @@
 import React from 'react'
 import { Formik } from 'formik'
-import { Divider, Button, Label, Form } from 'semantic-ui-react'
+import { Field, Divider, Button, Label, Form } from 'semantic-ui-react'
 
 
 class Search extends React.Component {
