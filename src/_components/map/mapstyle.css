@@ -1,7 +1,7 @@
 .mapContainer {
-   
-    width: 600px;
-    height: 600px;
+    margin-top: 100px;
+    width: 800px;
+    height: 700px;
 }
 
 .mapboxgl-popup {
@@ -44,3 +44,5 @@
     font-size: larger;
     }
   */
+
+  

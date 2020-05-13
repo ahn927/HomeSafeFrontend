@@ -40,8 +40,14 @@ class ListingPage extends React.Component {
                     text='Search' >
                 </PageHeader>
                 <Search onClickSearch={this.handleSearch} />
-                <PropertyList properties={this.state.data} />
-                <Map properties={this.state.data} />
+                <div class="ui grid">  
+                    <div class="six wide column">
+                        <PropertyList properties={this.state.data} />
+                    </div>
+                    <div class="six wide column">
+                        <Map properties={this.state.data} />
+                    </div>
+                </div>
             </div>
         );
     }

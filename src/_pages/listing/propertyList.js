@@ -9,7 +9,7 @@ class PropertyList extends React.Component {
     state = {
         properties: this.props.properties,
         currentPage: 1,
-        propertiesPerPage: 10,
+        propertiesPerPage: 5,
         selectedProperty: null
     }
 
