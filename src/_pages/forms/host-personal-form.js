@@ -23,14 +23,14 @@ class HostPersonalForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            geoResult: null
+            geoResult: null,
+            addy: "poo"
         }
-
         this.handleChange = this.handleChange.bind(this);
       }
     
       handleChange(tar, val) {
-        tar = val;
+        tar = val.place_name;
       }
 
     render() {
@@ -41,6 +41,7 @@ class HostPersonalForm extends React.Component {
                     text='Become A Host' >
                 </PageHeader>
                 <Formik
+                    enableReinitialize
                     initialValues={{
                         firstName: "",
                         lastName: "",
@@ -49,7 +50,6 @@ class HostPersonalForm extends React.Component {
                         address: "",
                         city: "",
                         heardAbout: "",
-                        radioGroup: ""
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         /* // submitting event here.
@@ -62,6 +62,8 @@ class HostPersonalForm extends React.Component {
                                     console.log(error)
                                 }
                             ) */
+                        values.address = this.state.geoResult.place_name;
+                        values.city = this.state.geoResult.context[2].text;
                         console.log(JSON.stringify(values, null, 2));
                     }}
                     validationSchema={Yup.object().shape({
@@ -77,11 +79,6 @@ class HostPersonalForm extends React.Component {
                         email: Yup.string()
                             .required("Required")
                             .email(),
-                        address: Yup.string()
-                            .required("Required")
-                            .matches(/()/, "Must be a valid address."),
-                        city: Yup.string()
-                            .required("Required"),
                         heardAbout: Yup.string()
                             .required("Must state where you heard about this service."),
                     })}
@@ -174,63 +171,13 @@ class HostPersonalForm extends React.Component {
                                     <Divider />
                                     <div>
                                         <label htmlFor="address">Address</label>
-                                        {/* <input
-                                            name="address"
-                                            type="text"
-                                            placeholder="Enter your address"
-                                            value={values.address}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            className={errors.address && touched.address && "error"}
-                                        /> */}
                                         <Search handleOnSelect={(result) => {
                                             console.log('result', result)
-
                                             this.setState({ geoResult: result })
-                                            this.handleChange(values.address, this.state.geoResult);
-                                            console.log('statet', result)
-                                            console.log('address', values.address)
                                         }} />
                                         {this.state.geoResult &&
                                             <p><small>You selected: </small><br />{this.state.geoResult.place_name}</p>
                                         }
-                                        {/* {errors.address && touched.address && (
-                                            <Label basic color='red' pointing>
-                                                {errors.address}
-                                            </Label>
-                                        )} */}
-                                    </div>
-                                    <Divider />
-                                    <div>
-                                        <label htmlFor="city">City</label>
-                                        {/**<MySelect
-                                            value={values.city}
-                                            onChange={setFieldValue}
-                                            onBlur={setFieldTouched}
-                                            error={errors.city}
-                                            touched={touched.city}
-                                        />
-                                        <Dropdown
-                                            placeholder='Select a City'
-                                            fluid
-                                            selection
-                                            options={options}
-                                            value={values.city}
-                                        />*/}
-                                        <input
-                                            name="city"
-                                            type="text"
-                                            placeholder="Enter your city"
-                                            value={values.city}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            className={errors.city && touched.city && "error"}
-                                        />
-                                        {errors.city && touched.city && (
-                                            <Label basic color='red' pointing>
-                                                {errors.city}
-                                            </Label>
-                                        )}
                                     </div>
                                     <Divider />
                                     <div>
@@ -243,25 +190,29 @@ class HostPersonalForm extends React.Component {
                                             <Field
                                                 component={RadioButton}
                                                 name="heardAbout"
-                                                id="online"
+                                                id="online"                                                
+                                                content="Online"
                                                 label="Online"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="heardAbout"
                                                 id="wordOfMouth"
+                                                content="Word Of Mouth"
                                                 label="Word Of Mouth"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="heardAbout"
                                                 id="facebook"
+                                                content="Facebook"
                                                 label="Facebook"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="heardAbout"
                                                 id="instagram"
+                                                content="Instagram"
                                                 label="Instagram"
                                             />
                                         </RadioButtonGroup>
