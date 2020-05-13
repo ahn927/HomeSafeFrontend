@@ -8,6 +8,7 @@ import RadioButton from '../helper/radio-button'
 import RadioButtonGroup from '../helper/radio-group'
 import MySelect from '../helper/my-select'
 import * as images from '../../../_constants/images'
+import Search from '../../../_components/map/search'
 
 class EditHostListing extends React.Component {
 
@@ -15,6 +16,7 @@ class EditHostListing extends React.Component {
         host: "This is a description of the host.",
         neighbourhood: "This is a description of the neighbourhood.",
         house: "This is a description of the house.",
+        address: "15908 Prospect Crescent, White Rock, British Columbia V4B 2A2, Canada",
         roomType: "En Suite",
         washroomAvail: "En Suite",
         gendersAccepted: "Any",
@@ -56,6 +58,7 @@ class EditHostListing extends React.Component {
                 initialValues={{ host: this.state.host,
                                  neighbourhood: this.state.neighbourhood,
                                  house: this.state.house,
+                                 address: this.state.address,
                                  roomType: this.state.roomType,
                                  washroomAvail: this.state.washroomAvail,
                                  gendersAccepted: this.state.gendersAccepted,
@@ -166,6 +169,17 @@ class EditHostListing extends React.Component {
                                             {errors.house}
                                         </Label>
                                     )}
+                                </div>
+                                <Divider />
+                                <div>
+                                <label htmlFor="address">Address</label>
+                                    <Search handleOnSelect={(result) => {
+                                        console.log('result', result)
+                                        this.setState({ geoResult: result })
+                                    }} />
+                                    {this.state.geoResult &&
+                                        <p><small>You selected: </small><br />{this.state.geoResult.place_name}</p>
+                                    }
                                 </div>
                                 <Divider />
                                 <div>
