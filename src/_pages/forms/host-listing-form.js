@@ -231,6 +231,7 @@ class HostListingForm extends React.Component {
                                         {errors.house && touched.house && (
                                             <Label basic color='red' pointing>
                                                 {errors.house}
+                                                                                            component={RadioButton}
                                             </Label>
                                         )}
                                     </div>
@@ -243,7 +244,6 @@ class HostListingForm extends React.Component {
                                             touched={touched.roomType}
                                         >
                                             <Field
-                                                component={RadioButton}
                                                 name="roomType"
                                                 id="single"
                                                 label="Single Room"

@@ -6,7 +6,7 @@ import * as images from '../../_constants/images'
 
 class PropertyCard extends React.Component {
     state = {
-        property : this.props.property
+        property: this.props.property
     }
 
     item = {
@@ -16,9 +16,9 @@ class PropertyCard extends React.Component {
     };
 
     render() {
-        if(!this.state.property) return <p></p>
+        if (!this.state.property) return <p></p>
         return (
-            <Card >
+            <Card style={{ width: '100%' }}>
                 <Card.Content>
                     <Grid centered>
                         <Grid.Row>
@@ -32,7 +32,7 @@ class PropertyCard extends React.Component {
                                 </Card.Meta>
                                 <Card.Description>
                                     {this.state.property.propertyDescription}
-                    </Card.Description>
+                                </Card.Description>
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>

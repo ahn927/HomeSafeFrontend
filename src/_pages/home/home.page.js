@@ -3,7 +3,6 @@ import React from 'react'
 import { Divider, Header, Icon, Table, Grid, Image, Button } from 'semantic-ui-react'
 
 import auth from '../../_services/auth'
-import Search from '../../_components/search'
 import AccordionComponent from './accordion'
 import * as Images from '../../_constants/images';
 

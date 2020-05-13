@@ -20,6 +20,9 @@ const queryParams = {
     // country: 'us'
 }
 
+const MyInput = (props) => <input {...props} placeholder="Search School / Landmarks / Address ..." />
+
+
 class Search extends React.Component {
     state = {
         viewport: {}
@@ -42,6 +45,11 @@ class Search extends React.Component {
                     viewport={viewport}
                     hideOnSelect={true}
                     queryParams={queryParams}
+                    placeholder='ds'
+                    updateInputOnSelect={true}
+                    // initialInputValue="Find School/Landmark/Transportation"
+                    inputComponent={MyInput}
+
                 />
             </div>
         )

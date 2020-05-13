@@ -41,14 +41,13 @@ class PropertyList extends React.Component {
                 <PropertyCard property={properties[i + (currentPage - 1) * propertiesPerPage]} />
             )
         }
-    
+
         return cards;
     }
 
     render() {
         return (
             <div className="PropertyList">
-                <h1>list</h1>
                 {this.renderList()}
                 {this.renderPagination()}
             </div>
