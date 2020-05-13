@@ -12,13 +12,23 @@ class Map extends React.Component {
         this.state = {
             lng: -123.1207,
             lat: 49.2827,
-            zoom: 11,
+            zoom: 10,
             results: null,
-            properties: this.props.properties
+            properties: this.props.properties,
+            propertyLng: this.props.propertyLng,
+            propertyLat: this.props.propertyLat
         };
     }
 
     componentDidMount() {
+        //if we want to pass in some location not default
+        if(this.state.propertyLng) {
+            this.setState({
+                lng: this.state.propertyLng,
+                lat: this.state.propertyLat
+            })
+        }
+
         const map = new mapboxgl.Map({
             container: this.mapContainer,
             style: 'mapbox://styles/mapbox/streets-v11',
@@ -40,10 +50,6 @@ class Map extends React.Component {
         let currentMarker = new mapboxgl.Marker(markerHTML);
 
         geocoder.on('result', async function (resultJSON) {
-            // can also use an api call like such:
-            // const result = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/Los%20Angeles.json?access_token=${mapboxgl.accessToken}`);
-            // const body = await result.json();
-            // console.log(body);
             console.log(resultJSON);
             
             //removes previous marker if exist, then adds the new one to map
@@ -66,7 +72,8 @@ class Map extends React.Component {
                 'type' : 'Feature',
                 'properties': {
                     'title': property.unitNumber + ' ' + property.streetNumber + ' ' + property.street,
-                    'description': property.propertyDescription
+                    'description': property.propertyDescription,
+                    'id': 'http://localhost:3000/property/' + property.propertyID
                     //add whatever extra fields you need here e.g vip code, country etc 
                 },
                 'geometry': {
@@ -88,7 +95,8 @@ class Map extends React.Component {
                 new mapboxgl.Marker(el)
                     .setLngLat(marker.geometry.coordinates)
                     .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-                        .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.propertyDescription + '</p>'))
+                        .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'
+                        +  '<a href="' + marker.properties.id + '">Click Here to see more details</a>' ))
                     .addTo(map);
             });
 

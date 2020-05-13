@@ -10,7 +10,8 @@ class CarouselComponent extends React.Component {
 
     state = {
         modalOpen: false,
-        propertyImages: [images.TEMPLATE_HOUSE2, images.TEMPLATE_HOUSE1, images.TEMPLATE_HOUSE3],
+        //image array passed here are the strings stored in the database
+        propertyImages: this.props.images,
         clickedImageIndex: -1
     }
 

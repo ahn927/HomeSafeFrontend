@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react'
-import { useParams } from 'react-router-dom'
+import { withRouter } from "react-router-dom";
 
 import {
     Card, Grid, Container, List, Divider, Header, Icon, Button, Label, Form, Sticky, Rail,
@@ -8,7 +8,7 @@ import {
 import { Formik } from 'formik'
 import * as Yup from "yup"
 
-
+import Map from '../../_components/map/map';
 import CarouselComponent from './carousel.component'
 import * as routes from '../../_constants/routes'
 import * as images from '../../_constants/images'
@@ -17,63 +17,41 @@ import auth from '../../_services/auth'
 
 
 class PropertyPage extends React.Component {
-
-
     state = {
+        id: null,
         propertyId: null,
         bookError: null,
-        property: {
-            "propertyId": 1,
-            "price": 1000.99,
-            "hostDescription": "george is a ….",
-            "propertyDescription": "this suite ...",
-            "neighbourhoodDescription": "down in the slums..",
-            "roomType": "single",
-            "washroomType": "private",
-            "genderPreference": "male",
-            "pets": true,
-            "utilities": true,
-            "closestSchool": "bcit",
-            "streetNumber": 1535,
-            "street": "30th ave",
-            "unitNumber": "5",
-            "city": "vancouver",
-            "province": "BC",
-            "country": "Canada",
-            "latitude": -125.235093235,
-            "longitude": 49.2523535353,
-            "images": [
-                images.TEMPLATE_HOUSE1,
-                images.TEMPLATE_HOUSE2,
-                images.TEMPLATE_HOUSE3,
-            ],
-            "ownerId": 1,
-            "tenants": [
-                {
-                    "userId": 3,
-                    "firstName": "Mark",
-                    "lastName": "Christian",
-                    "gender": "male"
-                },
-                {
-                    "userId": 3,
-                    "firstName": "Molly",
-                    "lastName": "Lena",
-                    "gender": "male"
-                }
-            ],
-
-        }
+        property: null,
+        properties: [],
+        userId: null,
+        tenants: []    
     }
 
 
-    componentDidMount() {
-        // let { id } = useParams();
-
-        this.setState({
-            // propertyId: id,
-            // property: tempData //TODO: Replace this line by fetch call to backend.
+    async componentDidMount() {
+        const id = this.props.match.params.id;
+        console.log(id);
+        const resultProperty = await fetch(`https://10kftdb.azurewebsites.net/api/properties/search/${id}`);
+        const jsonProperty = await resultProperty.json();
+        let temparray = this.state.properties;
+        temparray.push(jsonProperty);
+        this.setState({ 
+            propertyId: id,
+            properties: temparray,
+            property: jsonProperty,
+            userId: jsonProperty.userID
         });
+        console.log(this.state.properties);
+        console.log(this.state.property);
+                
+
+        const resultTenant = await fetch(`https://10kftdb.azurewebsites.net/api/properties/getTenantAppliedPropertyByLandlordID/${this.state.userId}`);
+        const jsonTenant = await resultTenant.json();
+        this.setState({
+            tenants: jsonTenant
+        })
+        console.log(jsonTenant);
+        
     }
 
     contextRef = createRef()
@@ -85,23 +63,39 @@ class PropertyPage extends React.Component {
         console.log('property', property)
 
         if (!currentUser) return null;
-        if (currentUser.userId != property.ownerId) return null;
-
-        let takenCount = property.tenants.length;
-        let tableRows = [];
-        property.tenants.forEach((tenant, key) => {
-            tableRows.push(
-                <Table.Row>
-                    <Table.Cell collapsing>{tenant.firstName} {tenant.lastName}</Table.Cell>
-                    <Table.Cell collapsing>{tenant.gender}</Table.Cell>
-                </Table.Row>
+        if (currentUser.userID != property.userID) return null;
+        if (!this.state.tenants) {
+            return(
+                (
+                    <div>
+                        <Message color='blue'>
+                            <Message.Header>Hi, {currentUser.userFirstName + ' ' + currentUser.userLastName}</Message.Header>
+                            <Header as="h3">Dear {currentUser.userFirstName}</Header>
+                            <p>There are 0 guests took this property.</p>
+                        </Message>
+                        <Divider></Divider>
+                    </div>
+                )
             )
+        }
+
+        let takenCount = this.state.tenants.length;
+        let tableRows = [];
+        this.state.tenants.forEach((tenant, key) => {
+            if(tenant.propertyID == this.state.property.propertyID) {
+                tableRows.push(
+                    <Table.Row>
+                        <Table.Cell collapsing>{tenant.userFirstName} {tenant.userLastName}</Table.Cell>
+                        <Table.Cell collapsing>{tenant.gender}</Table.Cell>
+                    </Table.Row>
+                )
+            }
         })
         return (
             <div>
                 <Message color='blue'>
-                    {/* <Message.Header>Hi, {currentUser.firstName + ' ' + currentUser.lastName}</Message.Header> */}
-                    <Header as="h3">Dear {currentUser.firstName}</Header>
+                    <Message.Header>Hi, {currentUser.userFirstName + ' ' + currentUser.userLastName}</Message.Header>
+                    <Header as="h3">Dear {currentUser.userFirstName}</Header>
                     <p>There are {takenCount} guests took this property.</p>
                     <Table className="my-3" color='blue' inverted>
                         <Table.Header>
@@ -155,8 +149,8 @@ class PropertyPage extends React.Component {
                         <Card className="mx-2">
                             <Card.Content>
                                 <List divided relaxed>
-                                    {property.utilities && this.renderListItem('wifi', 'Utilities Provided')}
-                                    {!property.utilities && this.renderListItem('wifi', 'Utilities Not Provided')}
+                                    {property.wifiAndUtilitiesIncluded && this.renderListItem('wifi', 'Utilities Provided')}
+                                    {!property.wifiAndUtilitiesIncluded && this.renderListItem('wifi', 'Utilities Not Provided')}
                                 </List>
                             </Card.Content>
                         </Card>
@@ -294,10 +288,9 @@ class PropertyPage extends React.Component {
     }
 
     renderBookingBox() {
-        let property = this.state.property;
         return (
             <div>
-                <Header as="h3">$ {property.price} <span className="font-weight-light">/month</span></Header>
+                <Header as="h3">$ {this.state.property.price} <span className="font-weight-light">/month</span></Header>
                 <span className="font-weight-light">smaller text will go here.</span>
                 <Divider></Divider>
                 <Header as="p" block>
@@ -310,26 +303,27 @@ class PropertyPage extends React.Component {
             </div>
         )
     }
+
     render() {
-        let property = this.state.property;
         if (!this.state.property) {
-            console.log(this.state.property)
-            return (<div></div>)
+            return (<div> Loading </div>)
         }
+
         return (
             <div>
-                <CarouselComponent />
+               {/* <CarouselComponent propertyImages={this.state.property.propertyImages}/> */}
                 {this.rendernapshotInfo()}
                 <Grid >
                     <Grid.Column width="10">
                         <Ref innerRef={this.contextRef}>
                             <div>
                                 {this.renderDivdingHeader('home', 'Room Information')}
-                                <p>{property.propertyDescription}</p>
+                                <p>{this.state.property.propertyDescription}</p>
                                 {this.renderDivdingHeader('id badge', 'Host Information')}
-                                <p>{property.hostDescription}</p>
+                                <p>{this.state.property.hostDescription}</p>
                                 {this.renderDivdingHeader('home', 'Map')}
-                                <Image src={images.TEMPLATE_IMAGE} />
+                                <Map properties={this.state.properties} propertyLng={this.state.property.longitutde}
+                                    propertyLat={this.state.property.latitude}/>
                                 {this.renderDivdingHeader('home', 'Points of Interests')}
 
                                 <Rail position='right'>
