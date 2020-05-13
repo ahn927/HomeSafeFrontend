@@ -29,8 +29,8 @@ class HostPersonalForm extends React.Component {
         this.handleChange = this.handleChange.bind(this);
       }
     
-      handleChange(event) {
-        this.setState({geoResult: event.target.value});
+      handleChange(tar, val) {
+        tar = val;
       }
 
     render() {
@@ -187,8 +187,9 @@ class HostPersonalForm extends React.Component {
                                             console.log('result', result)
 
                                             this.setState({ geoResult: result })
-                                            //this.handleChange(values.address, this.state.geoResult);
-                                            console.log('statet', this.state)
+                                            this.handleChange(values.address, this.state.geoResult);
+                                            console.log('statet', result)
+                                            console.log('address', values.address)
                                         }} />
                                         {this.state.geoResult &&
                                             <p><small>You selected: </small><br />{this.state.geoResult.place_name}</p>
@@ -220,7 +221,7 @@ class HostPersonalForm extends React.Component {
                                             name="city"
                                             type="text"
                                             placeholder="Enter your city"
-                                            value={values.address}
+                                            value={values.city}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
                                             className={errors.city && touched.city && "error"}

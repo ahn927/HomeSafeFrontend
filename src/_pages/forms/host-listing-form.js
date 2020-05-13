@@ -45,6 +45,8 @@ class HostListingForm extends React.Component {
                                  washroomAvail: "",
                                  gendersAccepted: "",
                                  pets: false,
+                                 startDate: "",
+                                 endDate: "",
                                  nearestSchool: "",
                                  images: [] }}
                 onSubmit={(values, { setSubmitting }) => {
@@ -75,6 +77,10 @@ class HostListingForm extends React.Component {
                         .required("Required"),
                     pets: Yup.string()
                         .required("Required."),
+                    startDate: Yup.string()
+                        .required("Required"),
+                    endDate: Yup.string()
+                        .required("Required"),
                     nearestSchool: Yup.string()
                         .required("Required.")
                 })}
@@ -274,14 +280,51 @@ class HostListingForm extends React.Component {
                                 </div>
                                 <Divider />
                                 <div>
-                                    <label htmlFor="nearestSchool">What is the Nearest School</label>
-                                    <MySelect
-                                        value={values.nearestSchool}
-                                        onChange={setFieldValue}
-                                        onBlur={setFieldTouched}
-                                        error={errors.nearestSchool}
-                                        touched={touched.nearestSchool}
+                                    <label htmlFor="startDate">Date Room Is Available</label><br />
+                                    <input
+                                        name="startDate"
+                                        type="date"
+                                        placeholder={(new Date()).toDateString()}
+                                        value={values.startDate}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        className={errors.startDate && touched.startDate && "error"}
                                     />
+                                    {errors.startDate && touched.startDate && (
+                                        <Label basic color='red' pointing>
+                                            {errors.startDate}
+                                        </Label>
+                                    )}
+                                </div>
+                                <Divider />
+                                <div>
+                                    <label htmlFor="endDate">Date When Stay Ends</label><br />
+                                    <input
+                                        name="endDate"
+                                        type="date"
+                                        placeholder={(new Date()).toDateString()}
+                                        value={values.endDate}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        className={errors.endDate && touched.endDate && "error"}
+                                    />
+                                    {errors.endDate && touched.endDate && (
+                                        <Label basic color='red' pointing>
+                                            {errors.endDate}
+                                        </Label>
+                                    )}
+                                </div>
+                                <Divider />
+                                <div>
+                                    <label htmlFor="nearestSchool">What is the Nearest School</label>
+                                    <input
+                                        name="nearestSchool"
+                                        type="text"
+                                        placeholder="Enter the closest school and the ETA"
+                                        value={values.nearestSchool}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        className={errors.nearestSchool && touched.nearestSchool && "error"} />
                                     {errors.nearestSchool && touched.nearestSchool && (
                                         <Label basic color='red' pointing>
                                             {errors.nearestSchool}
@@ -290,7 +333,7 @@ class HostListingForm extends React.Component {
                                 </div>
                                 <Divider />
                                 <div>
-                                    <label htmlFor="images">Attach Images Of The Room</label>
+                                    <label htmlFor="images">Attach Images Of The Room (Hold select while you choose all your images)</label>
                                     <Base64Converter
                                         multiple={ true }
                                         onDone={ this.getFiles.bind(this) }
