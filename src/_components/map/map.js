@@ -66,7 +66,8 @@ class Map extends React.Component {
                 'type' : 'Feature',
                 'properties': {
                     'title': property.unitNumber + ' ' + property.streetNumber + ' ' + property.street,
-                    'description': property.propertyDescription
+                    'description': property.propertyDescription,
+                    'id': property.propertyId
                     //add whatever extra fields you need here e.g vip code, country etc 
                 },
                 'geometry': {
@@ -88,7 +89,7 @@ class Map extends React.Component {
                 new mapboxgl.Marker(el)
                     .setLngLat(marker.geometry.coordinates)
                     .setPopup(new mapboxgl.Popup({ offset: 25 }) // add popups
-                        .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.propertyDescription + '</p>'))
+                        .setHTML('<h3>' + marker.properties.title + '</h3><p>' + marker.properties.description + '</p>'))
                     .addTo(map);
             });
 
