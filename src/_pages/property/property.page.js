@@ -24,7 +24,7 @@ class PropertyPage extends React.Component {
         property: null,
         properties: [],
         userId: null,
-        tenant: []    
+        tenants: []    
     }
 
 
@@ -48,7 +48,7 @@ class PropertyPage extends React.Component {
         const resultTenant = await fetch(`https://localhost:5001/getTenantAppliedPropertyByLandlordID/${this.state.userId}`);
         const jsonTenant = await resultTenant.json();
         this.setState({
-            tenant: jsonTenant
+            tenants: jsonTenant
         })
         console.log(jsonTenant);
         
@@ -63,23 +63,39 @@ class PropertyPage extends React.Component {
         console.log('property', property)
 
         if (!currentUser) return null;
-        if (currentUser.userId != property.ownerId) return null;
-
-        let takenCount = property.tenants.length;
-        let tableRows = [];
-        property.tenants.forEach((tenant, key) => {
-            tableRows.push(
-                <Table.Row>
-                    <Table.Cell collapsing>{tenant.firstName} {tenant.lastName}</Table.Cell>
-                    <Table.Cell collapsing>{tenant.gender}</Table.Cell>
-                </Table.Row>
+        if (currentUser.userID != property.userID) return null;
+        if (!this.state.tenants) {
+            return(
+                (
+                    <div>
+                        <Message color='blue'>
+                            <Message.Header>Hi, {currentUser.userFirstName + ' ' + currentUser.userLastName}</Message.Header>
+                            <Header as="h3">Dear {currentUser.userFirstName}</Header>
+                            <p>There are 0 guests took this property.</p>
+                        </Message>
+                        <Divider></Divider>
+                    </div>
+                )
             )
+        }
+
+        let takenCount = this.state.tenants.length;
+        let tableRows = [];
+        this.state.tenants.forEach((tenant, key) => {
+            if(tenant.propertyID == this.state.property.propertyID) {
+                tableRows.push(
+                    <Table.Row>
+                        <Table.Cell collapsing>{tenant.userFirstName} {tenant.userLastName}</Table.Cell>
+                        <Table.Cell collapsing>{tenant.gender}</Table.Cell>
+                    </Table.Row>
+                )
+            }
         })
         return (
             <div>
                 <Message color='blue'>
-                    {/* <Message.Header>Hi, {currentUser.firstName + ' ' + currentUser.lastName}</Message.Header> */}
-                    <Header as="h3">Dear {currentUser.firstName}</Header>
+                    <Message.Header>Hi, {currentUser.userFirstName + ' ' + currentUser.userLastName}</Message.Header>
+                    <Header as="h3">Dear {currentUser.userFirstName}</Header>
                     <p>There are {takenCount} guests took this property.</p>
                     <Table className="my-3" color='blue' inverted>
                         <Table.Header>
@@ -289,7 +305,7 @@ class PropertyPage extends React.Component {
     }
 
     render() {
-        if (!this.state.property || !this.state.tenant) {
+        if (!this.state.property) {
             return (<div> Loading </div>)
         }
 
