@@ -20,20 +20,17 @@ const options = [
 
 class EditHostPersonal extends React.Component {
 
-    state = {
-        firstName: "Greg",
-        lastName: "Makasoff",
-        phoneNumber: "0009991111",
-        email: "g@g.g",
-        address: "15908 Prospect Crescent",
-        city: "White Rock",
-        heardAbout: "Online"
-    }
-
     constructor(props) {
         super(props);
         this.state = {
-            geoResult: null
+            geoResult: null,
+            firstName: "Greg",
+            lastName: "Makasoff",
+            phoneNumber: "0009991111",
+            email: "g@g.g",
+            address: "15908 Prospect Crescent",
+            city: "White Rock",
+            heardAbout: "online"
         }
 
         this.handleChange = this.handleChange.bind(this);
