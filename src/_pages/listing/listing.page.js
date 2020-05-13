@@ -24,7 +24,7 @@ class ListingPage extends React.Component {
     };
 
     async componentDidMount() {
-        const result = await fetch(`https://localhost:5001/api/properties`);
+        const result = await fetch(`https://10kftdb.azurewebsites.net/api/properties`);
         const json = await result.json();
         this.setState({ data: json });
     }

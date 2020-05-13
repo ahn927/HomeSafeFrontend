@@ -31,7 +31,7 @@ class PropertyPage extends React.Component {
     async componentDidMount() {
         const id = this.props.match.params.id;
         console.log(id);
-        const resultProperty = await fetch(`https://localhost:5001/api/properties/search/${id}`);
+        const resultProperty = await fetch(`https://10kftdb.azurewebsites.net/api/properties/search/${id}`);
         const jsonProperty = await resultProperty.json();
         let temparray = this.state.properties;
         temparray.push(jsonProperty);
@@ -45,7 +45,7 @@ class PropertyPage extends React.Component {
         console.log(this.state.property);
                 
 
-        const resultTenant = await fetch(`https://localhost:5001/getTenantAppliedPropertyByLandlordID/${this.state.userId}`);
+        const resultTenant = await fetch(`https://10kftdb.azurewebsites.net/api/properties/getTenantAppliedPropertyByLandlordID/${this.state.userId}`);
         const jsonTenant = await resultTenant.json();
         this.setState({
             tenants: jsonTenant
@@ -311,7 +311,7 @@ class PropertyPage extends React.Component {
 
         return (
             <div>
-                <CarouselComponent propertyImages={this.state.property.propertyImages}/>
+               {/* <CarouselComponent propertyImages={this.state.property.propertyImages}/> */}
                 {this.rendernapshotInfo()}
                 <Grid >
                     <Grid.Column width="10">
