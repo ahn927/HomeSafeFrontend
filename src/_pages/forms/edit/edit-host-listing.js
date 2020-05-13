@@ -78,6 +78,7 @@ class EditHostListing extends React.Component {
                                 console.log(error)
                             }
                         ) */
+                        values.address = this.state.geoResult.place_name;
                         console.log(JSON.stringify(values, null, 2));
                 }}
                 validationSchema={Yup.object().shape({
