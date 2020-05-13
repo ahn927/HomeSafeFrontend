@@ -12,6 +12,7 @@ import Map from '../../_components/map/map';
 import CarouselComponent from './carousel.component'
 import * as routes from '../../_constants/routes'
 import * as images from '../../_constants/images'
+import LoadingSpinner from '../../_components/loadingSpinner';
 
 import auth from '../../_services/auth'
 
@@ -306,9 +307,9 @@ class PropertyPage extends React.Component {
 
     render() {
         if (!this.state.property) {
-            return (<div> Loading </div>)
+            return (<div> <LoadingSpinner/> </div>)
         }
-
+        console.log(this.state.property.latitude);
         return (
             <div>
                {/* <CarouselComponent propertyImages={this.state.property.propertyImages}/> */}
@@ -322,7 +323,7 @@ class PropertyPage extends React.Component {
                                 {this.renderDivdingHeader('id badge', 'Host Information')}
                                 <p>{this.state.property.hostDescription}</p>
                                 {this.renderDivdingHeader('home', 'Map')}
-                                <Map properties={this.state.properties} propertyLng={this.state.property.longitutde}
+                                <Map properties={this.state.properties} propertyLng={this.state.property.longitude}
                                     propertyLat={this.state.property.latitude}/>
                                 {this.renderDivdingHeader('home', 'Points of Interests')}
 

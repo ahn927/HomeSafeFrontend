@@ -8,7 +8,7 @@ import * as Images from '../../_constants/images';
 import Map from '../../_components/map/map';
 import PageHeader from '../../_components/pageHeader'
 import PropertyList from './propertyList'
-
+import LoadingSpinner from '../../_components/loadingSpinner'
 
 class ListingPage extends React.Component {
     state = {
@@ -24,14 +24,14 @@ class ListingPage extends React.Component {
     };
 
     async componentDidMount() {
-        const result = await fetch(`https://10kftdb.azurewebsites.net/api/properties`);
-        const json = await result.json();
-        this.setState({ data: json });
+         const result = await fetch(`https://10kftdb.azurewebsites.net/api/properties`);
+         const json = await result.json();
+         this.setState({ data: json });
     }
 
     render() {
 
-        if (this.state.data.length < 1) return <h1>page not found<br /><p>fetching Backend failed</p></h1>
+        if (this.state.data.length < 1) return <div><LoadingSpinner/></div> 
 
         return (
             <div>
