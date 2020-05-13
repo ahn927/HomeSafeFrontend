@@ -8,6 +8,7 @@ import {
 import { Formik } from 'formik'
 import * as Yup from "yup"
 
+
 import CarouselComponent from './carousel.component'
 import * as routes from '../../_constants/routes'
 import * as images from '../../_constants/images'
@@ -20,8 +21,7 @@ class PropertyPage extends React.Component {
 
     state = {
         propertyId: null,
-        modalOpen: false,
-        bookError: '',
+        bookError: null,
         property: {
             "propertyId": 1,
             "price": 1000.99,
@@ -77,10 +77,6 @@ class PropertyPage extends React.Component {
     }
 
     contextRef = createRef()
-
-    handleOpen = () => this.setState({ modalOpen: true })
-
-    handleClose = () => this.setState({ modalOpen: false })
 
     renderHostMessage() {
         const currentUser = auth.currentUserValue;
@@ -209,12 +205,12 @@ class PropertyPage extends React.Component {
                 initialValues={{ checkinDate: "", checkoutDate: "" }}
                 onSubmit={(values, { setSubmitting }) => {
                     if (!auth.currentUserValue) {
-                        this.setState({ bookError: 'You have not logged in.' })
-                        this.handleOpen();
+                        this.setState({ bookError: { message: 'You have not logged in.', loginBtn: true, registerBtn: true } })
+                        console.log('render modal', 'no logged in')
                     }
                     if (!auth.currentUserValue.isTenant) {
-                        this.setState({ bookError: 'You need a tenant account to book a room.' })
-                        this.handleOpen();
+                        this.setState({ bookError: { message: 'You need a tenant account to book a room.', loginBtn: false, registerBtn: true } })
+                        console.log('render modal', 'no tenant')
                     }
 
                 }}
@@ -274,8 +270,21 @@ class PropertyPage extends React.Component {
                                     )}
                                 </div>
                                 <Divider />
+                                {
+                                    this.state.bookError &&
+                                    <div className="my-3">
+                                        <Message negative>
+                                            <Message.Header>{this.state.bookError.message}</Message.Header>
+                                            You have to logged in with a tenant account to book this room.<br />
+                                            <Button size='tiny' color='red' content='Login' href={routes.LOGIN} className="my-2 mr-1" />
+                                            <Button size='tiny' color='red' content='Register' href={routes.GUESTPERSONAL} className="my-2" />
+                                        </Message>
+                                        <Divider />
+                                    </div>
+                                }
                                 <Button type="submit" >Book Now</Button>
                             </Form>
+
                         </div>
                     )
                 }}
@@ -293,8 +302,8 @@ class PropertyPage extends React.Component {
                 <Divider></Divider>
                 <Header as="p" block>
                     <Icon circular color='green' name='clipboard check' size='small' verticalalign='middle' />
-                                                    Verified Host
-                                                    <Header.Subheader>This host is verifed by HomeSafe by conducting host background check.</Header.Subheader>
+                    Verified Host
+                    <Header.Subheader>This host is verifed by HomeSafe by conducting host background check.</Header.Subheader>
                 </Header>
                 <Divider></Divider>
                 {this.renderForm()}
@@ -338,21 +347,6 @@ class PropertyPage extends React.Component {
                         </Ref>
                     </Grid.Column>
                 </Grid>
-
-                <Modal >
-                    <Modal.Header>Select a Photo</Modal.Header>
-                    <Modal.Content image>
-                        <Image wrapped size='medium' src='https://react.semantic-ui.com/images/avatar/large/rachel.png' />
-                        <Modal.Description>
-                            <Header>Default Profile Image</Header>
-                            <p>
-                                We've found the following gravatar image associated with your e-mail
-                                address.
-                            </p>
-                            <p>Is it okay to use this photo?</p>
-                        </Modal.Description>
-                    </Modal.Content>
-                </Modal>
             </div>
 
         )

@@ -16,7 +16,7 @@ class ListingPage extends React.Component {
         long: null,
         errorMessage: null,
         searchValue: null,
-        data:[]
+        data: []
     }
 
     handleSearch = (searchValue) => {
@@ -26,13 +26,13 @@ class ListingPage extends React.Component {
     async componentDidMount() {
         const result = await fetch(`https://localhost:5001/api/properties`);
         const json = await result.json();
-        this.setState({data: json});
+        this.setState({ data: json });
     }
 
     render() {
 
-        if(this.state.data.length < 1) return <h1>page not found</h1>
-        
+        if (this.state.data.length < 1) return <h1>page not found<br /><p>fetching Backend failed</p></h1>
+
         return (
             <div>
                 <PageHeader
@@ -41,7 +41,7 @@ class ListingPage extends React.Component {
                 </PageHeader>
                 <Search onClickSearch={this.handleSearch} />
                 <PropertyList properties={this.state.data} />
-                <Map properties={this.state.data}/> 
+                <Map properties={this.state.data} />
             </div>
         );
     }
