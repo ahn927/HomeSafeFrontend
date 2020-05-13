@@ -2,71 +2,11 @@ import React from 'react'
 import { Formik, Field } from 'formik'
 import * as Yup from "yup"
 import { Divider, Button, Label, Form, Dropdown } from 'semantic-ui-react'
-import classNames from "classnames"
 import PageHeader from '../../_components/pageHeader'
 import Search from '../../_components/map/search'
-
-import Select from 'react-select'
-
-
-const InputFeedback = ({ error }) =>
-    error ? <div className={classNames("input-feedback")}>{error}</div> : null;
-
-// Radio input
-const RadioButton = ({
-    field: { name, value, onChange, onBlur },
-    id,
-    label,
-    className,
-    ...props
-}) => {
-    return (
-        <div>
-            <input
-                name={name}
-                id={id}
-                type="radio"
-                value={id} // could be something else for output?
-                checked={id === value}
-                onChange={onChange}
-                onBlur={onBlur}
-                className={classNames("radio-button")}
-                {...props}
-            />
-            <label htmlFor={id}>{label}</label>
-        </div>
-    );
-};
-
-// Radio group
-const RadioButtonGroup = ({
-    value,
-    error,
-    touched,
-    id,
-    label,
-    className,
-    children
-}) => {
-    const classes = classNames(
-        "input-field",
-        {
-            "is-success": value || (!error && touched), // handle prefilled or user-filled
-            "is-error": !!error && touched
-        },
-        className
-    );
-
-    return (
-        <div className={classes}>
-            <fieldset>
-                <legend>{label}</legend>
-                {children}
-                {touched && <InputFeedback error={error} />}
-            </fieldset>
-        </div>
-    );
-};
+import RadioButton from './helper/radio-button'
+import RadioButtonGroup from './helper/radio-group'
+import MySelect from './helper/my-select'
 
 const options = [
     { key: 'Vancouver', value: 'Vancouver', label: 'Vancouver' },
@@ -77,33 +17,6 @@ const options = [
     { key: 'Port Moody', value: 'Port Moody', label: 'Port Moody' },
     { key: 'New Westminster', value: 'New Westminster', label: 'New Westminster' },
 ];
-
-class MySelect extends React.Component {
-    handleChange = v => {
-        // this is going to call setFieldValue and manually update values.topcis
-        this.props.onChange('city', v.value);
-    };
-
-    handleBlur = () => {
-        // this is going to call setFieldTouched and manually update touched.topcis
-        this.props.onBlur('city', true);
-    };
-
-    render() {
-        return (
-            <div style={{ margin: '1rem 0' }}>
-                <Select
-                    id="city"
-                    options={options}
-                    multi={false}
-                    onChange={this.handleChange}
-                    onBlur={this.handleBlur}
-                    value={this.props.value}
-                />
-            </div>
-        );
-    }
-}
 
 class HostPersonalForm extends React.Component {
 

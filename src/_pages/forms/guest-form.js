@@ -2,98 +2,11 @@ import React from 'react'
 import { Formik, Field } from 'formik'
 import * as Yup from "yup"
 import { Divider, Button, Label, Form } from 'semantic-ui-react'
-import classNames from "classnames"
-import Select from 'react-select'
 import PageHeader from '../../_components/pageHeader'
- 
-import "react-datepicker/dist/react-datepicker.css"
-import countries from "../../resources/countries.json"
+import RadioButton from './helper/radio-button'
+import RadioButtonGroup from './helper/radio-group'
+import MySelect from './helper/my-select'
 
-const InputFeedback = ({ error }) =>
-  error ? <div className={classNames("input-feedback")}>{error}</div> : null;
-
-// Radio input
-const RadioButton = ({
-    field: { name, value, onChange, onBlur },
-    id,
-    label,
-    className,
-    ...props
-  }) => {
-    return (
-      <div>
-        <input
-          name={name}
-          id={id}
-          type="radio"
-          value={id} // could be something else for output?
-          checked={id === value}
-          onChange={onChange}
-          onBlur={onBlur}
-          className={classNames("radio-button")}
-          {...props}
-        />
-        <label htmlFor={id}>{label}</label>
-      </div>
-    );
-  };
-  
-  // Radio group
-  const RadioButtonGroup = ({
-    value,
-    error,
-    touched,
-    id,
-    label,
-    className,
-    children
-  }) => {
-    const classes = classNames(
-      "input-field",
-      {
-        "is-success": value || (!error && touched), // handle prefilled or user-filled
-        "is-error": !!error && touched
-      },
-      className
-    );
-  
-    return (
-      <div className={classes}>
-        <fieldset>
-          <legend>{label}</legend>
-          {children}
-          {touched && <InputFeedback error={error} />}
-        </fieldset>
-      </div>
-    );
-  };
-
-  class MySelect extends React.Component {
-    handleChange = v => {
-      // this is going to call setFieldValue and manually update values.topcis
-      this.props.onChange('nationality', v.value);
-    };
-  
-    handleBlur = () => {
-      // this is going to call setFieldTouched and manually update touched.topcis
-      this.props.onBlur('nationality', true);
-    };
-  
-    render() {
-      return (
-        <div style={{ margin: '1rem 0' }}>
-          <Select
-            id="nationality"
-            options={countries}
-            multi={false}
-            onChange={this.handleChange}
-            onBlur={this.handleBlur}
-            value={this.props.value}
-          />
-        </div>
-      );
-    }
-  }
 
 class GuestForm extends React.Component {
 
