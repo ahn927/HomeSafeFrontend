@@ -44,7 +44,7 @@ class HostListingForm extends React.Component {
                                  roomType: "",
                                  washroomAvail: "",
                                  gendersAccepted: "",
-                                 pets: false,
+                                 pets: Boolean,
                                  startDate: "",
                                  endDate: "",
                                  nearestSchool: "",
@@ -164,18 +164,21 @@ class HostListingForm extends React.Component {
                                         component={RadioButton}
                                         name="roomType"
                                         id="single"
+                                        content="Single Room"
                                         label="Single Room"
                                     />
                                     <Field
                                         component={RadioButton}
                                         name="roomType"
                                         id="double"
+                                        content="Double Room"
                                         label="Double Room"
                                     />
                                     <Field
                                         component={RadioButton}
                                         name="roomType"
                                         id="enSuite"
+                                        content="En Suite"
                                         label="En Suite"
                                     />
                                     </RadioButtonGroup>
@@ -197,18 +200,21 @@ class HostListingForm extends React.Component {
                                         component={RadioButton}
                                         name="washroomAvail"
                                         id="shared"
+                                        content="Shared"
                                         label="Shared"
                                     />
                                     <Field
                                         component={RadioButton}
                                         name="washroomAvail"
                                         id="private"
+                                        content="Private"
                                         label="Private"
                                     />
                                     <Field
                                         component={RadioButton}
                                         name="washroomAvail"
                                         id="enSuite"
+                                        content="En Suite"
                                         label="En Suite"
                                     />
                                     </RadioButtonGroup>
@@ -230,18 +236,21 @@ class HostListingForm extends React.Component {
                                         component={RadioButton}
                                         name="gendersAccepted"
                                         id="male"
+                                        content="Male"
                                         label="Male"
                                     />
                                     <Field
                                         component={RadioButton}
                                         name="gendersAccepted"
                                         id="female"
+                                        content="Female"
                                         label="Female"
                                     />
                                     <Field
                                         component={RadioButton}
                                         name="gendersAccepted"
                                         id="Any"
+                                        content="Any"
                                         label="Any"
                                     />
                                     </RadioButtonGroup>
@@ -263,12 +272,14 @@ class HostListingForm extends React.Component {
                                         component={RadioButton}
                                         name="pets"
                                         id="yes"
+                                        content={true}
                                         label="Yes"
                                     />
                                     <Field
                                         component={RadioButton}
                                         name="pets"
                                         id="no"
+                                        content={false}
                                         label="No"
                                     />
                                     </RadioButtonGroup>

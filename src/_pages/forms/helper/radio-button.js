@@ -5,6 +5,7 @@ const RadioButton = ({
     field: { name, value, onChange, onBlur },
     id,
     label,
+    content,
     className,
     ...props
 }) => {
@@ -14,8 +15,8 @@ const RadioButton = ({
                 name={name}
                 id={id}
                 type="radio"
-                value={id} // could be something else for output?
-                checked={id === value}
+                value={content} // could be something else for output?
+                checked={content === value || value}
                 onChange={onChange}
                 onBlur={onBlur}
                 className={classNames("radio-button")}

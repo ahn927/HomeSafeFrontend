@@ -18,6 +18,9 @@ import AboutUsPage from './_pages/aboutus/aboutus.page'
 import HostPersonalForm from './_pages/forms/host-personal-form';
 import HostListingForm from './_pages/forms/host-listing-form';
 import GuestForm from './_pages/forms/guest-form';
+import EditHostPersonal from './_pages/forms/edit/edit-host-personal';
+import EditHostListing from './_pages/forms/edit/edit-host-listing';
+import EditGuest from './_pages/forms/edit/edit-guest';
 import Map from './_components/map/map';
 import Search from './_components/map/search'
 
@@ -51,6 +54,9 @@ class App extends React.Component {
                         <Route exact path={routes.BECOME_HOST} component={HostPersonalForm} />
                         <Route exact path={routes.HOSTLISTING} component={HostListingForm} />
                         <Route exact path={routes.GUESTPERSONAL} component={GuestForm} />
+                        <Route exact path={routes.EDIT_HOST} component={EditHostPersonal} />
+                        <Route exact path={routes.EDITLISTING} component={EditHostListing} />
+                        <Route exact path={routes.EDITGUEST} component={EditGuest} />
 
                         <ProtectedRoute
                             exact

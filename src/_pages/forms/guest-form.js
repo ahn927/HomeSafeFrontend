@@ -193,18 +193,21 @@ class GuestForm extends React.Component {
                                         component={RadioButton}
                                         name="gender"
                                         id="male"
+                                        content="Male"
                                         label="Male"
                                     />
                                     <Field
                                         component={RadioButton}
                                         name="gender"
                                         id="female"
+                                        content="Female"
                                         label="Female"
                                     />
                                     <Field
                                         component={RadioButton}
                                         name="gender"
                                         id="other"
+                                        content="Other"
                                         label="Other"
                                     />
                                     </RadioButtonGroup>
@@ -269,30 +272,35 @@ class GuestForm extends React.Component {
                                         component={RadioButton}
                                         name="heardAbout"
                                         id="online"
+                                        content="Online"
                                         label="Online"
                                     />
                                     <Field
                                         component={RadioButton}
                                         name="heardAbout"
                                         id="wordOfMouth"
+                                        content="Word Of Mouth"
                                         label="Word Of Mouth"
                                     />
                                     <Field
                                         component={RadioButton}
                                         name="heardAbout"
                                         id="facebook"
+                                        content="Facebook"
                                         label="Facebook"
                                     />
                                     <Field
                                         component={RadioButton}
                                         name="heardAbout"
                                         id="instagram"
+                                        content="Instagram"
                                         label="Instagram"
                                     />
                                     <Field
                                         component={RadioButton}
                                         name="heardAbout"
                                         id="school"
+                                        content="School"
                                         label="Through my University/College"
                                     />
                                     </RadioButtonGroup>
