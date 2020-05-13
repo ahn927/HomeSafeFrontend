@@ -28,9 +28,9 @@ class EditHostPersonal extends React.Component {
             lastName: "Makasoff",
             phoneNumber: "0009991111",
             email: "g@g.g",
-            address: "15908 Prospect Crescent",
+            address: "15908 Prospect Crescent, White Rock, British Columbia V4B 2A2, Canada",
             city: "White Rock",
-            heardAbout: "online"
+            heardAbout: "Online"
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -180,63 +180,13 @@ class EditHostPersonal extends React.Component {
                                     <Divider />
                                     <div>
                                         <label htmlFor="address">Address</label>
-                                        {/* <input
-                                            name="address"
-                                            type="text"
-                                            placeholder="Enter your address"
-                                            value={values.address}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            className={errors.address && touched.address && "error"}
-                                        /> */}
                                         <Search handleOnSelect={(result) => {
                                             console.log('result', result)
-
                                             this.setState({ geoResult: result })
-                                            this.handleChange(values.address, this.state.geoResult);
-                                            console.log('statet', result)
-                                            console.log('address', values.address)
                                         }} />
                                         {this.state.geoResult &&
                                             <p><small>You selected: </small><br />{this.state.geoResult.place_name}</p>
                                         }
-                                        {/* {errors.address && touched.address && (
-                                            <Label basic color='red' pointing>
-                                                {errors.address}
-                                            </Label>
-                                        )} */}
-                                    </div>
-                                    <Divider />
-                                    <div>
-                                        <label htmlFor="city">City</label>
-                                        {/**<MySelect
-                                            value={values.city}
-                                            onChange={setFieldValue}
-                                            onBlur={setFieldTouched}
-                                            error={errors.city}
-                                            touched={touched.city}
-                                        />
-                                        <Dropdown
-                                            placeholder='Select a City'
-                                            fluid
-                                            selection
-                                            options={options}
-                                            value={values.city}
-                                        />*/}
-                                        <input
-                                            name="city"
-                                            type="text"
-                                            placeholder="Enter your city"
-                                            value={values.city}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            className={errors.city && touched.city && "error"}
-                                        />
-                                        {errors.city && touched.city && (
-                                            <Label basic color='red' pointing>
-                                                {errors.city}
-                                            </Label>
-                                        )}
                                     </div>
                                     <Divider />
                                     <div>
@@ -249,25 +199,29 @@ class EditHostPersonal extends React.Component {
                                             <Field
                                                 component={RadioButton}
                                                 name="heardAbout"
-                                                id="online"
+                                                id="online"                                                
+                                                content="Online"
                                                 label="Online"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="heardAbout"
                                                 id="wordOfMouth"
+                                                content="Word Of Mouth"
                                                 label="Word Of Mouth"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="heardAbout"
                                                 id="facebook"
+                                                content="Facebook"
                                                 label="Facebook"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="heardAbout"
                                                 id="instagram"
+                                                content="Instagram"
                                                 label="Instagram"
                                             />
                                         </RadioButtonGroup>
