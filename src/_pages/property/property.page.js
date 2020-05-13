@@ -309,7 +309,6 @@ class PropertyPage extends React.Component {
             return (<div> Loading </div>)
         }
 
-        let property = this.state.property;
         return (
             <div>
                 <CarouselComponent propertyImages={this.state.property.propertyImages}/>
@@ -319,9 +318,9 @@ class PropertyPage extends React.Component {
                         <Ref innerRef={this.contextRef}>
                             <div>
                                 {this.renderDivdingHeader('home', 'Room Information')}
-                                <p>{property.propertyDescription}</p>
+                                <p>{this.state.property.propertyDescription}</p>
                                 {this.renderDivdingHeader('id badge', 'Host Information')}
-                                <p>{property.hostDescription}</p>
+                                <p>{this.state.property.hostDescription}</p>
                                 {this.renderDivdingHeader('home', 'Map')}
                                 <Map properties={this.state.properties} propertyLng={this.state.property.longitutde}
                                     propertyLat={this.state.property.latitude}/>
