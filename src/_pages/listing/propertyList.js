@@ -8,13 +8,14 @@ import PropertyCard from './propertyCard'
 class PropertyList extends React.Component {
     state = {
         properties: this.props.properties,
-        currentPage: 1,
+        currentPage: 2,
         propertiesPerPage: 5,
-        selectedProperty: null
+        selectedProperty: null,
+        cards: []
     }
 
     handlePaginationChange = (e, { activePage }) => {
-        console.log(activePage)
+        console.log('activePage', activePage)
         this.setState({ currentPage: activePage })
     }
 
@@ -37,11 +38,12 @@ class PropertyList extends React.Component {
         let cards = [];
         let { currentPage, propertiesPerPage, properties } = this.state
         for (let i = 0; i < propertiesPerPage; i++) {
+            let index = i + (currentPage - 1) * propertiesPerPage
+            console.log('index', index)
             cards.push(
-                <PropertyCard property={properties[i + (currentPage - 1) * propertiesPerPage]} />
+                <PropertyCard key={index} property={properties[index]} />
             )
         }
-
         return cards;
     }
 
