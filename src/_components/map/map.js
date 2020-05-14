@@ -21,19 +21,14 @@ class Map extends React.Component {
     }
 
     componentDidMount() {
-        //if we want to pass in some location not default
-        if(this.state.propertyLng) {
-            this.setState({
-                lng: this.state.propertyLng,
-                lat: this.state.propertyLat
-            })
-        }
-
         const map = new mapboxgl.Map({
             container: this.mapContainer,
             style: 'mapbox://styles/mapbox/streets-v11',
-            center: [this.state.lng, this.state.lat],
-            zoom: this.state.zoom
+            //default location: vancouver
+            //else if we pass in lng/lat, then move to that area
+            //ternary operator !a ? b : a
+            center: [!this.state.propertyLng ? this.state.lng : this.state.propertyLng, !this.state.propertyLat ? this.state.lat : this.state.propertyLat],
+            zoom: !this.state.propertyLng ? 10 : 13
         });
 
         //adds controls to map

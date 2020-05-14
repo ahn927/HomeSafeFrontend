@@ -12,6 +12,7 @@ import Map from '../../_components/map/map';
 import CarouselComponent from './carousel.component'
 import * as routes from '../../_constants/routes'
 import * as images from '../../_constants/images'
+import LoadingSpinner from '../../_components/loadingSpinner';
 
 import auth from '../../_services/auth'
 
@@ -307,9 +308,9 @@ class PropertyPage extends React.Component {
 
     render() {
         if (!this.state.property) {
-            return (<div> Loading </div>)
+            return (<div> <LoadingSpinner /> </div>)
         }
-
+        console.log(this.state.property.latitude);
         return (
             <div>
                 {/* <CarouselComponent propertyImages={this.state.property.propertyImages}/> */}
