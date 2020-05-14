@@ -2,99 +2,11 @@ import React from 'react'
 import { Formik, Field } from 'formik'
 import * as Yup from "yup"
 import { Divider, Button, Label, Form } from 'semantic-ui-react'
-import classNames from "classnames"
-import DatePicker from "react-datepicker"
-import Select from 'react-select'
 import PageHeader from '../../_components/pageHeader'
+import RadioButton from './helper/radio-button'
+import RadioButtonGroup from './helper/radio-group'
+import MySelect from './helper/my-select'
 
-import "react-datepicker/dist/react-datepicker.css"
-import countries from "../../resources/countries.json"
-
-const InputFeedback = ({ error }) =>
-    error ? <div className={classNames("input-feedback")}>{error}</div> : null;
-
-// Radio input
-const RadioButton = ({
-    field: { name, value, onChange, onBlur },
-    id,
-    label,
-    className,
-    ...props
-}) => {
-    return (
-        <div>
-            <input
-                name={name}
-                id={id}
-                type="radio"
-                value={id} // could be something else for output?
-                checked={id === value}
-                onChange={onChange}
-                onBlur={onBlur}
-                className={classNames("radio-button")}
-                {...props}
-            />
-            <label htmlFor={id}>{label}</label>
-        </div>
-    );
-};
-
-// Radio group
-const RadioButtonGroup = ({
-    value,
-    error,
-    touched,
-    id,
-    label,
-    className,
-    children
-}) => {
-    const classes = classNames(
-        "input-field",
-        {
-            "is-success": value || (!error && touched), // handle prefilled or user-filled
-            "is-error": !!error && touched
-        },
-        className
-    );
-
-    return (
-        <div className={classes}>
-            <fieldset>
-                <legend>{label}</legend>
-                {children}
-                {touched && <InputFeedback error={error} />}
-            </fieldset>
-        </div>
-    );
-};
-
-class MySelect extends React.Component {
-    handleChange = v => {
-        // this is going to call setFieldValue and manually update values.topcis
-        this.props.onChange('nationality', v.value);
-    };
-
-    handleBlur = () => {
-        // this is going to call setFieldTouched and manually update touched.topcis
-        this.props.onBlur('nationality', true);
-    };
-
-    render() {
-        return (
-            <div style={{ margin: '1rem 0' }}>
-                <Select
-                    id="nationality"
-                    options={countries}
-                    multi={false}
-                    onChange={this.handleChange}
-                    onBlur={this.handleBlur}
-                    value={this.props.value}
-                />
-            </div>
-        );
-    }
-}
 
 class GuestForm extends React.Component {
 
@@ -113,7 +25,7 @@ class GuestForm extends React.Component {
             <div>
                 <PageHeader
                     icon={null}
-                    text='Register As A Tenant' >
+                    text='Become A Guest' >
                 </PageHeader>
                 <Formik
                     initialValues={{
@@ -121,7 +33,7 @@ class GuestForm extends React.Component {
                         lastName: "",
                         email: "",
                         phoneNumber: "",
-                        dateOfBirth: new Date(),
+                        dateOfBirth: "",
                         gender: "",
                         nationality: "",
                         reasonForStay: "",
@@ -153,6 +65,8 @@ class GuestForm extends React.Component {
                         phoneNumber: Yup.string()
                             .required("Required")
                             .matches(/(^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$)/, "Must be a valid phone number."),
+                        dateOfBirth: Yup.string()
+                            .required("Required"),
                         gender: Yup.string()
                             .required("Required")
                             .matches(/([A-Za-z])/, "Must be a valid city"),
@@ -254,11 +168,15 @@ class GuestForm extends React.Component {
                                     <Divider />
                                     <div>
                                         <label htmlFor="dateOfBirth">Date Of Birth</label><br />
-                                        <DatePicker
-                                            selected={this.state.startDate}
-                                            onChange={this.handleChange}
+                                        <input
+                                            name="dateOfBirth"
+                                            type="date"
+                                            placeholder={(new Date()).toDateString()}
+                                            value={values.dateOfBirth}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
                                             className={errors.dateOfBirth && touched.dateOfBirth && "error"}
-                                        /><br />
+                                        />
                                         {errors.dateOfBirth && touched.dateOfBirth && (
                                             <Label basic color='red' pointing>
                                                 {errors.dateOfBirth}
@@ -277,18 +195,21 @@ class GuestForm extends React.Component {
                                                 component={RadioButton}
                                                 name="gender"
                                                 id="male"
+                                                content="Male"
                                                 label="Male"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="gender"
                                                 id="female"
+                                                content="Female"
                                                 label="Female"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="gender"
                                                 id="other"
+                                                content="Other"
                                                 label="Other"
                                             />
                                         </RadioButtonGroup>
@@ -304,7 +225,7 @@ class GuestForm extends React.Component {
                                         <input
                                             name="nationality"
                                             type="text"
-                                            placeholder="Enter your nationality"
+                                            placeholder="Choose your country below"
                                             value={values.nationality}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
@@ -353,30 +274,35 @@ class GuestForm extends React.Component {
                                                 component={RadioButton}
                                                 name="heardAbout"
                                                 id="online"
+                                                content="Online"
                                                 label="Online"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="heardAbout"
                                                 id="wordOfMouth"
+                                                content="Word Of Mouth"
                                                 label="Word Of Mouth"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="heardAbout"
                                                 id="facebook"
+                                                content="Facebook"
                                                 label="Facebook"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="heardAbout"
                                                 id="instagram"
+                                                content="Instagram"
                                                 label="Instagram"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="heardAbout"
                                                 id="school"
+                                                content="School"
                                                 label="Through my University/College"
                                             />
                                         </RadioButtonGroup>

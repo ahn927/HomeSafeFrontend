@@ -2,70 +2,12 @@ import React from 'react'
 import { Formik, Field } from 'formik'
 import * as Yup from "yup"
 import { Divider, Button, Label, Form } from 'semantic-ui-react'
-import Select from 'react-select'
 import Base64Converter from '../../_components/imageconvert/base64-converter'
 import PageHeader from '../../_components/pageHeader'
-
-import classNames from "classnames"
-
-const InputFeedback = ({ error }) =>
-    error ? <div className={classNames("input-feedback")}>{error}</div> : null;
-
-// Radio input
-const RadioButton = ({
-    field: { name, value, onChange, onBlur },
-    id,
-    label,
-    className,
-    ...props
-}) => {
-    return (
-        <div>
-            <input
-                name={name}
-                id={id}
-                type="radio"
-                value={id} // could be something else for output?
-                checked={id === value}
-                onChange={onChange}
-                onBlur={onBlur}
-                className={classNames("radio-button")}
-                {...props}
-            />
-            <label htmlFor={id}>{label}</label>
-        </div>
-    );
-};
-
-// Radio group
-const RadioButtonGroup = ({
-    value,
-    error,
-    touched,
-    id,
-    label,
-    className,
-    children
-}) => {
-    const classes = classNames(
-        "input-field",
-        {
-            "is-success": value || (!error && touched), // handle prefilled or user-filled
-            "is-error": !!error && touched
-        },
-        className
-    );
-
-    return (
-        <div className={classes}>
-            <fieldset>
-                <legend>{label}</legend>
-                {children}
-                {touched && <InputFeedback error={error} />}
-            </fieldset>
-        </div>
-    );
-};
+import RadioButton from './helper/radio-button'
+import RadioButtonGroup from './helper/radio-group'
+import MySelect from './helper/my-select'
+import Search from '../../_components/map/search'
 
 const options = [
     { value: 'ubc', label: 'UBC' },
@@ -75,39 +17,13 @@ const options = [
     { value: 'kwantlen', label: 'Kwantlen' },
 ];
 
-class MySelect extends React.Component {
-    handleChange = v => {
-        // this is going to call setFieldValue and manually update values.topcis
-        this.props.onChange('nearestSchool', v.value);
-    };
-
-    handleBlur = () => {
-        // this is going to call setFieldTouched and manually update touched.topcis
-        this.props.onBlur('nearestSchool', true);
-    };
-
-    render() {
-        return (
-            <div style={{ margin: '1rem 0' }}>
-                <Select
-                    id="nearestSchool"
-                    options={options}
-                    multi={false}
-                    onChange={this.handleChange}
-                    onBlur={this.handleBlur}
-                    value={this.props.value}
-                />
-            </div>
-        );
-    }
-}
-
 class HostListingForm extends React.Component {
 
     constructor() {
         super()
         this.state = {
-            files: []
+            files: [],
+            geoResult: null
         }
     }
 
@@ -121,17 +37,20 @@ class HostListingForm extends React.Component {
             <div>
                 <PageHeader
                     icon={null}
-                    text='Add A Property' >
+                    text='List A Room' >
                 </PageHeader>
                 <Formik
                     initialValues={{
                         host: "",
                         neighbourhood: "",
                         house: "",
+                        address: "",
                         roomType: "",
                         washroomAvail: "",
                         gendersAccepted: "",
-                        pets: false,
+                        pets: Boolean,
+                        startDate: "",
+                        endDate: "",
                         nearestSchool: "",
                         images: []
                     }}
@@ -146,6 +65,7 @@ class HostListingForm extends React.Component {
                                                         console.log(error)
                                                     }
                                                 ) */
+                        values.address = this.state.geoResult.place_name;
                         console.log(JSON.stringify(values, null, 2));
                     }}
                     validationSchema={Yup.object().shape({
@@ -163,6 +83,10 @@ class HostListingForm extends React.Component {
                             .required("Required"),
                         pets: Yup.string()
                             .required("Required."),
+                        startDate: Yup.string()
+                            .required("Required"),
+                        endDate: Yup.string()
+                            .required("Required"),
                         nearestSchool: Yup.string()
                             .required("Required.")
                     })}
@@ -231,9 +155,19 @@ class HostListingForm extends React.Component {
                                         {errors.house && touched.house && (
                                             <Label basic color='red' pointing>
                                                 {errors.house}
-                                                                                            component={RadioButton}
                                             </Label>
                                         )}
+                                    </div>
+                                    <Divider />
+                                    <div>
+                                        <label htmlFor="address">Address</label>
+                                        <Search handleOnSelect={(result) => {
+                                            console.log('result', result)
+                                            this.setState({ geoResult: result })
+                                        }} />
+                                        {this.state.geoResult &&
+                                            <p><small>You selected: </small><br />{this.state.geoResult.place_name}</p>
+                                        }
                                     </div>
                                     <Divider />
                                     <div>
@@ -244,20 +178,24 @@ class HostListingForm extends React.Component {
                                             touched={touched.roomType}
                                         >
                                             <Field
+                                                component={RadioButton}
                                                 name="roomType"
                                                 id="single"
+                                                content="Single Room"
                                                 label="Single Room"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="roomType"
                                                 id="double"
+                                                content="Double Room"
                                                 label="Double Room"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="roomType"
                                                 id="enSuite"
+                                                content="En Suite"
                                                 label="En Suite"
                                             />
                                         </RadioButtonGroup>
@@ -279,18 +217,21 @@ class HostListingForm extends React.Component {
                                                 component={RadioButton}
                                                 name="washroomAvail"
                                                 id="shared"
+                                                content="Shared"
                                                 label="Shared"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="washroomAvail"
                                                 id="private"
+                                                content="Private"
                                                 label="Private"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="washroomAvail"
                                                 id="enSuite"
+                                                content="En Suite"
                                                 label="En Suite"
                                             />
                                         </RadioButtonGroup>
@@ -312,18 +253,21 @@ class HostListingForm extends React.Component {
                                                 component={RadioButton}
                                                 name="gendersAccepted"
                                                 id="male"
+                                                content="Male"
                                                 label="Male"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="gendersAccepted"
                                                 id="female"
+                                                content="Female"
                                                 label="Female"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="gendersAccepted"
                                                 id="Any"
+                                                content="Any"
                                                 label="Any"
                                             />
                                         </RadioButtonGroup>
@@ -345,12 +289,14 @@ class HostListingForm extends React.Component {
                                                 component={RadioButton}
                                                 name="pets"
                                                 id="yes"
+                                                content={true}
                                                 label="Yes"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="pets"
                                                 id="no"
+                                                content={false}
                                                 label="No"
                                             />
                                         </RadioButtonGroup>
@@ -362,14 +308,51 @@ class HostListingForm extends React.Component {
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="nearestSchool">What is the Nearest School</label>
-                                        <MySelect
-                                            value={values.nearestSchool}
-                                            onChange={setFieldValue}
-                                            onBlur={setFieldTouched}
-                                            error={errors.nearestSchool}
-                                            touched={touched.nearestSchool}
+                                        <label htmlFor="startDate">Date Room Is Available</label><br />
+                                        <input
+                                            name="startDate"
+                                            type="date"
+                                            placeholder={(new Date()).toDateString()}
+                                            value={values.startDate}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            className={errors.startDate && touched.startDate && "error"}
                                         />
+                                        {errors.startDate && touched.startDate && (
+                                            <Label basic color='red' pointing>
+                                                {errors.startDate}
+                                            </Label>
+                                        )}
+                                    </div>
+                                    <Divider />
+                                    <div>
+                                        <label htmlFor="endDate">Date When Stay Ends</label><br />
+                                        <input
+                                            name="endDate"
+                                            type="date"
+                                            placeholder={(new Date()).toDateString()}
+                                            value={values.endDate}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            className={errors.endDate && touched.endDate && "error"}
+                                        />
+                                        {errors.endDate && touched.endDate && (
+                                            <Label basic color='red' pointing>
+                                                {errors.endDate}
+                                            </Label>
+                                        )}
+                                    </div>
+                                    <Divider />
+                                    <div>
+                                        <label htmlFor="nearestSchool">What is the Nearest School</label>
+                                        <input
+                                            name="nearestSchool"
+                                            type="text"
+                                            placeholder="Enter the closest school and the ETA"
+                                            value={values.nearestSchool}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            className={errors.nearestSchool && touched.nearestSchool && "error"} />
                                         {errors.nearestSchool && touched.nearestSchool && (
                                             <Label basic color='red' pointing>
                                                 {errors.nearestSchool}
@@ -378,7 +361,7 @@ class HostListingForm extends React.Component {
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="images">Attach Images Of The Room</label>
+                                        <label htmlFor="images">Attach Images Of The Room (Hold select while you choose all your images)</label>
                                         <Base64Converter
                                             multiple={true}
                                             onDone={this.getFiles.bind(this)}
@@ -411,4 +394,4 @@ class HostListingForm extends React.Component {
     }
 }
 
-export default HostListingForm;
+export default HostListingForm

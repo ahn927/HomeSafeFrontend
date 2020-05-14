@@ -2,11 +2,11 @@ import React from 'react'
 import { Formik, Field } from 'formik'
 import * as Yup from "yup"
 import { Divider, Button, Label, Form, Dropdown } from 'semantic-ui-react'
-import PageHeader from '../../_components/pageHeader'
-import Search from '../../_components/map/search'
-import RadioButton from './helper/radio-button'
-import RadioButtonGroup from './helper/radio-group'
-import MySelect from './helper/my-select'
+import PageHeader from '../../../_components/pageHeader'
+import Search from '../../../_components/map/search'
+import RadioButton from '../helper/radio-button'
+import RadioButtonGroup from '../helper/radio-group'
+import MySelect from '../helper/my-select'
 
 const options = [
     { key: 'Vancouver', value: 'Vancouver', label: 'Vancouver' },
@@ -18,19 +18,26 @@ const options = [
     { key: 'New Westminster', value: 'New Westminster', label: 'New Westminster' },
 ];
 
-class HostPersonalForm extends React.Component {
+class EditHostPersonal extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
             geoResult: null,
-            addy: "poo"
+            firstName: "Greg",
+            lastName: "Makasoff",
+            phoneNumber: "0009991111",
+            email: "g@g.g",
+            address: "15908 Prospect Crescent, White Rock, British Columbia V4B 2A2, Canada",
+            city: "White Rock",
+            heardAbout: "Online"
         }
+
         this.handleChange = this.handleChange.bind(this);
       }
     
       handleChange(tar, val) {
-        tar = val.place_name;
+        tar = val;
       }
 
     render() {
@@ -38,18 +45,17 @@ class HostPersonalForm extends React.Component {
             <div>
                 <PageHeader
                     icon={null}
-                    text='Become A Host' >
+                    text='Edit A Host' >
                 </PageHeader>
                 <Formik
-                    enableReinitialize
                     initialValues={{
-                        firstName: "",
-                        lastName: "",
-                        phoneNumber: "",
-                        email: "",
-                        address: "",
-                        city: "",
-                        heardAbout: "",
+                        firstName: this.state.firstName,
+                        lastName: this.state.lastName,
+                        phoneNumber: this.state.phoneNumber,
+                        email: this.state.email,
+                        address: this.state.address,
+                        city: this.state.city,
+                        heardAbout: this.state.heardAbout,
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         /* // submitting event here.
@@ -62,8 +68,6 @@ class HostPersonalForm extends React.Component {
                                     console.log(error)
                                 }
                             ) */
-                        values.address = this.state.geoResult.place_name;
-                        values.city = this.state.geoResult.context[2].text;
                         console.log(JSON.stringify(values, null, 2));
                     }}
                     validationSchema={Yup.object().shape({
@@ -79,6 +83,11 @@ class HostPersonalForm extends React.Component {
                         email: Yup.string()
                             .required("Required")
                             .email(),
+                        address: Yup.string()
+                            .required("Required")
+                            .matches(/()/, "Must be a valid address."),
+                        city: Yup.string()
+                            .required("Required"),
                         heardAbout: Yup.string()
                             .required("Must state where you heard about this service."),
                     })}
@@ -237,4 +246,4 @@ class HostPersonalForm extends React.Component {
     }
 }
 
-export default HostPersonalForm;
+export default EditHostPersonal;

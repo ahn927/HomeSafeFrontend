@@ -106,7 +106,7 @@ export default class SortableTable extends Component {
                                 <Table.Cell>{new Date(availableEndDate).toDateString()}</Table.Cell>
                                 <Table.Cell>{available && 'Yes'}{!available && 'Not Avaliable'}</Table.Cell>
                                 <Table.Cell>
-                                    <Button size='tiny' href={routes.EDIT_PROPERTY + '/' + propertyId} >Edit</Button>
+                                    <Button size='tiny' href={routes.EDITLISTING + '/' + propertyId} >Edit</Button>
                                     <Button size='tiny' href={routes.PROPERTY + '/' + propertyId}>View</Button>
                                 </Table.Cell>
 
