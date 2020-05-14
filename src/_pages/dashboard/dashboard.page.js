@@ -2,7 +2,7 @@ import React from 'react'
 import { Route, withRouter } from 'react-router-dom';
 
 import auth from '../../_services/auth'
-
+import LoadingSpinner from '../../_components/loadingSpinner';
 import SortableTable from './sortableTable'
 import PageHeader from '../../_components/pageHeader'
 import { Message } from 'semantic-ui-react'
@@ -14,44 +14,16 @@ class dashboardPage extends React.Component {
 
         this.state = {
             currentUser: auth.currentUserValue,
-            userInfo: {
-                "firstName": "first",
-                "lastName": "last",
-                "phoneNumber": "2368659199",
-                "emailAddress": "wow@ee.ee",
-                "streetNumber": "2418",
-                "street": "East 19 the ave",
-                "province": "BC",
-                "country": "Canada",
-                "isLandlord": true,
-                "isVerified": true,
-                "properties": [
-                    {
-                        "propertyId": 1,
-                        "available": true,
-                        "availableStartDate": "0001-01-01T00:00:00",
-                        "availableEndDate": "0001-01-01T00:00:00",
-                        "streetNumber": 1535,
-                        "street": "30th ave",
-                        "unitNumber": "5",
-                        "city": "vancouver",
-                        "province": "BC",
-                    },
-                    {
-                        "propertyId": 1,
-                        "available": true,
-                        "availableStartDate": "0001-01-01T00:00:00",
-                        "availableEndDate": "0001-01-01T00:00:00",
-                        "streetNumber": 1535,
-                        "street": "30th ave",
-                        "unitNumber": "5",
-                        "city": "vancouver",
-                        "province": "BC",
-                    },
-                ]
-            }
-
+            userInfo: null
         };
+    }
+
+    async componentDidMount() {
+        const userResult = await fetch(`https://10kftdb.azurewebsites.net/api/users/${this.state.currentUser.userID}`);
+        const userJson = await userResult.json();
+        this.setState({
+            userInfo: userJson
+        })
     }
 
     renderHost() {
@@ -98,6 +70,7 @@ class dashboardPage extends React.Component {
     }
 
     render() {
+        if(!this.state.userInfo) return <LoadingSpinner/>
         return (
             <div>
                 {this.renderHost()}

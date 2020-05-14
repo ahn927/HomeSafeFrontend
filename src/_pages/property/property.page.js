@@ -31,7 +31,6 @@ class PropertyPage extends React.Component {
 
     async componentDidMount() {
         const id = this.props.match.params.id;
-        console.log(id);
         const resultProperty = await fetch(`https://10kftdb.azurewebsites.net/api/properties/search/${id}`);
         const jsonProperty = await resultProperty.json();
         let temparray = this.state.properties;
@@ -42,7 +41,6 @@ class PropertyPage extends React.Component {
             property: jsonProperty,
             userId: jsonProperty.userID
         });
-        console.log(this.state.properties);
         console.log(this.state.property);
 
         if (auth.currentUserValue && auth.currentUserValue.isLandlord) {
@@ -51,9 +49,7 @@ class PropertyPage extends React.Component {
             this.setState({
                 tenants: jsonTenant
             })
-            console.log(jsonTenant);
         }
-
     }
 
     contextRef = createRef()
@@ -61,9 +57,7 @@ class PropertyPage extends React.Component {
     renderHostMessage() {
         const currentUser = auth.currentUserValue;
         const { property } = this.state;
-        console.log('currentUser', currentUser)
-        console.log('property', property)
-
+    
         if (!currentUser) return null;
         if (currentUser.userID != property.userID) return null;
         if (!this.state.tenants) {
@@ -142,7 +136,7 @@ class PropertyPage extends React.Component {
 
     rendernapshotInfo() {
         let property = this.state.property;
-        console.log(property)
+        
         return (
             <div>
                 <Container>
@@ -310,7 +304,7 @@ class PropertyPage extends React.Component {
         if (!this.state.property) {
             return (<div> <LoadingSpinner /> </div>)
         }
-        console.log(this.state.property.latitude);
+       
         return (
             <div>
                 {/* <CarouselComponent propertyImages={this.state.property.propertyImages}/> */}
@@ -327,7 +321,7 @@ class PropertyPage extends React.Component {
                                 <Grid >
                                     <Grid.Row>
                                         <Grid.Column width={16} style={{ minHeight: '300px' }} className='p-3'>
-                                            <Map properties={this.state.properties} propertyLng={this.state.property.longitutde}
+                                            <Map properties={this.state.properties} propertyLng={this.state.property.longitude}
                                                 propertyLat={this.state.property.latitude} />
                                         </Grid.Column>
                                     </Grid.Row>
