@@ -25,7 +25,7 @@ class Navbar extends React.Component {
         const { activeItem } = this.state
         let currentUser = this.state.currentUser
         return (
-            <div>
+            <div className='my-5'>
                 <Menu stackable size='large'>
                     <Menu.Item
                         header

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Formik } from 'formik'
-import { Field, Divider, Button, Label, Form, Grid, Card } from 'semantic-ui-react'
+import { Field, Divider, Button, Label, Form, Grid, Card, Message, Icon } from 'semantic-ui-react'
 import MySelect from './my.select'
 import Search from './map/search'
 
@@ -69,9 +69,11 @@ class SearchBar extends React.Component {
                         } = props;
                         return (
                             <div className="d-flex justify-content-center">
-                                <Card fluid>
-                                    <Card.Content className="d-flex justify-content-center">
-                                        <Form onSubmit={handleSubmit}>
+
+                                <Form onSubmit={handleSubmit}>
+                                    <Card className=" fluid segment px-3">
+
+                                        <Card.Content>
                                             <Form.Group widths='equal'>
                                                 <div className="checkinDate mx-2" style={{ minWidth: '170px' }}>
                                                     <label htmlFor="checkinDate">Checkin Date</label>
@@ -157,12 +159,20 @@ class SearchBar extends React.Component {
                                                     />
                                                 </div>
                                             </Form.Group>
-                                            <Button type="submit">
-                                                Book a Room
+                                        </Card.Content>
+                                        <Card.Content extra>
+
+                                            <Button animated='vertical' type="submit" size='large' color='black' style={{ width: '100%' }}>
+                                                <Button.Content hidden>Search</Button.Content>
+                                                <Button.Content visible>
+                                                    <Icon name='search' />
+                                                </Button.Content>
                                             </Button>
-                                        </Form>
-                                    </Card.Content>
-                                </Card>
+                                        </Card.Content>
+
+                                    </Card>
+                                </Form>
+
                             </div>
                         );
                     }}

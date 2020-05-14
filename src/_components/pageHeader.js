@@ -25,7 +25,7 @@ class PageHeader extends React.Component {
                     <p>{text}</p>
                 </Divider>
 
-                <Grid className="mb-3">
+                {this.props.children && <Grid className="mb-3">
                     <Grid.Row>
                         <Grid.Column textAlign='center'>
                             <div style={{ fontSize: '1.33em' }}>
@@ -33,7 +33,8 @@ class PageHeader extends React.Component {
                             </div>
                         </Grid.Column>
                     </Grid.Row>
-                </Grid>
+
+                </Grid>}
             </div>
         )
     }
