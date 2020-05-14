@@ -3,6 +3,8 @@ import { Formik } from 'formik'
 import { Field, Divider, Button, Label, Form, Grid, Card, Message, Icon } from 'semantic-ui-react'
 import MySelect from './my.select'
 import Search from './map/search'
+import * as Yup from "yup"
+
 
 const cityOptions = [
     { value: 'Vancouver', label: 'Vancouver' },
@@ -15,13 +17,9 @@ const cityOptions = [
 ];
 
 const genderOptions = [
-    { value: 'Vancouver', label: 'Vancouver' },
-    { value: 'Richmond', label: 'Richmond' },
-    { value: 'Surrey', label: 'Surrey' },
-    { value: 'Burnaby', label: 'Burnaby' },
-    { value: 'Coquitlam', label: 'Coquitlam' },
-    { value: 'Port Moody', label: 'Port Moody' },
-    { value: 'New Westminster', label: 'New Westminster' },
+    { value: 'male', label: 'Male' },
+    { value: 'female', label: 'Female' },
+    { value: 'any', label: 'Any' }
 ];
 
 class SearchBar extends React.Component {
@@ -30,7 +28,6 @@ class SearchBar extends React.Component {
         this.state = {
             geoResult: null
         }
-
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -44,16 +41,34 @@ class SearchBar extends React.Component {
                     initialValues={{
                         checkinDate: "",
                         checkoutDate: "",
-                        school: "",
                         city: "",
                         maxRent: "",
                         minRent: "",
                         gender: ""
                     }}
                     onSubmit={(values, { setSubmitting }) => {
-                        this.props.onClickSearch(values);
+                        this.props.onClickSearch(values, this.state.geoResult);
                         console.log(values)
                     }}
+                    validationSchema={Yup.object().shape({
+                        checkinDate: Yup.date()
+                            .required("Required"),
+                        checkoutDate: Yup.date()
+                            .required("Required")
+                            .when(
+                                'checkinDate',
+                                (checkinDate, schema) => (checkinDate && schema.min(checkinDate, 'Check-out date before Check-in date.'))),
+                        city: Yup.string()
+                            .required("Required"),
+                        minRent: Yup.number()
+                            .positive()
+                            .required("Required"),
+                        maxRent: Yup.number()
+                            .required("Required")
+                            .moreThan(Yup.ref('minRent'), 'Max Rent should be greater than min rent.'),
+                        gender: Yup.string()
+                            .required("Required")
+                    })}
                 >
                     {props => {
                         const {
@@ -84,6 +99,11 @@ class SearchBar extends React.Component {
                                                         value={values.checkinDate}
                                                         onChange={handleChange}
                                                     />
+                                                    {errors.checkinDate && touched.checkinDate && (
+                                                        <Label basic color='red' pointing>
+                                                            {errors.checkinDate}
+                                                        </Label>
+                                                    )}
                                                 </div>
 
                                                 <div className="checkoutDate mx-2" style={{ minWidth: '170px' }}>
@@ -95,6 +115,11 @@ class SearchBar extends React.Component {
                                                         value={values.checkoutDate}
                                                         onChange={handleChange}
                                                     />
+                                                    {errors.checkoutDate && touched.checkoutDate && (
+                                                        <Label basic color='red' pointing>
+                                                            {errors.checkoutDate}
+                                                        </Label>
+                                                    )}
                                                 </div>
 
                                                 <div className="address mx-2">
@@ -105,9 +130,7 @@ class SearchBar extends React.Component {
                                                             this.setState({ geoResult: result })
                                                             this.handleChange(values.address, this.state.geoResult);
                                                         }} />
-                                                    {this.state.geoResult &&
-                                                        <p><small>You selected: </small><br />{this.state.geoResult.place_name}</p>
-                                                    }
+
                                                 </div>
 
 
@@ -124,17 +147,11 @@ class SearchBar extends React.Component {
                                                         placeholder='Search City'
                                                         options={cityOptions}
                                                     />
-                                                </div>
-
-                                                <div className="maxRent mx-2">
-                                                    <label htmlFor="maxRent">Max Rent</label>
-                                                    <Form.Input
-                                                        name="maxRent"
-                                                        type="text"
-                                                        placeholder="Max Rent"
-                                                        value={values.maxRent}
-                                                        onChange={handleChange}
-                                                    />
+                                                    {errors.city && touched.city && (
+                                                        <Label basic color='red' pointing>
+                                                            {errors.city}
+                                                        </Label>
+                                                    )}
                                                 </div>
 
                                                 <div className="minRent mx-2">
@@ -146,28 +163,61 @@ class SearchBar extends React.Component {
                                                         value={values.minRent}
                                                         onChange={handleChange}
                                                     />
+                                                    {errors.minRent && touched.minRent && (
+                                                        <Label basic color='red' pointing>
+                                                            {errors.minRent}
+                                                        </Label>
+                                                    )}
                                                 </div>
 
-                                                <div className="gender mx-2" style={{ maxWidth: '100px' }}>
-                                                    <label htmlFor="gender">Gender</label>
+                                                <div className="maxRent mx-2">
+                                                    <label htmlFor="maxRent">Max Rent</label>
                                                     <Form.Input
-                                                        name="gender"
+                                                        name="maxRent"
                                                         type="text"
-                                                        placeholder="Gender"
-                                                        value={values.gender}
+                                                        placeholder="Max Rent"
+                                                        value={values.maxRent}
                                                         onChange={handleChange}
                                                     />
+                                                    {errors.maxRent && touched.maxRent && (
+                                                        <Label basic color='red' pointing>
+                                                            {errors.maxRent}
+                                                        </Label>
+                                                    )}
+                                                </div>
+
+                                                <div className="gender mx-2" style={{ minWidth: '150px' }}>
+                                                    <label htmlFor="gender">Gender</label>
+                                                    <MySelect
+                                                        value={values.value}
+                                                        onChange={setFieldValue}
+                                                        onBlur={setFieldTouched}
+                                                        error={errors.gender}
+                                                        touched={touched.gender}
+                                                        placeholder='Any'
+                                                        options={genderOptions}
+                                                    />
+                                                    {errors.gender && touched.gender && (
+                                                        <Label basic color='red' pointing>
+                                                            {errors.gender}
+                                                        </Label>
+                                                    )}
+
                                                 </div>
                                             </Form.Group>
                                         </Card.Content>
                                         <Card.Content extra>
 
-                                            <Button animated='vertical' type="submit" size='large' color='black' style={{ width: '100%' }}>
+                                            <Button type="submit" size='large' color='black' style={{ width: '100%' }}>
+                                                <Icon name='search' />Search
+                                            </Button>
+
+                                            {/* <Button animated='vertical' type="submit" size='large' color='black' style={{ width: '100%' }}>
                                                 <Button.Content hidden>Search</Button.Content>
                                                 <Button.Content visible>
                                                     <Icon name='search' />
                                                 </Button.Content>
-                                            </Button>
+                                            </Button> */}
                                         </Card.Content>
 
                                     </Card>

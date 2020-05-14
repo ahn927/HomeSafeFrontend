@@ -16,17 +16,37 @@ class ListingPage extends React.Component {
         long: null,
         errorMessage: null,
         searchValue: null,
+        geoResult: null,
         data: []
     }
 
-    handleSearch = (searchValue) => {
+    handleSearch = (searchValue, geoResult) => {
         this.setState({ searchValue: searchValue });
+        console.log('searchValue', this.state.searchValue);
+
     };
 
-    async componentDidMount() {
-        const result = await fetch(`https://10kftdb.azurewebsites.net/api/properties`);
-        const json = await result.json();
-        this.setState({ data: json });
+    componentDidMount() {
+        // const result = await fetch(`https://10kftdb.azurewebsites.net/api/properties`);
+        // const json = await result.json();
+        // console.log('json', json)
+        // if (this.state.data.length < 1)
+        //     this.setState({ data: json });
+
+
+
+        fetch(`https://10kftdb.azurewebsites.net/api/properties`)
+            .then(res => res.json())
+            .then(
+                (result) => {
+                    this.setState({ data: result });
+                },
+                (error) => {
+                    console.log('error', error)
+                }
+            )
+
+
     }
 
     render() {

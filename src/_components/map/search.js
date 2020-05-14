@@ -45,7 +45,6 @@ class Search extends React.Component {
                     viewport={viewport}
                     hideOnSelect={true}
                     queryParams={queryParams}
-                    placeholder='ds'
                     updateInputOnSelect={true}
                     // initialInputValue="Find School/Landmark/Transportation"
                     inputComponent={MyInput}

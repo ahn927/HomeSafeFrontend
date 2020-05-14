@@ -11,7 +11,6 @@ class Navbar extends React.Component {
     }
     handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
-    // handleLogin = (e) => this.props.history.push("/login")
     handleLogout = (e) => {
         auth.logout()
         window.location.reload()
