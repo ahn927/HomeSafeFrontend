@@ -1,14 +1,24 @@
-import React from 'react'
+import React, { Component, PropTypes } from 'react'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
+
+import history from '../../history'
 
 import { Card, Image, Icon, Grid, List, Divider } from 'semantic-ui-react'
 import * as images from '../../_constants/images'
 import './propertyCard.css';
+import * as routes from '../../_constants/routes'
+
 
 
 
 class PropertyCard extends React.Component {
     state = {
         property: this.props.property
+    }
+
+    constructor(props) {
+        super(props)
+        // this.handleClick = this.handleClick.bind(this)
     }
 
     item = {
@@ -18,30 +28,21 @@ class PropertyCard extends React.Component {
     };
 
 
+    handleClick = (event) => {
+        let location = routes.PROPERTY + '/' + this.state.property.propertyID
+        console.log('move', location)
+        event.preventDefault()
+        history.push(location)
+    }
+
+
     render() {
         if (!this.state.property) return <p></p>
+
+
         let text = this.state.property.propertyDescription
         return (
-            //     <Card>
-            //     <Image src='https://react.semantic-ui.com/images/avatar/large/matthew.png' wrapped ui={false} />
-            //     <Card.Content>
-            //       <Card.Header>Matthew</Card.Header>
-            //       <Card.Meta>
-            //         <span className='date'>Joined in 2015</span>
-            //       </Card.Meta>
-            //       <Card.Description>
-            //         Matthew is a musician living in Nashville.
-            //       </Card.Description>
-            //     </Card.Content>
-            //     <Card.Content extra>
-            //       <a>
-            //         <Icon name='user' />
-            //         22 Friends
-            //       </a>
-            //     </Card.Content>
-            //   </Card>
-
-            <Card style={{ width: '100%' }} className='bgColour'>
+            <Card style={{ width: '100%' }} className='bgColour' onClick={this.handleClick}>
                 <Card.Content>
                     <Card.Header>{this.state.property.unitNumber} {this.state.property.streetNumber} {this.state.property.street}</Card.Header>
                     <Card.Meta>

@@ -4,6 +4,8 @@ import ReactDOM from "react-dom";
 import { BrowserRouter, Route, Switch, Router } from 'react-router-dom';
 import { Segment, Container } from 'semantic-ui-react'
 
+
+
 import HomePage from "./_pages/home/home.page";
 import LoginPage from "./_pages/login.page";
 import dashboardPage from "./_pages/dashboard/dashboard.page";
@@ -26,6 +28,7 @@ import * as routes from './_constants/routes'
 import Navbar from './_components/navbar';
 import Footer from './_components/footer';
 
+import history from './history'
 
 
 class App extends React.Component {
@@ -66,7 +69,7 @@ class App extends React.Component {
 }
 
 ReactDOM.render(
-    <BrowserRouter>
+    <Router history={history}>
         <App />
-    </BrowserRouter>,
+    </Router>,
     document.getElementById("root"));

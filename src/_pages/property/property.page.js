@@ -24,7 +24,7 @@ class PropertyPage extends React.Component {
         property: null,
         properties: [],
         userId: null,
-        tenants: []    
+        tenants: []
     }
 
 
@@ -35,7 +35,7 @@ class PropertyPage extends React.Component {
         const jsonProperty = await resultProperty.json();
         let temparray = this.state.properties;
         temparray.push(jsonProperty);
-        this.setState({ 
+        this.setState({
             propertyId: id,
             properties: temparray,
             property: jsonProperty,
@@ -43,15 +43,16 @@ class PropertyPage extends React.Component {
         });
         console.log(this.state.properties);
         console.log(this.state.property);
-                
 
-        const resultTenant = await fetch(`https://10kftdb.azurewebsites.net/api/properties/getTenantAppliedPropertyByLandlordID/${this.state.userId}`);
-        const jsonTenant = await resultTenant.json();
-        this.setState({
-            tenants: jsonTenant
-        })
-        console.log(jsonTenant);
-        
+        if (auth.currentUserValue && auth.currentUserValue.isLandlord) {
+            const resultTenant = await fetch(`https://10kftdb.azurewebsites.net/api/properties/getappliedpropertybylandlordid/${this.state.userId}`);
+            const jsonTenant = await resultTenant.json();
+            this.setState({
+                tenants: jsonTenant
+            })
+            console.log(jsonTenant);
+        }
+
     }
 
     contextRef = createRef()
@@ -65,7 +66,7 @@ class PropertyPage extends React.Component {
         if (!currentUser) return null;
         if (currentUser.userID != property.userID) return null;
         if (!this.state.tenants) {
-            return(
+            return (
                 (
                     <div>
                         <Message color='blue'>
@@ -82,7 +83,7 @@ class PropertyPage extends React.Component {
         let takenCount = this.state.tenants.length;
         let tableRows = [];
         this.state.tenants.forEach((tenant, key) => {
-            if(tenant.propertyID == this.state.property.propertyID) {
+            if (tenant.propertyID == this.state.property.propertyID) {
                 tableRows.push(
                     <Table.Row>
                         <Table.Cell collapsing>{tenant.userFirstName} {tenant.userLastName}</Table.Cell>
@@ -311,7 +312,7 @@ class PropertyPage extends React.Component {
 
         return (
             <div>
-               {/* <CarouselComponent propertyImages={this.state.property.propertyImages}/> */}
+                {/* <CarouselComponent propertyImages={this.state.property.propertyImages}/> */}
                 {this.rendernapshotInfo()}
                 <Grid >
                     <Grid.Column width="10">
@@ -322,9 +323,14 @@ class PropertyPage extends React.Component {
                                 {this.renderDivdingHeader('id badge', 'Host Information')}
                                 <p>{this.state.property.hostDescription}</p>
                                 {this.renderDivdingHeader('home', 'Map')}
-                                <Map properties={this.state.properties} propertyLng={this.state.property.longitutde}
-                                    propertyLat={this.state.property.latitude}/>
-                                {this.renderDivdingHeader('home', 'Points of Interests')}
+                                <Grid >
+                                    <Grid.Row>
+                                        <Grid.Column width={16} style={{ minHeight: '300px' }} className='p-3'>
+                                            <Map properties={this.state.properties} propertyLng={this.state.property.longitutde}
+                                                propertyLat={this.state.property.latitude} />
+                                        </Grid.Column>
+                                    </Grid.Row>
+                                </Grid>
 
                                 <Rail position='right'>
                                     <Sticky active={true} context={this.contextRef}>
