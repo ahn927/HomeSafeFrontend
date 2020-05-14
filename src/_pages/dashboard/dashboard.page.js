@@ -63,30 +63,28 @@ class dashboardPage extends React.Component {
                     icon={null}
                     text='Host Dashboard' >
                 </PageHeader>
-                <Message
-                    color='blue'>
-                    <Message.Header>Your backround check was verified.</Message.Header>
-                    <p>
-                        HomeSafe staff had reviewed your application.
+                {
+                    currentUser.isVerifiedByStaff ?
+                        (<Message
+                            color='blue'>
+                            <Message.Header>Your backround check was verified.</Message.Header>
+                            <p>
+                                HomeSafe staff had reviewed your application.
                     </p>
-                </Message>
-                <Message
-                    color='red'>
-                    <Message.Header>Your backround check is still in processing.</Message.Header>
-                    <p>
-                        HomeSafe staff had reviewed your application.
+                        </Message>)
+                        :
+                        (<Message
+                            color='red'>
+                            <Message.Header>Your backround check is still in processing.</Message.Header>
+                            <p>
+                                HomeSafe staff is reviewing your application.
                     </p>
-                </Message>
+                        </Message>
+                        )
+                }
 
 
                 <SortableTable properties={userInfo.properties}></SortableTable>
-                {/* <button onClick={
-                    () => {
-                        auth.logout()
-                        this.props.history.push("/")
-                        window.location.reload();
-                    }
-                }>logout</button> */}
             </div>
         )
     }

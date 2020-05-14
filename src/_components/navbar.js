@@ -72,7 +72,7 @@ class Navbar extends React.Component {
                                 href={routes.DASHBOARD}
                             >
                                 <Icon name='user' />
-                                {`${currentUser.firstName} ${currentUser.lastName}`}
+                                {`${currentUser.userFirstName} ${currentUser.userLastName}`}
                             </Menu.Item>
                         }
                         {

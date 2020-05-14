@@ -55,7 +55,7 @@ export default class SortableTable extends Component {
 
         return (
             <div>
-                <Button className="m-3" floated='right' href={routes.CREATE_PROPERTY}>Create New Listing</Button>
+                <Button className="m-3" floated='right' href={routes.HOSTLISTING}>Create New Listing</Button>
                 <Table sortable celled fixed>
                     <Table.Header>
                         <Table.Row>

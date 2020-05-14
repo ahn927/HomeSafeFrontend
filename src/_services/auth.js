@@ -15,10 +15,14 @@ function login(username, password) {
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password })
+        body: JSON.stringify(
+            {
+                "credentialUserName": username,
+                "password": password
+            })
     };
 
-    return fetch(`https://8000/users/authenticate`, requestOptions)
+    return fetch(`https://10kftdb.azurewebsites.net/api/Credentials/login`, requestOptions)
         .then(handleResponse)
         .then(user => {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
