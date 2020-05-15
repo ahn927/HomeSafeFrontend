@@ -55,6 +55,26 @@ class PropertyPage extends React.Component {
 
     contextRef = createRef()
 
+    acceptTenant(uID, pID) {
+        return async function() {    
+            console.log(uID + " w " + pID);
+            fetch(`https://10kftdb.azurewebsites.net/api/properties/setTenantPropertyAssignmentVerification/${uID}/${pID}`, {
+                method: 'PUT',
+                heads: {
+                    'Content-Type' : 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success: ', data);
+
+            })
+            .catch((error) => {
+                console.error('Error: ', error);
+            });
+        }
+    };
+
     renderHostMessage() {
         const currentUser = auth.currentUserValue;
         const { property } = this.state;
@@ -78,12 +98,13 @@ class PropertyPage extends React.Component {
 
         let takenCount = this.state.tenants.length;
         let tableRows = [];
+        
         this.state.tenants.forEach((tenant, key) => {
             if (tenant.propertyID == this.state.property.propertyID) {
                 tableRows.push(
                     <Table.Row key={key}>
-                        <Table.Cell collapsing>{tenant.userFirstName} {tenant.userLastName}</Table.Cell>
-                        <Table.Cell collapsing>{tenant.gender}</Table.Cell>
+                        <Table.Cell collapsing>{tenant.tenantFirstName} {tenant.tenantLastName}</Table.Cell>
+                        <Table.Cell collapsing><button onClick={this.acceptTenant(tenant.userID, tenant.propertyID)}> Accept </button></Table.Cell>
                     </Table.Row>
                 )
             }
@@ -93,12 +114,11 @@ class PropertyPage extends React.Component {
                 <Message color='blue'>
                     <Message.Header>Hi, {currentUser.userFirstName + ' ' + currentUser.userLastName}</Message.Header>
                     <Header as="h3">Dear {currentUser.userFirstName}</Header>
-                    <p>There are {takenCount} guests took this property.</p>
                     <Table className="my-3" color='blue' inverted>
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell>GuestName</Table.HeaderCell>
-                                <Table.HeaderCell>Gender</Table.HeaderCell>
+                                <Table.HeaderCell></Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
                         <Table.Body>
@@ -190,6 +210,13 @@ class PropertyPage extends React.Component {
         )
     }
 
+    bookNow(user) {
+        return async function() {    
+            console.log(user);
+            console.log(this.state.property);
+        }
+    };
+
     renderForm() {
         return (
             <Formik
@@ -277,7 +304,7 @@ class PropertyPage extends React.Component {
                                         <Divider />
                                     </div>
                                 }
-                                <Button type="submit" >Book Now</Button>
+                                <Button type="submit" onClick={this.bookNow(this.state.currentUser)} >Book Now</Button>
                             </Form>
 
                         </div>
