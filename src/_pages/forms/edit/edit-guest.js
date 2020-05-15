@@ -13,12 +13,14 @@ class EditGuestForm extends React.Component {
 
     state = {
         currentUser: auth.currentUserValue,
-        data: {}
+        data: {},
+        id: null
     };
 
     async componentDidMount() {
         // let { id } = useParams();
-        const result = await fetch('https://10kftdb.azurewebsites.net/api/Users/10');
+        this.state.id = this.state.currentUser.userID;
+        const result = await fetch(`https://10kftdb.azurewebsites.net/api/Users/${this.state.id}`);
         const json = await result.json();
         this.setState({
             // userId: id,
@@ -46,32 +48,38 @@ class EditGuestForm extends React.Component {
                                  "userFirstName": this.state.data.userFirstName, 
                                  "userLastName": this.state.data.userLastName,
                                  "userPhoneNumber": this.state.data.userPhoneNumber,
-                                 "userEmailAddress": "",
-                                 "userAddressStreetNumber" : "",	
-                                 "userAddressStreet" : "",
-                                 "userAddressUnitNumber" : "",
-                                 "userAddressCity" : "",
-                                 "userAddressProvince" : "",
-                                 "userAddressCountry" : "",
-                                 "howDidYouHearFromUs": "",
-                                 "tenantDateOfBirth": "",
-                                 "tenantGender": "",
-                                 "tenantNationality": "",
-                                 "tenantReasonForStay": "",
+                                 "userEmailAddress": this.state.data.userEmailAddress,
+                                 "userAddressStreetNumber" : this.state.userAddressStreetNumber,	
+                                 "userAddressStreet" : this.state.userAddressStreet,
+                                 "userAddressUnitNumber" : this.state.userAddressUnitNumber,
+                                 "userAddressCity" : this.state.userAddressCity,
+                                 "userAddressProvince" : this.state.userAddressProvince,
+                                 "userAddressCountry" : this.state.userAddressCountry,
+                                 "howDidYouHearFromUs": this.state.howDidYouHearFromUs,
+                                 "tenantDateOfBirth": this.state.tenantDateOfBirth,
+                                 "tenantGender": this.state.tenantGender,
+                                 "tenantNationality": this.state.tenantNationality,
+                                 "tenantReasonForStay": this.state.tenantReasonForStay,
                                  "tenantIsAdmin": false,
                                  "tenantIsLandlord": false,
                                  "tenantIsTenant": true }}
                 onSubmit={(values, { setSubmitting }) => {
-                    // submitting event here.
-/*                     auth.login(values.username, values.password)
-                        .then(
-                            user => {
-                                this.props.history.push("/dashboard")
-                            },
-                            error => {
-                                console.log(error)
-                            }
-                        ) */
+
+                    fetch(`https://10kftdb.azurewebsites.net/api/Users/${this.state.id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(values, null, 2),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                    console.log(JSON.stringify(values, null, 2));
                     console.log(JSON.stringify(values, null, 2));
                 }}
                 validationSchema={Yup.object().shape({
