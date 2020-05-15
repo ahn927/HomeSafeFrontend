@@ -6,7 +6,7 @@ import Base64Converter from '../../../_components/imageconvert/base64-converter'
 import PageHeader from '../../../_components/pageHeader'
 import RadioButton from '../helper/radio-button'
 import RadioButtonGroup from '../helper/radio-group'
-import MySelect from '../helper/my-select'
+import auth from '../../../_services/auth';
 import * as images from '../../../_constants/images'
 import Search from '../../../_components/map/search'
 
@@ -29,13 +29,19 @@ class EditHostListing extends React.Component {
             images.TEMPLATE_HOUSE2,
             images.TEMPLATE_HOUSE3,
         ],
-        files: []
+        files: [],
+        geoResult: {
+            place_name: ""
+        },
+        currentUser: auth.currentUserValue,
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         // let { id } = useParams();
+        const result = await fetch();
+        const json = await result.json();
         this.getFiles.bind(this.state.images);
-
+        this.state.geoResult.place_name = this.state.address;
         this.setState({
             // userId: id,
             // user: tempData //TODO: Replace this line by fetch call to backend.
@@ -79,7 +85,23 @@ class EditHostListing extends React.Component {
                             }
                         ) */
                         values.address = this.state.geoResult.place_name;
-                        console.log(JSON.stringify(values, null, 2));
+
+                        fetch('https://10kftdb.azurewebsites.net/api/', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(values, null, 2),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Success:', data);
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+
+                        //console.log(JSON.stringify(values, null, 2));
                 }}
                 validationSchema={Yup.object().shape({
                     host: Yup.string()
@@ -374,7 +396,7 @@ class EditHostListing extends React.Component {
                                 </div>
                                 <Divider />
                                 <div>
-                                    <label htmlFor="images">Attach Images Of The Room (Hold select while you choose all your images)</label>
+                                    <label htmlFor="images">Attach Images Of The Room (Hold Ctrl while you choose all your images)</label>
                                     <Base64Converter
                                         multiple={ true }
                                         onDone={ this.getFiles.bind(this) }
@@ -386,9 +408,9 @@ class EditHostListing extends React.Component {
                                     }) }
                                     <img src="" />
                                     </div>
-                                    {errors.nearestSchool && touched.nearestSchool && (
+                                    {errors.images && touched.images && (
                                         <Label basic color='red' pointing>
-                                            {errors.nearestSchool}
+                                            {errors.images}
                                         </Label>
                                     )}
                                 </div>

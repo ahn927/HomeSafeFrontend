@@ -6,17 +6,7 @@ import PageHeader from '../../../_components/pageHeader'
 import Search from '../../../_components/map/search'
 import RadioButton from '../helper/radio-button'
 import RadioButtonGroup from '../helper/radio-group'
-import MySelect from '../helper/my-select'
-
-const options = [
-    { key: 'Vancouver', value: 'Vancouver', label: 'Vancouver' },
-    { key: 'Richmond', value: 'Richmond', label: 'Richmond' },
-    { key: 'Surrey', value: 'Surrey', label: 'Surrey' },
-    { key: 'Burnaby', value: 'Burnaby', label: 'Burnaby' },
-    { key: 'Coquitlam', value: 'Coquitlam', label: 'Coquitlam' },
-    { key: 'Port Moody', value: 'Port Moody', label: 'Port Moody' },
-    { key: 'New Westminster', value: 'New Westminster', label: 'New Westminster' },
-];
+import auth from '../../../_services/auth';
 
 class EditHostPersonal extends React.Component {
 
@@ -24,6 +14,7 @@ class EditHostPersonal extends React.Component {
         super(props);
         this.state = {
             geoResult: null,
+            currentUser: auth.currentUserValue,
             firstName: "Greg",
             lastName: "Makasoff",
             phoneNumber: "0009991111",
