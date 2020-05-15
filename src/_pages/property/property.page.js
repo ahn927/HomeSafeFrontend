@@ -44,11 +44,12 @@ class PropertyPage extends React.Component {
         console.log(this.state.property);
 
         if (auth.currentUserValue && auth.currentUserValue.isLandlord) {
-            const resultTenant = await fetch(`https://10kftdb.azurewebsites.net/api/properties/getappliedpropertybylandlordid/${this.state.userId}`);
-            const jsonTenant = await resultTenant.json();
+            const resultTenant = await fetch(`https://10kftdb.azurewebsites.net/api/properties/getAppliedpropertiesbylandlordid/${this.state.userId}`);
+            let jsonTenant = await resultTenant.json();
             this.setState({
                 tenants: jsonTenant
             })
+            console.log(jsonTenant)
         }
     }
 
@@ -57,7 +58,7 @@ class PropertyPage extends React.Component {
     renderHostMessage() {
         const currentUser = auth.currentUserValue;
         const { property } = this.state;
-    
+
         if (!currentUser) return null;
         if (currentUser.userID != property.userID) return null;
         if (!this.state.tenants) {
@@ -80,7 +81,7 @@ class PropertyPage extends React.Component {
         this.state.tenants.forEach((tenant, key) => {
             if (tenant.propertyID == this.state.property.propertyID) {
                 tableRows.push(
-                    <Table.Row>
+                    <Table.Row key={key}>
                         <Table.Cell collapsing>{tenant.userFirstName} {tenant.userLastName}</Table.Cell>
                         <Table.Cell collapsing>{tenant.gender}</Table.Cell>
                     </Table.Row>
@@ -136,7 +137,7 @@ class PropertyPage extends React.Component {
 
     rendernapshotInfo() {
         let property = this.state.property;
-        
+
         return (
             <div>
                 <Container>
@@ -202,6 +203,10 @@ class PropertyPage extends React.Component {
                         this.setState({ bookError: { message: 'You need a tenant account to book a room.', loginBtn: false, registerBtn: true } })
                         console.log('render modal', 'no tenant')
                     }
+
+                    // const result = await fetch(`https://10kftdb.azurewebsites.net/api/`);
+                    // const jsonProperty = await resultProperty.json();
+
 
                 }}
                 validationSchema={Yup.object().shape({
@@ -304,7 +309,7 @@ class PropertyPage extends React.Component {
         if (!this.state.property) {
             return (<div> <LoadingSpinner /> </div>)
         }
-       
+
         return (
             <div>
                 {/* <CarouselComponent propertyImages={this.state.property.propertyImages}/> */}

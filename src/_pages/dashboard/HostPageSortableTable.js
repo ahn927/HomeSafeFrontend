@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 import { Table, Button } from 'semantic-ui-react'
 import * as routes from '../../_constants/routes'
 
-export default class SortableTable extends Component {
+export default class HostPageSortableTable extends Component {
 
     state = {
         column: null,
@@ -33,6 +33,7 @@ export default class SortableTable extends Component {
             direction: direction === 'ascending' ? 'descending' : 'ascending',
         })
     }
+
 
     render() {
         const { column, data, direction } = this.state
