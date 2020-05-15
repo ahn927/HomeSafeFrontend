@@ -8,14 +8,7 @@ import RadioButton from './helper/radio-button'
 import RadioButtonGroup from './helper/radio-group'
 import MySelect from './helper/my-select'
 import Search from '../../_components/map/search'
-
-const options = [
-    { value: 'ubc', label: 'UBC' },
-    { value: 'sfu', label: 'SFU' },
-    { value: 'bcit', label: 'BCIT' },
-    { value: 'douglas', label: 'Douglas' },
-    { value: 'kwantlen', label: 'Kwantlen' },
-];
+import auth from '../../_services/auth';
 
 class HostListingForm extends React.Component {
 
@@ -23,13 +16,13 @@ class HostListingForm extends React.Component {
         super()
         this.state = {
             files: [],
-            geoResult: null
+            geoResult: null,
+            currentUser: auth.currentUserValue,
         }
     }
 
     getFiles(files) {
         this.setState({ files: files })
-        this.values.images.push(files.base64)
     }
 
     render() {
@@ -41,53 +34,82 @@ class HostListingForm extends React.Component {
                 </PageHeader>
                 <Formik
                     initialValues={{
-                        host: "",
-                        neighbourhood: "",
-                        house: "",
-                        address: "",
+                        userID: this.state.currentUser.userID,
+                        isAvailable: false,
+                        latitude: null,
+                        longitude: null,
+                        availableStartDate: "",
+                        availableEndDate: "",
+                        hostDescription: "",
+                        propertyDescription: "",
+                        neighbourhoodDescription: "",
                         roomType: "",
-                        washroomAvail: "",
-                        gendersAccepted: "",
-                        pets: Boolean,
-                        startDate: "",
-                        endDate: "",
-                        nearestSchool: "",
-                        images: []
+                        washroomType: "",
+                        genderPreference: "",
+                        pets: "",
+                        wifiAndUtilitiesIncuded: "",
+                        closestSchool: "",
+                        unitNumber: "",
+                        streetNumber: "",
+                        street: "",
+                        city: "",
+                        province: "",
+                        country: "",
+                        propertyImageData: []
                     }}
                     onSubmit={(values, { setSubmitting }) => {
-                        /*                     // submitting event here.
-                                            auth.login(values.username, values.password)
-                                                .then(
-                                                    user => {
-                                                        this.props.history.push("/dashboard")
-                                                    },
-                                                    error => {
-                                                        console.log(error)
-                                                    }
-                                                ) */
-                        values.address = this.state.geoResult.place_name;
-                        console.log(JSON.stringify(values, null, 2));
+
+                        values.street = this.state.geoResult.place_name;
+                        values.longitude = this.state.geoResult.center[0];
+                        values.latitude = this.state.geoResult.center[1];
+                        if (values.pets === "yes") {
+                            values.pets = true;
+                        }
+                        else {
+                            values.pets = false;
+                        }
+                        if (values.wifiAndUtilitiesIncuded === "yes") {
+                            values.wifiAndUtilitiesIncuded = true;
+                        }
+                        fetch('https://10kftdb.azurewebsites.net/api/properties/create/', {
+                            method: 'POST',
+                            mode: 'cors',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(values),
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log('Success:', data);
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                            });
+                        console.log(JSON.stringify(values));
                     }}
                     validationSchema={Yup.object().shape({
-                        host: Yup.string()
+                        hostDescription: Yup.string()
                             .matches(/([A-Za-z0-9.,]*)/, "Invalid character.[A-Za-z0-9,.]"),
-                        neighbourhood: Yup.string()
+                        neighbourhoodDescription: Yup.string()
                             .matches(/([A-Za-z0-9.,]*)/, "Invalid character.[A-Za-z0-9,.]"),
-                        house: Yup.string()
+                        propertyDescription: Yup.string()
                             .matches(/([A-Za-z0-9.,]*)/, "Invalid character.[A-Za-z0-9,.]"),
                         roomType: Yup.string()
                             .required("Required"),
-                        washroomAvail: Yup.string()
+                        washroomType: Yup.string()
                             .required("Required"),
-                        gendersAccepted: Yup.string()
+                        genderPreference: Yup.string()
                             .required("Required"),
                         pets: Yup.string()
                             .required("Required."),
-                        startDate: Yup.string()
+                        wifiAndUtilitiesIncuded: Yup.string()
                             .required("Required"),
-                        endDate: Yup.string()
+                        availableStartDate: Yup.string()
                             .required("Required"),
-                        nearestSchool: Yup.string()
+                        availableEndDate: Yup.string()
+                            .required("Required"),
+                        closestSchool: Yup.string()
                             .required("Required.")
                     })}
                 >
@@ -107,60 +129,60 @@ class HostListingForm extends React.Component {
                             <div>
                                 <Form onSubmit={handleSubmit}>
                                     <div>
-                                        <label htmlFor="host">Describe Yourself(The Host)</label>
+                                        <label htmlFor="hostDescription">Describe Yourself(The host)</label>
                                         <input
-                                            name="host"
+                                            name="hostDescription"
                                             type="text"
                                             placeholder="Enter a description about yourself"
-                                            value={values.host}
+                                            value={values.hostDescription}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            className={errors.host && touched.host && "error"} />
-                                        {errors.host && touched.host && (
+                                            className={errors.hostDescription && touched.hostDescription && "error"} />
+                                        {errors.hostDescription && touched.hostDescription && (
                                             <Label basic color='red' pointing>
-                                                {errors.host}
+                                                {errors.hostDescription}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="neighbourhood">Describe the Neighbourhood</label>
+                                        <label htmlFor="neighbourhoodDescription">Describe the Neighbourhood</label>
                                         <input
-                                            name="neighbourhood"
+                                            name="neighbourhoodDescription"
                                             type="text"
                                             placeholder="Enter a description of the neighbourhood"
-                                            value={values.lastName}
+                                            value={values.neighbourhoodDescription}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            className={errors.lastName && touched.lastName && "error"}
+                                            className={errors.neighbourhoodDescription && touched.neighbourhoodDescription && "error"}
                                         />
                                         {errors.lastName && touched.lastName && (
                                             <Label basic color='red' pointing>
-                                                {errors.lastName}
+                                                {errors.neighbourhoodDescription}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="house">Describe the House</label>
+                                        <label htmlFor="propertyDescription">Describe the House</label>
                                         <input
-                                            name="house"
+                                            name="propertyDescription"
                                             type="text"
                                             placeholder="Enter a description of your house"
-                                            value={values.house}
+                                            value={values.propertyDescription}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            className={errors.house && touched.house && "error"}
+                                            className={errors.propertyDescription && touched.propertyDescription && "error"}
                                         />
-                                        {errors.house && touched.house && (
+                                        {errors.propertyDescription && touched.propertyDescription && (
                                             <Label basic color='red' pointing>
-                                                {errors.house}
+                                                {errors.propertyDescription}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="address">Address</label>
+                                        <label htmlFor="street">Address</label>
                                         <Search handleOnSelect={(result) => {
                                             console.log('result', result)
                                             this.setState({ geoResult: result })
@@ -168,6 +190,11 @@ class HostListingForm extends React.Component {
                                         {this.state.geoResult &&
                                             <p><small>You selected: </small><br />{this.state.geoResult.place_name}</p>
                                         }
+                                        {errors.street && touched.street && (
+                                            <Label basic color='red' pointing>
+                                                {errors.street}
+                                            </Label>
+                                        )}
                                     </div>
                                     <Divider />
                                     <div>
@@ -180,22 +207,19 @@ class HostListingForm extends React.Component {
                                             <Field
                                                 component={RadioButton}
                                                 name="roomType"
-                                                id="single"
-                                                content="Single Room"
+                                                id="Single Room"
                                                 label="Single Room"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="roomType"
-                                                id="double"
-                                                content="Double Room"
+                                                id="Double Room"
                                                 label="Double Room"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="roomType"
-                                                id="enSuite"
-                                                content="En Suite"
+                                                id="En Suite"
                                                 label="En Suite"
                                             />
                                         </RadioButtonGroup>
@@ -207,73 +231,73 @@ class HostListingForm extends React.Component {
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="washroomAvail">Type of Washroom Offered</label>
+                                        <label htmlFor="washroomType">Type of Washroom Offered</label>
                                         <RadioButtonGroup
-                                            id="washroomAvail"
+                                            id="washroomType"
                                             value={values.washroomAvail}
                                             touched={touched.washroomAvail}
                                         >
                                             <Field
                                                 component={RadioButton}
-                                                name="washroomAvail"
+                                                name="washroomType"
                                                 id="shared"
                                                 content="Shared"
                                                 label="Shared"
                                             />
                                             <Field
                                                 component={RadioButton}
-                                                name="washroomAvail"
+                                                name="washroomType"
                                                 id="private"
                                                 content="Private"
                                                 label="Private"
                                             />
                                             <Field
                                                 component={RadioButton}
-                                                name="washroomAvail"
+                                                name="washroomType"
                                                 id="enSuite"
                                                 content="En Suite"
                                                 label="En Suite"
                                             />
                                         </RadioButtonGroup>
-                                        {errors.washroomAvail && touched.washroomAvail && (
+                                        {errors.washroomType && touched.washroomType && (
                                             <Label basic color='red' pointing>
-                                                {errors.washroomAvail}
+                                                {errors.washroomType}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="gendersAccepted">Which Genders Are Accepted</label>
+                                        <label htmlFor="genderPreference">Which Genders Are Accepted</label>
                                         <RadioButtonGroup
-                                            id="gendersAccepted"
-                                            value={values.gendersAccepted}
-                                            touched={touched.gendersAccepted}
+                                            id="genderPreference"
+                                            value={values.genderPreference}
+                                            touched={touched.genderPreference}
                                         >
                                             <Field
                                                 component={RadioButton}
-                                                name="gendersAccepted"
+                                                name="genderPreference"
                                                 id="male"
                                                 content="Male"
                                                 label="Male"
                                             />
                                             <Field
                                                 component={RadioButton}
-                                                name="gendersAccepted"
+                                                name="genderPreference"
                                                 id="female"
                                                 content="Female"
                                                 label="Female"
                                             />
                                             <Field
                                                 component={RadioButton}
-                                                name="gendersAccepted"
+                                                name="genderPreference"
                                                 id="Any"
                                                 content="Any"
                                                 label="Any"
                                             />
                                         </RadioButtonGroup>
-                                        {errors.gendersAccepted && touched.gendersAccepted && (
+                                        {errors.genderPreference && touched.genderPreference && (
                                             <Label basic color='red' pointing>
-                                                {errors.gendersAccepted}
+                                                {errors.genderPreference}
                                             </Label>
                                         )}
                                     </div>
@@ -308,74 +332,103 @@ class HostListingForm extends React.Component {
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="startDate">Date Room Is Available</label><br />
-                                        <input
-                                            name="startDate"
-                                            type="date"
-                                            placeholder={(new Date()).toDateString()}
-                                            value={values.startDate}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            className={errors.startDate && touched.startDate && "error"}
-                                        />
-                                        {errors.startDate && touched.startDate && (
+                                        <label htmlFor="wifiAndUtilitiesIncuded">Confirm Wifi and Utilities are Included (Mandatory)</label>
+                                        <RadioButtonGroup
+                                            id="wifiAndUtilitiesIncuded"
+                                            value={values.wifiAndUtilitiesIncuded}
+                                            touched={touched.wifiAndUtilitiesIncuded}
+                                        >
+                                            <Field
+                                                component={RadioButton}
+                                                name="wifiAndUtilitiesIncuded"
+                                                id="yes"
+                                                content={true}
+                                                label="Yes"
+                                            />{/* 
+                                    <Field
+                                        component={RadioButton}
+                                        name="wifiAndUtilitiesIncuded"
+                                        id="no"
+                                        content={false}
+                                        label="No"
+                                    /> */}
+                                        </RadioButtonGroup>
+                                        {errors.pets && touched.pets && (
                                             <Label basic color='red' pointing>
-                                                {errors.startDate}
+                                                {errors.pets}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="endDate">Date When Stay Ends</label><br />
+                                        <label htmlFor="availableStartDate">Date Room Is Available</label><br />
                                         <input
-                                            name="endDate"
+                                            name="availableStartDate"
                                             type="date"
                                             placeholder={(new Date()).toDateString()}
-                                            value={values.endDate}
+                                            value={values.availableStartDate}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            className={errors.endDate && touched.endDate && "error"}
+                                            className={errors.availabelStartDate && touched.availableStartDate && "error"}
                                         />
-                                        {errors.endDate && touched.endDate && (
+                                        {errors.availableStartDate && touched.availableStartDate && (
                                             <Label basic color='red' pointing>
-                                                {errors.endDate}
+                                                {errors.availableStartDate}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="nearestSchool">What is the Nearest School</label>
+                                        <label htmlFor="availableEndDate">Date When Stay Ends</label><br />
                                         <input
-                                            name="nearestSchool"
+                                            name="availableEndDate"
+                                            type="date"
+                                            placeholder={(new Date()).toDateString()}
+                                            value={values.availableEndDate}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            className={errors.availableEndDate && touched.availableEndDate && "error"}
+                                        />
+                                        {errors.availableEndDate && touched.availableEndDate && (
+                                            <Label basic color='red' pointing>
+                                                {errors.availableEndDate}
+                                            </Label>
+                                        )}
+                                    </div>
+                                    <Divider />
+                                    <div>
+                                        <label htmlFor="closestSchool">What is the Nearest School</label>
+                                        <input
+                                            name="closestSchool"
                                             type="text"
                                             placeholder="Enter the closest school and the ETA"
-                                            value={values.nearestSchool}
+                                            value={values.closestSchool}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            className={errors.nearestSchool && touched.nearestSchool && "error"} />
-                                        {errors.nearestSchool && touched.nearestSchool && (
+                                            className={errors.closestSchool && touched.closestSchool && "error"} />
+                                        {errors.closestSchool && touched.closestSchool && (
                                             <Label basic color='red' pointing>
-                                                {errors.nearestSchool}
+                                                {errors.closestSchool}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="images">Attach Images Of The Room (Hold select while you choose all your images)</label>
+                                        <label htmlFor="propertyImageData">Attach Images Of The Room (Hold select while you choose all your images)</label>
                                         <Base64Converter
                                             multiple={true}
                                             onDone={this.getFiles.bind(this)}
-                                            value={values.images} />
+                                            value={values.propertyImageData} />
                                         <div id="imageContainer">
                                             {this.state.files.map((file, i) => {
-                                                values.images.push(file.base64)
+                                                values.propertyImageData.push(file.base64)
                                                 return <img key={i} src={file.base64} style={{ maxWidth: 250 }} />
                                             })}
                                             <img src="" />
                                         </div>
-                                        {errors.nearestSchool && touched.nearestSchool && (
+                                        {errors.propertyImageData && touched.propertyImageData && (
                                             <Label basic color='red' pointing>
-                                                {errors.nearestSchool}
+                                                {errors.propertyImageData}
                                             </Label>
                                         )}
                                     </div>
