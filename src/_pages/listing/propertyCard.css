@@ -1,6 +1,13 @@
 
 .bgColour:hover{
-    background-color: rgba(0,0,0,.03);
+    background-color: rgba(0,0,0,.03) !important;
     transform: translateY(-5px);
     transition-duration: .5s;
 }
+/* .forcefullscreen{
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: red;
+} */

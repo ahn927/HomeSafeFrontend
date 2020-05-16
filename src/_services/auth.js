@@ -1,7 +1,8 @@
 import { BehaviorSubject } from 'rxjs';
 
+import history from '../history'
 import handleResponse from '../_helpers/handle.response'
-
+import * as routes from '../_constants/routes'
 const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
 
 const auth = {
@@ -37,6 +38,8 @@ function logout() {
     // remove user from local storage to log user out
     localStorage.removeItem('currentUser');
     currentUserSubject.next(null);
+    history.push(routes.HOME)
+    window.location.reload()
 }
 
 export default auth;

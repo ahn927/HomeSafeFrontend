@@ -13,7 +13,6 @@ class Navbar extends React.Component {
 
     handleLogout = (e) => {
         auth.logout()
-        window.location.reload()
     }
 
     componentDidUpdate() {
@@ -24,7 +23,7 @@ class Navbar extends React.Component {
         const { activeItem } = this.state
         let currentUser = this.state.currentUser
         return (
-            <div className='my-5'>
+            <div className='my-2'>
                 <Menu stackable size='large'>
                     <Menu.Item
                         header

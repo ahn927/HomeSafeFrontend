@@ -8,7 +8,15 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibWFwbGVzdG9yeTEyMyIsImEiOiJjazloam1pZHMwejFiM
 class Map extends React.Component {
     constructor(props) {
         super(props);
-        //sets initial coordinates view to vancouver
+        /*sets initial coordinates view to vancouver
+             if you want user location
+            window.navigator.geolocation.getCurrentPosition(
+            position => {
+                position.coords.latitude
+                position.coords.longitude
+            }    
+            pass this information from parent in compononentDidMount() method
+        */    
         this.state = {
             lng: -123.1207,
             lat: 49.2827,
@@ -28,7 +36,7 @@ class Map extends React.Component {
             //else if we pass in lng/lat, then move to that area
             //ternary operator !a ? b : a
             center: [!this.state.propertyLng ? this.state.lng : this.state.propertyLng, !this.state.propertyLat ? this.state.lat : this.state.propertyLat],
-            zoom: !this.state.propertyLng ? 10 : 13
+            zoom: !this.state.propertyLng ? this.state.zoom : 14
         });
 
         //adds controls to map
@@ -45,8 +53,6 @@ class Map extends React.Component {
         let currentMarker = new mapboxgl.Marker(markerHTML);
 
         geocoder.on('result', async function (resultJSON) {
-            console.log(resultJSON);
-            
             //removes previous marker if exist, then adds the new one to map
             currentMarker.remove();
             currentMarker.setLngLat(resultJSON.result.center);
@@ -62,7 +68,6 @@ class Map extends React.Component {
 
         //makes each property into a geojson object
         this.state.properties.forEach(function(property) {
-            console.log(property);
             let feature = {
                 'type' : 'Feature',
                 'properties': {

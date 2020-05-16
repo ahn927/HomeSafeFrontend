@@ -28,6 +28,8 @@ class PropertyList extends React.Component {
             <Pagination
                 boundaryRange={1}
                 siblingRange={1}
+                firstItem={null}
+                lastItem={null}
                 defaultActivePage={currentPage}
                 totalPages={totalPages}
                 onPageChange={this.handlePaginationChange} />

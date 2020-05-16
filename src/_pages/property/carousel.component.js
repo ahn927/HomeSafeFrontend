@@ -19,6 +19,7 @@ class CarouselComponent extends React.Component {
     handleClose = () => this.setState({ modalOpen: false })
 
     render() {
+
         let imageStyleBanner = { maxHeight: "300px", objectFit: "cover" };
         let imageArray = this.state.propertyImages;
         let items = [];
@@ -62,16 +63,17 @@ class CarouselComponent extends React.Component {
                         Detail Image
                     </Modal.Header>
                     <Modal.Content >
-                        {/* <Image wrapped size='huge' src={imageArray[this.state.clickedImageIndex]} /> */}
-                        <Carousel
+                        <Image wrapped size='huge' src={imageArray[this.state.clickedImageIndex]} />
+                        {/* <Carousel
                             showStatus={true}
                             showThumbs={true}
                             autoPlay={false}
                             selectedItem={this.state.clickedImageIndex}
                             onClickItem={e => handelClickItem(e)}
+                            style={{ height: '300px' }}
                         >
                             {itemsLarge}
-                        </Carousel>
+                        </Carousel> */}
                     </Modal.Content>
                     <Modal.Actions>
                         <Button color='grey' inverted onClick={_ => this.handleClose()}>
