@@ -29,7 +29,8 @@ class PropertyPage extends React.Component {
         properties: [],
         userId: null,
         tenants: [],
-        tenantInfoIsOpen: false
+        tenantInfoIsOpen: false,
+        tenantApplied: false
     }
 
     handleOpen = () => {
@@ -237,7 +238,14 @@ class PropertyPage extends React.Component {
     }
 
     bookNow(uID, pID, checkinDate, checkoutDate) {
-        if(!checkinDate || !checkoutDate) return null
+        
+        if(this.state.tenantApplied) {
+            return function() {
+                alert("already applied");
+            }
+        }
+
+        if(!checkinDate || !checkoutDate) return function(){}
         return async function() {    
             const values = {
                 userID : uID,
@@ -260,8 +268,11 @@ class PropertyPage extends React.Component {
             .catch((error) => {
                 console.error('Error: ', error);
             })
-        }
-    };
+            this.setState({
+                tenantApplied: true
+            })
+        }.bind(this);
+    }
 
     renderForm() {
         return (
