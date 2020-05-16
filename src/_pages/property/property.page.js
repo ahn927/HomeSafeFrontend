@@ -29,7 +29,8 @@ class PropertyPage extends React.Component {
         properties: [],
         userId: null,
         tenants: [],
-        tenantInfoIsOpen: false
+        tenantInfoIsOpen: false,
+        tenantApplied: false
     }
 
     handleOpen = () => {
@@ -74,6 +75,26 @@ class PropertyPage extends React.Component {
 
     contextRef = createRef()
 
+    acceptTenant(uID, pID) {
+        return async function() {    
+            console.log(uID + " w " + pID);
+            fetch(`https://10kftdb.azurewebsites.net/api/properties/setTenantPropertyAssignmentVerification/${uID}/${pID}`, {
+                method: 'PUT',
+                heads: {
+                    'Content-Type' : 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success: ', data);
+
+            })
+            .catch((error) => {
+                console.error('Error: ', error);
+            });
+        }
+    };
+
     renderHostMessage() {
         const currentUser = auth.currentUserValue;
         const { property } = this.state;
@@ -96,12 +117,13 @@ class PropertyPage extends React.Component {
 
         let takenCount = this.state.tenants.length;
         let tableRows = [];
+        
         this.state.tenants.forEach((tenant, key) => {
             if (tenant.propertyID == this.state.property.propertyID) {
                 tableRows.push(
                     <Table.Row key={key}>
-                        <Table.Cell collapsing>{tenant.userFirstName} {tenant.userLastName}</Table.Cell>
-                        <Table.Cell collapsing>{tenant.gender}</Table.Cell>
+                        <Table.Cell collapsing>{tenant.tenantFirstName} {tenant.tenantLastName}</Table.Cell>
+                        <Table.Cell collapsing><button onClick={this.acceptTenant(tenant.userID, tenant.propertyID)}> Accept </button></Table.Cell>
                     </Table.Row>
                 )
             }
@@ -111,13 +133,11 @@ class PropertyPage extends React.Component {
                 <Message color='blue'>
                     <Message.Header>Hi, {currentUser.userFirstName + ' ' + currentUser.userLastName}</Message.Header>
                     <Header as="h3">Dear {currentUser.userFirstName}</Header>
-                    <p>There are {takenCount} guests took this property.</p>
-
                     <Table className="my-3" color='blue' inverted>
                         <Table.Header>
                             <Table.Row>
                                 <Table.HeaderCell>GuestName</Table.HeaderCell>
-                                <Table.HeaderCell>Gender</Table.HeaderCell>
+                                <Table.HeaderCell></Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
                         <Popup
@@ -217,6 +237,44 @@ class PropertyPage extends React.Component {
         )
     }
 
+    bookNow(uID, pID, checkinDate, checkoutDate) {
+        
+        if(this.state.tenantApplied) {
+            return function() {
+                alert("already booked");
+            }
+        }
+
+        if(!checkinDate || !checkoutDate) return function(){}
+        return async function() {    
+            const values = {
+                userID : uID,
+                propertyID : parseInt(pID),
+                startDate : checkinDate,
+                endDate : checkoutDate
+            }
+            console.log(values);
+            fetch('https://10kftdb.azurewebsites.net/api/properties/tenantAppliesToProperty', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(values, null, 2)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success: ', data);
+            })
+            .catch((error) => {
+                console.error('Error: ', error);
+            })
+            this.setState({
+                tenantApplied: true
+            })
+            alert("Booked Successful");
+        }.bind(this);
+    }
+
     renderForm() {
         return (
             <Formik
@@ -304,7 +362,7 @@ class PropertyPage extends React.Component {
                                         <Divider />
                                     </div>
                                 }
-                                <Button type="submit" >Book Now</Button>
+                                <Button type="submit" onClick={this.bookNow(auth.currentUserValue.userID, this.state.propertyId, values.checkinDate, values.checkoutDate)} >Book Now</Button>
                             </Form>
 
                         </div>
