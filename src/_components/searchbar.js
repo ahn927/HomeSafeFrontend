@@ -17,9 +17,9 @@ const cityOptions = [
 ];
 
 const genderOptions = [
-    { value: 'male', label: 'Male' },
-    { value: 'female', label: 'Female' },
-    { value: 'any', label: 'Any' }
+    { value: 'male', label: 'male' },
+    { value: 'female', label: 'female' },
+    { value: 'any', label: 'any' }
 ];
 
 class SearchBar extends React.Component {
@@ -146,6 +146,7 @@ class SearchBar extends React.Component {
                                                         touched={touched.city}
                                                         placeholder='Search City'
                                                         options={cityOptions}
+                                                        fieldName='city'
                                                     />
                                                     {errors.city && touched.city && (
                                                         <Label basic color='red' pointing>
@@ -196,6 +197,7 @@ class SearchBar extends React.Component {
                                                         touched={touched.gender}
                                                         placeholder='Any'
                                                         options={genderOptions}
+                                                        fieldName='gender'
                                                     />
                                                     {errors.gender && touched.gender && (
                                                         <Label basic color='red' pointing>

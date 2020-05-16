@@ -35,16 +35,16 @@ class HostPersonalForm extends React.Component {
                     initialValues={{
                         "credentialUserName": this.state.userName,
                         "userPassword": this.state.password,
-                        "userFirstName": this.state.first, 
+                        "userFirstName": this.state.first,
                         "userLastName": this.state.last,
                         "userPhoneNumber": this.state.phone,
                         "userEmailAddress": this.state.email,
-                        "userAddressStreetNumber" : "",	
-                        "userAddressStreet" : "",
-                        "userAddressUnitNumber" : "",
-                        "userAddressCity" : "",
-                        "userAddressProvince" : "",
-                        "userAddressCountry" : "",
+                        "userAddressStreetNumber": "",
+                        "userAddressStreet": "",
+                        "userAddressUnitNumber": "",
+                        "userAddressCity": "",
+                        "userAddressProvince": "",
+                        "userAddressCountry": "",
                         "howDidYouHearFromUs": "",
                         "tenantDateOfBirth": new Date(),
                         "tenantGender": "",
@@ -67,13 +67,13 @@ class HostPersonalForm extends React.Component {
                             },
                             body: JSON.stringify(values, null, 2),
                         })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Success:', data);
-                        })
-                        .catch((error) => {
-                            console.error('Error:', error);
-                        });
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log('Success:', data);
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                            });
                         console.log(JSON.stringify(values, null, 2));
                     }}
                     validationSchema={Yup.object().shape({
@@ -273,7 +273,7 @@ class HostPersonalForm extends React.Component {
                                     </div>
                                     <Divider />
                                     <Button type="submit" disabled={isSubmitting}>
-                                        Next
+                                        Submit
                                 </Button>
                                 </Form>
                             </div>

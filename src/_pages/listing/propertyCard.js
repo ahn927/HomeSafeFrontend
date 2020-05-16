@@ -39,6 +39,17 @@ class PropertyCard extends React.Component {
     render() {
         if (!this.state.property) return <p></p>
 
+        let img = images.TEMPLATE_IMAGE
+        if (this.state.property.propertyImageData) {
+            if (this.state.property.propertyImageData.length > 0) {
+                img = this.state.property.propertyImageData[0];
+            }
+        }
+
+        const addDefaultSrc = (ev) => {
+            ev.target.src = images.TEMPLATE_IMAGE
+        }
+
 
         let text = this.state.property.propertyDescription
         return (
@@ -55,7 +66,7 @@ class PropertyCard extends React.Component {
                     <Grid centered stackable>
                         <Grid.Row>
                             <Grid.Column width={8}>
-                                <Image src={images.TEMPLATE_IMAGE} />
+                                <Image src={img} onError={addDefaultSrc} size='small' />
                             </Grid.Column>
                             <Grid.Column width={8}>
                                 <Card.Description>
@@ -72,9 +83,9 @@ class PropertyCard extends React.Component {
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
-                </Card.Content>
+                </Card.Content >
 
-            </Card>
+            </Card >
         )
     }
 }
