@@ -2,7 +2,6 @@ import React from "react";
 import mapboxgl from 'mapbox-gl';
 import './mapstyle.css';
 import MapboxGeocoder from 'mapbox-gl-geocoder';
-
 mapboxgl.accessToken = 'pk.eyJ1IjoibWFwbGVzdG9yeTEyMyIsImEiOiJjazloam1pZHMwejFiM2xvNDVhdHE5eHNyIn0.ON5FdVNTkBiVc1iUkgHhVw';
 
 class Map extends React.Component {
@@ -73,7 +72,7 @@ class Map extends React.Component {
                 'properties': {
                     'title': property.unitNumber + ' ' + property.streetNumber + ' ' + property.street,
                     'description': property.propertyDescription,
-                    'id': 'http://localhost:3000/property/' + property.propertyID
+                    'id': '/property/' + property.propertyID
                     //add whatever extra fields you need here e.g vip code, country etc 
                 },
                 'geometry': {
