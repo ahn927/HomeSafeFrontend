@@ -19,6 +19,7 @@ class CarouselComponent extends React.Component {
     handleClose = () => this.setState({ modalOpen: false })
 
     render() {
+
         let imageStyleBanner = { maxHeight: "300px", objectFit: "cover" };
         let imageArray = this.state.propertyImages;
         let items = [];
