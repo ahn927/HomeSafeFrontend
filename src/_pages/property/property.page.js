@@ -241,7 +241,7 @@ class PropertyPage extends React.Component {
         
         if(this.state.tenantApplied) {
             return function() {
-                alert("already applied");
+                alert("already booked");
             }
         }
 
@@ -271,6 +271,7 @@ class PropertyPage extends React.Component {
             this.setState({
                 tenantApplied: true
             })
+            alert("Booked Successful");
         }.bind(this);
     }
 
