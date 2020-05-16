@@ -30,6 +30,8 @@ class Footer extends React.Component {
                                 <List link inverted>
                                     <List.Item as='a' href={routes.LISTING} >Book A Room</List.Item>
                                     <List.Item as='a' href={routes.BECOME_HOST} >Become A Host</List.Item>
+                                    <List.Item as='a' href={routes.LOGIN} >User Login</List.Item>
+
                                     {/* <List.Item as='a'>How To Access</List.Item>
                                     <List.Item as='a'>Favorite X-Men</List.Item> */}
                                 </List>

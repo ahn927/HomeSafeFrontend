@@ -7,7 +7,8 @@ import Search from '../../_components/map/search'
 import RadioButton from './helper/radio-button'
 import RadioButtonGroup from './helper/radio-group'
 import auth from '../../_services/auth';
-
+import * as routes from '../../_constants/routes';
+import history from '../../history'
 class HostPersonalForm extends React.Component {
 
     constructor(props) {
@@ -70,6 +71,7 @@ class HostPersonalForm extends React.Component {
                             .then(response => response.json())
                             .then(data => {
                                 console.log('Success:', data);
+                                history.push(routes.DASHBOARD)
                             })
                             .catch((error) => {
                                 console.error('Error:', error);

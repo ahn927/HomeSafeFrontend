@@ -7,6 +7,8 @@ import RadioButton from './helper/radio-button'
 import RadioButtonGroup from './helper/radio-group'
 import MySelect from './helper/my-select'
 import auth from '../../_services/auth';
+import * as routes from '../../_constants/routes';
+import history from '../../history'
 
 
 class GuestForm extends React.Component {
@@ -73,6 +75,7 @@ class GuestForm extends React.Component {
                             .then(response => response.json())
                             .then(data => {
                                 console.log('Success:', data);
+                                history.push(routes.DASHBOARD)
                             })
                             .catch((error) => {
                                 console.error('Error:', error);
@@ -384,7 +387,7 @@ class GuestForm extends React.Component {
                                     </div>
                                     <Divider />
                                     <Button type="submit" disabled={isSubmitting}>
-                                        Next
+                                        Submit
                                 </Button>
                                 </Form>
                             </div>

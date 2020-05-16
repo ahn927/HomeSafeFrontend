@@ -76,22 +76,22 @@ class PropertyPage extends React.Component {
     contextRef = createRef()
 
     acceptTenant(uID, pID) {
-        return async function() {    
+        return async function () {
             console.log(uID + " w " + pID);
             fetch(`https://10kftdb.azurewebsites.net/api/properties/setTenantPropertyAssignmentVerification/${uID}/${pID}`, {
                 method: 'PUT',
                 heads: {
-                    'Content-Type' : 'application/json'
+                    'Content-Type': 'application/json'
                 }
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success: ', data);
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success: ', data);
 
-            })
-            .catch((error) => {
-                console.error('Error: ', error);
-            });
+                })
+                .catch((error) => {
+                    console.error('Error: ', error);
+                });
         }
     };
 
@@ -117,7 +117,7 @@ class PropertyPage extends React.Component {
 
         let takenCount = this.state.tenants.length;
         let tableRows = [];
-        
+
         this.state.tenants.forEach((tenant, key) => {
             if (tenant.propertyID == this.state.property.propertyID) {
                 tableRows.push(
@@ -131,7 +131,6 @@ class PropertyPage extends React.Component {
         return (
             <div>
                 <Message color='blue'>
-                    <Message.Header>Hi, {currentUser.userFirstName + ' ' + currentUser.userLastName}</Message.Header>
                     <Header as="h3">Dear {currentUser.userFirstName}</Header>
                     <Table className="my-3" color='blue' inverted>
                         <Table.Header>
@@ -238,20 +237,21 @@ class PropertyPage extends React.Component {
     }
 
     bookNow(uID, pID, checkinDate, checkoutDate) {
-        
-        if(this.state.tenantApplied) {
-            return function() {
+
+        if (this.state.tenantApplied) {
+            return function () {
                 alert("already booked");
+                console.log('booked popup')
             }
         }
 
-        if(!checkinDate || !checkoutDate) return function(){}
-        return async function() {    
+        if (!checkinDate || !checkoutDate) return function () { console.log('date worng') }
+        return async function () {
             const values = {
-                userID : uID,
-                propertyID : parseInt(pID),
-                startDate : checkinDate,
-                endDate : checkoutDate
+                userID: uID,
+                propertyID: parseInt(pID),
+                startDate: checkinDate,
+                endDate: checkoutDate
             }
             console.log(values);
             fetch('https://10kftdb.azurewebsites.net/api/properties/tenantAppliesToProperty', {
@@ -261,13 +261,13 @@ class PropertyPage extends React.Component {
                 },
                 body: JSON.stringify(values, null, 2)
             })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success: ', data);
-            })
-            .catch((error) => {
-                console.error('Error: ', error);
-            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success: ', data);
+                })
+                .catch((error) => {
+                    console.error('Error: ', error);
+                })
             this.setState({
                 tenantApplied: true
             })
@@ -284,14 +284,15 @@ class PropertyPage extends React.Component {
                         this.setState({ bookError: { message: 'You have not logged in.', loginBtn: true, registerBtn: true } })
                         console.log('render modal', 'no logged in')
                     }
-                    if (!auth.currentUserValue.isTenant) {
+                    else if (!auth.currentUserValue.isTenant) {
                         this.setState({ bookError: { message: 'You need a tenant account to book a room.', loginBtn: false, registerBtn: true } })
                         console.log('render modal', 'no tenant')
                     }
+                    else {
+                        this.bookNow(auth.currentUserValue.userID, this.state.propertyId, values.checkinDate, values.checkoutDate)
+                        console.log('booking')
 
-                    // const result = await fetch(`https://10kftdb.azurewebsites.net/api/`);
-                    // const jsonProperty = await resultProperty.json();
-
+                    }
 
                 }}
                 validationSchema={Yup.object().shape({
@@ -362,7 +363,17 @@ class PropertyPage extends React.Component {
                                         <Divider />
                                     </div>
                                 }
-                                <Button type="submit" onClick={this.bookNow(auth.currentUserValue.userID, this.state.propertyId, values.checkinDate, values.checkoutDate)} >Book Now</Button>
+                                {auth.currentUserValue ?
+                                    <Button type="submit"
+                                        onClick={this.bookNow(auth.currentUserValue.userID, this.state.propertyId, values.checkinDate, values.checkoutDate)}
+                                    >
+                                        Book Now
+                                    </Button>
+                                    :
+                                    <Button type="submit">
+                                        Book Now
+                                    </Button>
+                                }
                             </Form>
 
                         </div>
@@ -400,7 +411,7 @@ class PropertyPage extends React.Component {
             <div>
                 <CarouselComponent images={this.state.property.propertyImageData} />
                 {this.rendernapshotInfo()}
-                <Grid >
+                <Grid style={{ minHeight: '100vh' }}>
                     <Grid.Column width="10">
                         <Ref innerRef={this.contextRef}>
                             <div>
@@ -409,9 +420,9 @@ class PropertyPage extends React.Component {
                                 {this.renderDivdingHeader('id badge', 'Host Information')}
                                 <p>{this.state.property.hostDescription}</p>
                                 {this.renderDivdingHeader('home', 'Map')}
-                                <Grid >
+                                <Grid className='p-3'>
                                     <Grid.Row>
-                                        <Grid.Column width={16} style={{ minHeight: '300px' }} className='p-3'>
+                                        <Grid.Column width={16} style={{ minHeight: '300px' }} >
                                             <Map properties={this.state.properties} propertyLng={this.state.property.longitude}
                                                 propertyLat={this.state.property.latitude} />
                                         </Grid.Column>
@@ -419,7 +430,7 @@ class PropertyPage extends React.Component {
                                 </Grid>
 
                                 <Rail position='right'>
-                                    <Sticky active={true} context={this.contextRef}>
+                                    <Sticky active={false} context={this.contextRef}>
                                         <Card className="mt-3">
                                             <Card.Content>
 

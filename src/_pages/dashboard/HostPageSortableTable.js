@@ -91,7 +91,7 @@ export default class HostPageSortableTable extends Component {
                                 <Table.Cell>{new Date(availableEndDate).toDateString()}</Table.Cell>
                                 <Table.Cell>{isAvailable && 'Yes'}{!isAvailable && 'Not Avaliable'}</Table.Cell>
                                 <Table.Cell>
-                                    <Button size='tiny' href={routes.EDITLISTING + '/' + propertyID} >Edit</Button>
+                                    <Button size='tiny' href={'/forms/host-listing/edit/' + propertyID} >Edit</Button>
                                     <Button size='tiny' href={routes.PROPERTY + '/' + propertyID}>View</Button>
                                 </Table.Cell>
 

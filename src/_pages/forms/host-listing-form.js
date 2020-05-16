@@ -9,6 +9,8 @@ import RadioButtonGroup from './helper/radio-group'
 import MySelect from './helper/my-select'
 import Search from '../../_components/map/search'
 import auth from '../../_services/auth';
+import * as routes from '../../_constants/routes';
+import history from '../../history'
 
 class HostListingForm extends React.Component {
 
@@ -85,6 +87,7 @@ class HostListingForm extends React.Component {
                             .then(response => response.json())
                             .then(data => {
                                 console.log('Success:', data);
+                                history.push(routes.DASHBOARD)
                             })
                             .catch((error) => {
                                 console.error('Error:', error);
@@ -437,7 +440,7 @@ class HostListingForm extends React.Component {
                                     </div>
                                     <Divider />
                                     <Button type="submit" disabled={isSubmitting}>
-                                        Next
+                                        Submit
                                 </Button>
                                 </Form>
                             </div>

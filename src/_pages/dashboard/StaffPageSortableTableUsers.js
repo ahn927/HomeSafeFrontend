@@ -82,7 +82,7 @@ export default class StaffPageSortableTableUsers extends Component {
                                 <Table.Cell>{isAdmin && 'Staff'} {isLandLord && 'Host'} {isTenant && 'Tenant'}</Table.Cell>
 
                                 <Table.Cell>
-                                    <Button size='tiny' href={routes.EDITGUEST + '/' + userID}>Edit</Button>
+                                    <Button size='tiny' href={'/forms/guest/edit/' + userID}>Edit</Button>
                                 </Table.Cell>
 
                             </Table.Row>

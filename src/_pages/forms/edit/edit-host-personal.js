@@ -36,29 +36,30 @@ class EditHostPersonal extends React.Component {
                 </PageHeader>
                 <Formik
                     initialValues={{
-                                     "credentialUserName": this.state.data.credentialUserName,
-                                     "userPassword": this.state.data.userPassword,
-                                     "userFirstName": this.state.data.userFirstName, 
-                                     "userLastName": this.state.data.userLastName,
-                                     "userPhoneNumber": this.state.data.userPhoneNumber,
-                                     "userEmailAddress": this.state.data.userEmailAddress,
-                                     "userAddressStreetNumber" : this.state.userAddressStreetNumber,	
-                                     "userAddressStreet" : this.state.userAddressStreet,
-                                     "userAddressUnitNumber" : this.state.userAddressUnitNumber,
-                                     "userAddressCity" : this.state.userAddressCity,
-                                     "userAddressProvince" : this.state.userAddressProvince,
-                                     "userAddressCountry" : this.state.userAddressCountry,
-                                     "howDidYouHearFromUs": this.state.howDidYouHearFromUs,
-                                     "tenantDateOfBirth": this.state.tenantDateOfBirth,
-                                     "tenantGender": this.state.tenantGender,
-                                     "tenantNationality": this.state.tenantNationality,
-                                     "tenantReasonForStay": this.state.tenantReasonForStay,
-                                     "tenantIsAdmin": false,
-                                     "tenantIsLandlord": true,
-                                     "tenantIsTenant": false }}
+                        "credentialUserName": this.state.data.credentialUserName,
+                        "userPassword": this.state.data.userPassword,
+                        "userFirstName": this.state.data.userFirstName,
+                        "userLastName": this.state.data.userLastName,
+                        "userPhoneNumber": this.state.data.userPhoneNumber,
+                        "userEmailAddress": this.state.data.userEmailAddress,
+                        "userAddressStreetNumber": this.state.userAddressStreetNumber,
+                        "userAddressStreet": this.state.userAddressStreet,
+                        "userAddressUnitNumber": this.state.userAddressUnitNumber,
+                        "userAddressCity": this.state.userAddressCity,
+                        "userAddressProvince": this.state.userAddressProvince,
+                        "userAddressCountry": this.state.userAddressCountry,
+                        "howDidYouHearFromUs": this.state.howDidYouHearFromUs,
+                        "tenantDateOfBirth": this.state.tenantDateOfBirth,
+                        "tenantGender": this.state.tenantGender,
+                        "tenantNationality": this.state.tenantNationality,
+                        "tenantReasonForStay": this.state.tenantReasonForStay,
+                        "tenantIsAdmin": false,
+                        "tenantIsLandlord": true,
+                        "tenantIsTenant": false
+                    }}
                     onSubmit={(values, { setSubmitting }) => {
 
-                        if(this.state.geoResult.text !== null) {
+                        if (this.state.geoResult.text !== null) {
                             values.userAddressStreet = this.state.geoResult.place_name;
                             values.userAddressCity = this.state.geoResult.context[2].text;
                             values.userAddressProvince = this.state.geoResult.context[3].text;
@@ -71,13 +72,13 @@ class EditHostPersonal extends React.Component {
                             },
                             body: JSON.stringify(values, null, 2),
                         })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Success:', data);
-                        })
-                        .catch((error) => {
-                            console.error('Error:', error);
-                        });
+                            .then(response => response.json())
+                            .then(data => {
+                                console.log('Success:', data);
+                            })
+                            .catch((error) => {
+                                console.error('Error:', error);
+                            });
                         console.log(JSON.stringify(values, null, 2));
                     }}
                     validationSchema={Yup.object().shape({
@@ -209,7 +210,7 @@ class EditHostPersonal extends React.Component {
                                             <Field
                                                 component={RadioButton}
                                                 name="heardAbout"
-                                                id="online"                                                
+                                                id="online"
                                                 content="Online"
                                                 label="Online"
                                             />
@@ -243,7 +244,7 @@ class EditHostPersonal extends React.Component {
                                     </div>
                                     <Divider />
                                     <Button type="submit" disabled={isSubmitting}>
-                                        Next
+                                        Submit
                                 </Button>
                                 </Form>
                             </div>

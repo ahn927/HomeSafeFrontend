@@ -13,7 +13,6 @@ class Navbar extends React.Component {
 
     handleLogout = (e) => {
         auth.logout()
-        window.location.reload()
     }
 
     componentDidUpdate() {
