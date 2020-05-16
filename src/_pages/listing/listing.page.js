@@ -75,7 +75,7 @@ class ListingPage extends React.Component {
                     text='Search' >
                 </PageHeader>
 
-                <Grid >
+                <Grid className='forcefullscreen'>
                     <Grid.Row>
                         <Grid.Column width={16}>
                             <SearchBar onClickSearch={this.handleSearch} />
@@ -93,10 +93,10 @@ class ListingPage extends React.Component {
                     {
                         (this.state.data.length > 0) &&
                         <Grid.Row>
-                            <Grid.Column width={8}>
+                            <Grid.Column width={9}>
                                 <PropertyList properties={this.state.data} />
                             </Grid.Column>
-                            <Grid.Column width={8} className="pb-5">
+                            <Grid.Column width={7} className="pb-5">
                                 <Map properties={this.state.data} />
                             </Grid.Column>
                         </Grid.Row>
