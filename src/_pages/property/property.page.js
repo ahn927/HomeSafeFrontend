@@ -210,10 +210,30 @@ class PropertyPage extends React.Component {
         )
     }
 
-    bookNow(user) {
+    bookNow(uID, pID, checkinDate, checkoutDate) {
+        if(!checkinDate || !checkoutDate) return null
         return async function() {    
-            console.log(user);
-            console.log(this.state.property);
+            const values = {
+                userID : uID,
+                propertyID : parseInt(pID),
+                startDate : checkinDate,
+                endDate : checkoutDate
+            }
+            console.log(values);
+            fetch('https://10kftdb.azurewebsites.net/api/properties/tenantAppliesToProperty', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(values, null, 2)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success: ', data);
+            })
+            .catch((error) => {
+                console.error('Error: ', error);
+            })
         }
     };
 
@@ -304,7 +324,7 @@ class PropertyPage extends React.Component {
                                         <Divider />
                                     </div>
                                 }
-                                <Button type="submit" onClick={this.bookNow(this.state.currentUser)} >Book Now</Button>
+                                <Button type="submit" onClick={this.bookNow(auth.currentUserValue.userID, this.state.propertyId, values.checkinDate, values.checkoutDate)} >Book Now</Button>
                             </Form>
 
                         </div>
