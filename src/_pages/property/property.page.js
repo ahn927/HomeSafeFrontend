@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 
 import {
     Card, Grid, Container, List, Divider, Header, Icon, Button, Label, Form, Sticky, Rail,
-    Ref, Segment, Image, Message, Table, Modal
+    Ref, Segment, Image, Message, Table, Modal, Popup
 } from 'semantic-ui-react'
 import { Formik } from 'formik'
 import * as Yup from "yup"
@@ -17,6 +17,9 @@ import LoadingSpinner from '../../_components/loadingSpinner';
 import auth from '../../_services/auth'
 
 
+const timeoutLength = 2500
+
+
 class PropertyPage extends React.Component {
     state = {
         id: null,
@@ -25,8 +28,24 @@ class PropertyPage extends React.Component {
         property: null,
         properties: [],
         userId: null,
-        tenants: []
+        tenants: [],
+        tenantInfoIsOpen: false
     }
+
+    handleOpen = () => {
+        this.setState({ tenantInfoIsOpen: true })
+
+        this.timeout = setTimeout(() => {
+            this.setState({ tenantInfoIsOpen: false })
+        }, timeoutLength)
+    }
+
+    handleClose = () => {
+        this.setState({ tenantInfoIsOpen: false })
+        clearTimeout(this.timeout)
+    }
+
+
 
 
     async componentDidMount() {
@@ -86,7 +105,6 @@ class PropertyPage extends React.Component {
                 (
                     <div>
                         <Message color='blue'>
-                            <Message.Header>Hi, {currentUser.userFirstName + ' ' + currentUser.userLastName}</Message.Header>
                             <Header as="h3">Dear {currentUser.userFirstName}</Header>
                             <p>There are 0 guests took this property.</p>
                         </Message>
@@ -121,6 +139,14 @@ class PropertyPage extends React.Component {
                                 <Table.HeaderCell></Table.HeaderCell>
                             </Table.Row>
                         </Table.Header>
+                        <Popup
+                            on='click'
+                            open={this.state.isOpen}
+                            onClose={this.handleClose}
+                            onOpen={this.handleOpen}
+                            position='top right'
+                        >jdoisjos
+                            </Popup>
                         <Table.Body>
                             {tableRows}
                         </Table.Body>
@@ -357,9 +383,10 @@ class PropertyPage extends React.Component {
             return (<div> <LoadingSpinner /> </div>)
         }
 
+
         return (
             <div>
-                {/* <CarouselComponent propertyImages={this.state.property.propertyImages}/> */}
+                <CarouselComponent images={this.state.property.propertyImageData} />
                 {this.rendernapshotInfo()}
                 <Grid >
                     <Grid.Column width="10">

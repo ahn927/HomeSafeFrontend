@@ -6,28 +6,26 @@ import PageHeader from '../../../_components/pageHeader'
 import RadioButton from '../helper/radio-button'
 import RadioButtonGroup from '../helper/radio-group'
 import MySelect from '../helper/my-select'
+import auth from '../../../_services/auth';
 
 
 class EditGuestForm extends React.Component {
 
     state = {
-        firstName: "Greg",
-        lastName: "Makasoff",
-        email: "gregmakasoff@gmail.com",
-        phoneNumber: "999.000.9999",  
-        dateOfBirth: "1995-10-24",                               
-        gender: "Male",
-        nationality: "Canada",
-        reasonForStay: "School",
-        heardAbout: "Online"
+        currentUser: auth.currentUserValue,
+        data: {},
+        id: null
     };
 
-    componentDidMount() {
+    async componentDidMount() {
         // let { id } = useParams();
-
+        this.state.id = this.state.currentUser.userID;
+        const result = await fetch(`https://10kftdb.azurewebsites.net/api/Users/${this.state.id}`);
+        const json = await result.json();
         this.setState({
             // userId: id,
             // user: tempData //TODO: Replace this line by fetch call to backend.
+            data: json
         });
     }
 
@@ -45,53 +43,79 @@ class EditGuestForm extends React.Component {
                 text='Edit A Guest' >
             </PageHeader>
             <Formik
-                initialValues={{ firstName: this.state.firstName,
-                                 lastName: this.state.lastName,
-                                 email: this.state.email,
-                                 phoneNumber: this.state.phoneNumber,  
-                                 dateOfBirth: this.state.dateOfBirth,                               
-                                 gender: this.state.gender,
-                                 nationality: this.state.nationality,
-                                 reasonForStay: this.state.reasonForStay,
-                                 heardAbout: this.state.heardAbout }}
+                initialValues={{ "credentialUserName": this.state.data.credentialUserName,
+                                 "userPassword": this.state.data.userPassword,
+                                 "userFirstName": this.state.data.userFirstName, 
+                                 "userLastName": this.state.data.userLastName,
+                                 "userPhoneNumber": this.state.data.userPhoneNumber,
+                                 "userEmailAddress": this.state.data.userEmailAddress,
+                                 "userAddressStreetNumber" : this.state.userAddressStreetNumber,	
+                                 "userAddressStreet" : this.state.userAddressStreet,
+                                 "userAddressUnitNumber" : this.state.userAddressUnitNumber,
+                                 "userAddressCity" : this.state.userAddressCity,
+                                 "userAddressProvince" : this.state.userAddressProvince,
+                                 "userAddressCountry" : this.state.userAddressCountry,
+                                 "howDidYouHearFromUs": this.state.howDidYouHearFromUs,
+                                 "tenantDateOfBirth": this.state.tenantDateOfBirth,
+                                 "tenantGender": this.state.tenantGender,
+                                 "tenantNationality": this.state.tenantNationality,
+                                 "tenantReasonForStay": this.state.tenantReasonForStay,
+                                 "tenantIsAdmin": false,
+                                 "tenantIsLandlord": false,
+                                 "tenantIsTenant": true }}
                 onSubmit={(values, { setSubmitting }) => {
-                    // submitting event here.
-/*                     auth.login(values.username, values.password)
-                        .then(
-                            user => {
-                                this.props.history.push("/dashboard")
-                            },
-                            error => {
-                                console.log(error)
-                            }
-                        ) */
+
+                    fetch(`https://10kftdb.azurewebsites.net/api/Users/${this.state.id}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(values, null, 2),
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+                    console.log(JSON.stringify(values, null, 2));
                     console.log(JSON.stringify(values, null, 2));
                 }}
                 validationSchema={Yup.object().shape({
-                    firstName: Yup.string()
+                    credentialUserName: Yup.string()
+                        .required("Required")
+                        .min(4, "Minimum of 4 characters.")
+                        .max(20, "Maximum of 20 characters."),
+                    userPassword: Yup.string()
+                        .required("Required")
+                        .min(4, "Minimum of 4 characters.")
+                        .max(20, "Maximum of 20 characters.")
+                        .matches(/(?=.*[0-9])/, "Password must contain a number."),
+                    userFirstName: Yup.string()
                         .required("Required")
                         .matches(/([A-Za-z]*)/, "Name must be only letters."),
-                    lastName: Yup.string()
+                    userLastName: Yup.string()
                         .required("Required")
                         .matches(/([A-Za-z]*)/, "Name must be only letters."),
-                    email: Yup.string()
-                        .required("Required")
-                        .email(),
-                    phoneNumber: Yup.string()
+                    userPhoneNumber: Yup.string()
                         .required("Required")
                         .matches(/(^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$)/, "Must be a valid phone number."),
-                    dateOfBirth: Yup.string()
+                    userEmailAddress: Yup.string()
+                        .required("Required")
+                        .email(),
+                    tenantDateOfBirth: Yup.string()
                         .required("Required"),
-                    gender: Yup.string()
+                    tenantGender: Yup.string()
                         .required("Required")
                         .matches(/([A-Za-z])/,"Must be a valid city"),
-                    nationality: Yup.string()
+                    tenantNationality: Yup.string()
                         .required("Required")
                         .matches(/([A-Za-z])/,"Must be a valid country"),
-                    reasonForStay: Yup.string()
+                    tenantReasonForStay: Yup.string()
                         .required("Required")
                         .matches(/([A-Za-z0-9,.])/,"Invalid character.[A-Za-z0-9,.]"),
-                    heardAbout: Yup.string()
+                    howDidYouHearFromUs: Yup.string()
                         .required("Must state where you heard about this service.")
                 })}
             >
@@ -111,211 +135,253 @@ class EditGuestForm extends React.Component {
                         <div>
                             <Form onSubmit={handleSubmit}>
                                 <div>
-                                    <label htmlFor="firstName">First Name</label>
+                                    <label htmlFor="credentialUserName">User Name</label>
                                     <input
-                                        name="firstName"
+                                        name="credentialUserName"
                                         type="text"
                                         placeholder="Enter your first name"
-                                        value={values.firstName}
+                                        value={values.credentialUserName}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        className={errors.firstName && touched.firstName && "error"} />
-                                    {errors.firstName && touched.firstName && (
+                                        className={errors.credentialUserName && touched.credentialUserName && "error"} />
+                                    {errors.credentialUserName && touched.credentialUserName && (
                                         <Label basic color='red' pointing>
-                                            {errors.firstName}
+                                            {errors.credentialUserName}
                                         </Label>
                                     )}
                                 </div>
                                 <Divider />
                                 <div>
-                                    <label htmlFor="lastName">Last Name</label>
+                                    <label htmlFor="userPassword">Password</label>
                                     <input
-                                        name="lastName"
+                                        name="userPassword"
+                                        type="text"
+                                        placeholder="Enter your first name"
+                                        value={values.userPassword}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        className={errors.userPassword && touched.userPassword && "error"} />
+                                    {errors.userPassword && touched.userPassword && (
+                                        <Label basic color='red' pointing>
+                                            {errors.userPassword}
+                                        </Label>
+                                    )}
+                                </div>
+                                <Divider />
+                                <div>
+                                    <label htmlFor="userFirstName">First Name</label>
+                                    <input
+                                        name="userFirstName"
+                                        type="text"
+                                        placeholder="Enter your first name"
+                                        value={values.userFirstName}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        className={errors.userFirstName && touched.userFirstName && "error"} />
+                                    {errors.userFirstName && touched.userFirstName && (
+                                        <Label basic color='red' pointing>
+                                            {errors.userFirstName}
+                                        </Label>
+                                    )}
+                                </div>
+                                <Divider />
+                                <div>
+                                    <label htmlFor="userLastName">Last Name</label>
+                                    <input
+                                        name="userLastName"
                                         type="text"
                                         placeholder="Enter your last name"
-                                        value={values.lastName}
+                                        value={values.userLastName}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        className={errors.lastName && touched.lastName && "error"}
+                                        className={errors.userLastName && touched.userLastName && "error"}
                                     />
-                                    {errors.lastName && touched.lastName && (
+                                    {errors.userLastName && touched.userLastName && (
                                         <Label basic color='red' pointing>
-                                            {errors.lastName}
+                                            {errors.userLastName}
                                         </Label>
                                     )}
                                 </div>
                                 <Divider />
                                 <div>
-                                    <label htmlFor="email">Email</label>
+                                    <label htmlFor="userPhoneNumber">Phone Number</label>
                                     <input
-                                        name="email"
-                                        type="text"
-                                        placeholder="Enter your email"
-                                        value={values.email}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        className={errors.email && touched.email && "error"}
-                                    />
-                                    {errors.email && touched.email && (
-                                        <Label basic color='red' pointing>
-                                            {errors.email}
-                                        </Label>
-                                    )}
-                                </div>
-                                <Divider />
-                                <div>
-                                    <label htmlFor="phoneNumber">Phone Number</label>
-                                    <input
-                                        name="phoneNumber"
+                                        name="userPhoneNumber"
                                         type="text"
                                         placeholder="Enter your phone number"
-                                        value={values.phoneNumber}
+                                        value={values.userPhoneNumber}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        className={errors.phoneNumber && touched.phoneNumber && "error"}
+                                        className={errors.userPhoneNumber && touched.userPhoneNumber && "error"}
                                     />
-                                    {errors.phoneNumber && touched.phoneNumber && (
+                                    {errors.userPhoneNumber && touched.userPhoneNumber && (
                                         <Label basic color='red' pointing>
-                                            {errors.phoneNumber}
+                                            {errors.puserPhoneNumber}
                                         </Label>
                                     )}
                                 </div>
                                 <Divider />
                                 <div>
-                                    <label htmlFor="dateOfBirth">Date Of Birth</label><br />
+                                    <label htmlFor="userEmailAddress">Email</label>
                                     <input
-                                        name="dateOfBirth"
+                                        name="userEmailAddress"
+                                        type="text"
+                                        placeholder="Enter your email"
+                                        value={values.userEmailAddress}
+                                        onChange={handleChange}
+                                        onBlur={handleBlur}
+                                        className={errors.userEmailAddress && touched.userEmailAddress && "error"}
+                                    />
+                                    {errors.userEmailAddress && touched.userEmailAddress && (
+                                        <Label basic color='red' pointing>
+                                            {errors.userEmailAddress}
+                                        </Label>
+                                    )}
+                                </div>
+                                <Divider />
+                                <div>
+                                    <label htmlFor="tenantDateOfBirth">Date Of Birth</label><br />
+                                    <input
+                                        name="tenantDateOfBirth"
                                         type="date"
                                         placeholder={(new Date()).toDateString()}
-                                        value={values.dateOfBirth}
+                                        value={values.tenantDateOfBirth}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        className={errors.dateOfBirth && touched.dateOfBirth && "error"}
+                                        className={errors.tenantDateOfBirth && touched.tenantDateOfBirth && "error"}
                                     />
-                                    {errors.dateOfBirth && touched.dateOfBirth && (
+                                    {errors.tenantDateOfBirth && touched.tenantDateOfBirth && (
                                         <Label basic color='red' pointing>
-                                            {errors.dateOfBirth}
+                                            {errors.tenantDateOfBirth}
                                         </Label>
                                     )}
                                 </div>
                                 <Divider />
                                 <div>
-                                    <label htmlFor="gender">Gender</label>
+                                    <label htmlFor="tenantGender">Gender</label>
                                     <RadioButtonGroup
-                                        id="gender"
-                                        value={values.gender}
-                                        touched={touched.gender}
+                                        id="tenantGender"
+                                        value={values.tenantGender}
+                                        touched={touched.tenantGender}
                                     >
                                     <Field
                                         component={RadioButton}
-                                        name="gender"
+                                        name="tenantGender"
                                         id="male"
+                                        content="Male"
                                         label="Male"
                                     />
                                     <Field
                                         component={RadioButton}
-                                        name="gender"
+                                        name="tenantGender"
                                         id="female"
+                                        content="Female"
                                         label="Female"
                                     />
                                     <Field
                                         component={RadioButton}
-                                        name="gender"
+                                        name="tenantGender"
                                         id="other"
+                                        content="Other"
                                         label="Other"
                                     />
                                     </RadioButtonGroup>
-                                    {errors.gender && touched.gender && (
+                                    {errors.tenantGender && touched.tenantGender && (
                                         <Label basic color='red' pointing>
-                                            {errors.gender}
+                                            {errors.tenantGender}
                                         </Label>
                                     )}
                                 </div>
                                 <Divider />
                                 <div>
-                                    <label htmlFor="nationality">Nationality</label>
+                                    <label htmlFor="tenantNationality">Nationality</label>
                                     <input
-                                        name="nationality"
+                                        name="tenantNationality"
                                         type="text"
                                         placeholder="Choose your country below"
-                                        value={values.nationality}
+                                        value={values.tenantNationality}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        className={errors.nationality && touched.nationality && "error"}
+                                        className={errors.tenantNationality && touched.tenantNationality && "error"}
                                     />
                                     <MySelect
-                                        value={values.nationality}
+                                        value={values.tenantNationality}
                                         onChange={setFieldValue}
                                         onBlur={setFieldTouched}
-                                        error={errors.nationality}
-                                        touched={touched.nationality}
+                                        error={errors.tenantNationality}
+                                        touched={touched.tenantNationality}
                                     />
-                                    {errors.nationality && touched.nationality && (
+                                    {errors.tenantNationality && touched.tenantNationality && (
                                         <Label basic color='red' pointing>
-                                            {errors.nationality}
+                                            {errors.tenantNationality}
                                         </Label>
                                     )}
                                 </div>
                                 <Divider />
                                 <div>
-                                    <label htmlFor="reasonForStay">Reason for Stay</label>
+                                    <label htmlFor="tenantReasonForStay">Reason for Stay</label>
                                     <input
-                                        name="reasonForStay"
+                                        name="tenantReasonForStay"
                                         type="text"
                                         placeholder="Enter the reason for your stay"
-                                        value={values.reasonForStay}
+                                        value={values.tenantReasonForStay}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
-                                        className={errors.reasonForStay && touched.reasonForStay && "error"}
+                                        className={errors.tenantReasonForStay && touched.tenantReasonForStay && "error"}
                                     />
-                                    {errors.reasonForStay && touched.reasonForStay && (
+                                    {errors.tenantReasonForStay && touched.tenantReasonForStay && (
                                         <Label basic color='red' pointing>
-                                            {errors.reasonForStay}
+                                            {errors.tenantReasonForStay}
                                         </Label>
                                     )}
                                 </div>
                                 <Divider />
                                 <div>
-                                    <label htmlFor="heardAbout">How Did You Hear Of Us</label>
+                                    <label htmlFor="howDidYouHearFromUs">How Did You Hear Of Us</label>
                                     <RadioButtonGroup
-                                        id="heardAbout"
-                                        value={values.heardAbout}
-                                        touched={touched.heardAbout}
+                                        id="howDidYouHearFromUs"
+                                        value={values.howDidYouHearFromUs}
+                                        touched={touched.howDidYouHearFromUs}
                                     >
                                     <Field
                                         component={RadioButton}
-                                        name="heardAbout"
+                                        name="howDidYouHearFromUs"
                                         id="online"
+                                        content="Online"
                                         label="Online"
                                     />
                                     <Field
                                         component={RadioButton}
-                                        name="heardAbout"
+                                        name="howDidYouHearFromUs"
                                         id="wordOfMouth"
+                                        content="Word Of Mouth"
                                         label="Word Of Mouth"
                                     />
                                     <Field
                                         component={RadioButton}
-                                        name="heardAbout"
+                                        name="howDidYouHearFromUs"
                                         id="facebook"
+                                        content="Facebook"
                                         label="Facebook"
                                     />
                                     <Field
                                         component={RadioButton}
-                                        name="heardAbout"
+                                        name="howDidYouHearFromUs"
                                         id="instagram"
+                                        content="Instagram"
                                         label="Instagram"
                                     />
                                     <Field
                                         component={RadioButton}
-                                        name="heardAbout"
+                                        name="howDidYouHearFromUs"
                                         id="school"
+                                        content="School"
                                         label="Through my University/College"
                                     />
                                     </RadioButtonGroup>
-                                    {errors.heardAbout && touched.heardAbout && (
+                                    {errors.howDidYouHearFromUs && touched.howDidYouHearFromUs && (
                                         <Label basic color='red' pointing>
-                                            {errors.heardAbout}
+                                            {errors.howDidYouHearFromUs}
                                         </Label>
                                     )}
                                 </div>

@@ -6,40 +6,37 @@ import Base64Converter from '../../../_components/imageconvert/base64-converter'
 import PageHeader from '../../../_components/pageHeader'
 import RadioButton from '../helper/radio-button'
 import RadioButtonGroup from '../helper/radio-group'
-import MySelect from '../helper/my-select'
-import * as images from '../../../_constants/images'
+import auth from '../../../_services/auth';
 import Search from '../../../_components/map/search'
 
 class EditHostListing extends React.Component {
 
     state = {
-        host: "This is a description of the host.",
-        neighbourhood: "This is a description of the neighbourhood.",
-        house: "This is a description of the house.",
-        address: "15908 Prospect Crescent, White Rock, British Columbia V4B 2A2, Canada",
-        roomType: "En Suite",
-        washroomAvail: "En Suite",
-        gendersAccepted: "Any",
-        pets: false,
-        startDate: "2020-03-14",
-        endDate: "2020-04-26",
-        nearestSchool: "The nearest school is BCIT. It is 8 mins walking distance.",
-        images: [
-            images.TEMPLATE_HOUSE1,
-            images.TEMPLATE_HOUSE2,
-            images.TEMPLATE_HOUSE3,
-        ],
-        files: []
+        files: [],
+        geoResult: {
+            place_name: ""
+        },
+        currentUser: auth.currentUserValue,
+        data: {},
+        id: null
     }
 
-    componentDidMount() {
-        // let { id } = useParams();
+    async componentDidMount() {
+        this.state.id = this.state.currentUser.userID;
+        const result = await fetch(`10kftdb.azurewebsites.net/api/properties/search/${this.state.id}`);
+        const json = await result.json();
         this.getFiles.bind(this.state.images);
-
+        this.state.geoResult.place_name = this.state.address;
         this.setState({
-            // userId: id,
-            // user: tempData //TODO: Replace this line by fetch call to backend.
+            data: json
         });
+        this.state.geoResult.place_name = this.state.data.street;
+        if(this.state.data.pets)
+            this.state.data.pets = "yes";
+        else
+            this.state.data.pets = "no";
+        if(this.state.data.wifiAndUtilitiesIncuded)
+            this.state.data.wifiAndUtilitiesIncuded = "yes";
     }
 
     getFiles(files){
@@ -55,30 +52,60 @@ class EditHostListing extends React.Component {
                 text='Edit A Room' >
             </PageHeader>
             <Formik
-                initialValues={{ host: this.state.host,
-                                 neighbourhood: this.state.neighbourhood,
-                                 house: this.state.house,
-                                 address: this.state.address,
-                                 roomType: this.state.roomType,
-                                 washroomAvail: this.state.washroomAvail,
-                                 gendersAccepted: this.state.gendersAccepted,
-                                 pets: this.state.pets,
-                                 startDate: this.state.startDate,
-                                 endDate: this.state.endDate,
-                                 nearestSchool: this.state.nearestSchool,
-                                 images: this.state.images }}
+                initialValues={{ userID: this.state.currentUser.userID,
+                                 isAvailable: this.state.data.isAvailable,
+                                 latitude: this.state.data.latitude,
+                                 longitude: this.state.data.longitude,
+                                 availableStartDate: this.state.data.availableStartDate,
+                                 availableEndDate: this.state.data.availableEndDate,
+                                 hostDescription: this.state.data.hostDescription,
+                                 propertyDescription: this.state.data.propertyDescription,
+                                 neighbourhoodDescription: this.state.data.neighbourhood,
+                                 roomType: this.state.data.roomType,
+                                 washroomType: this.state.data.washroomType,
+                                 genderPreference: this.state.data.genderPreference,
+                                 pets: this.state.data.pets,
+                                 wifiAndUtilitiesIncuded: this.state.data.wifiAndUtilitiesIncuded,
+                                 closestSchool: this.state.data.closestSchool,
+                                 unitNumber: this.state.data.unitNumber,
+                                 streetNumber: this.state.data.streetNumber,
+                                 street: this.state.data.street,
+                                 city: this.state.data.city,
+                                 province: this.state.data.province,
+                                 country: this.state.data.country,
+                                 propertyImageData: this.state.data.propertyImageData}}
                 onSubmit={(values, { setSubmitting }) => {
-/*                     // submitting event here.
-                    auth.login(values.username, values.password)
-                        .then(
-                            user => {
-                                this.props.history.push("/dashboard")
+                    
+                        if(this.state.geoResult.text !== null) {
+                            values.street = this.state.geoResult.place_name;
+                            values.city = this.state.geoResult.context[2].text;
+                            values.province = this.state.geoResult.context[3].text;
+                            values.country = this.state.geoResult.context[4].text;
+                        }
+                        if (values.pets === "yes"){
+                            values.pets = true;
+                        }
+                        else {
+                            values.pets = false;
+                        }
+                        if (values.wifiAndUtilitiesIncuded === "yes") {
+                            values.wifiAndUtilitiesIncuded = true;
+                        }
+                        fetch(`https://10kftdb.azurewebsites.net/api/properties/edit/${this.state.id}`, {
+                            method: 'PUT',
+                            headers: {
+                                'Content-Type': 'application/json',
                             },
-                            error => {
-                                console.log(error)
-                            }
-                        ) */
-                        values.address = this.state.geoResult.place_name;
+                            body: JSON.stringify(values, null, 2),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Success:', data);
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+
                         console.log(JSON.stringify(values, null, 2));
                 }}
                 validationSchema={Yup.object().shape({
@@ -374,7 +401,7 @@ class EditHostListing extends React.Component {
                                 </div>
                                 <Divider />
                                 <div>
-                                    <label htmlFor="images">Attach Images Of The Room (Hold select while you choose all your images)</label>
+                                    <label htmlFor="images">Attach Images Of The Room (Hold Ctrl while you choose all your images)</label>
                                     <Base64Converter
                                         multiple={ true }
                                         onDone={ this.getFiles.bind(this) }
@@ -386,9 +413,9 @@ class EditHostListing extends React.Component {
                                     }) }
                                     <img src="" />
                                     </div>
-                                    {errors.nearestSchool && touched.nearestSchool && (
+                                    {errors.images && touched.images && (
                                         <Label basic color='red' pointing>
-                                            {errors.nearestSchool}
+                                            {errors.images}
                                         </Label>
                                     )}
                                 </div>

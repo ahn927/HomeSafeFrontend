@@ -15,8 +15,8 @@ const RadioButton = ({
                 name={name}
                 id={id}
                 type="radio"
-                value={content} // could be something else for output?
-                checked={content === value || value}
+                value={id} 
+                checked={id === value}
                 onChange={onChange}
                 onBlur={onBlur}
                 className={classNames("radio-button")}

@@ -6,39 +6,26 @@ import PageHeader from '../../../_components/pageHeader'
 import Search from '../../../_components/map/search'
 import RadioButton from '../helper/radio-button'
 import RadioButtonGroup from '../helper/radio-group'
-import MySelect from '../helper/my-select'
-
-const options = [
-    { key: 'Vancouver', value: 'Vancouver', label: 'Vancouver' },
-    { key: 'Richmond', value: 'Richmond', label: 'Richmond' },
-    { key: 'Surrey', value: 'Surrey', label: 'Surrey' },
-    { key: 'Burnaby', value: 'Burnaby', label: 'Burnaby' },
-    { key: 'Coquitlam', value: 'Coquitlam', label: 'Coquitlam' },
-    { key: 'Port Moody', value: 'Port Moody', label: 'Port Moody' },
-    { key: 'New Westminster', value: 'New Westminster', label: 'New Westminster' },
-];
+import auth from '../../../_services/auth';
 
 class EditHostPersonal extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            geoResult: null,
-            firstName: "Greg",
-            lastName: "Makasoff",
-            phoneNumber: "0009991111",
-            email: "g@g.g",
-            address: "15908 Prospect Crescent, White Rock, British Columbia V4B 2A2, Canada",
-            city: "White Rock",
-            heardAbout: "Online"
-        }
+    state = {
+        currentUser: auth.currentUserValue,
+        data: {},
+        geoResult: null,
+        id: null
+    };
 
-        this.handleChange = this.handleChange.bind(this);
-      }
-    
-      handleChange(tar, val) {
-        tar = val;
-      }
+    async componentDidMount() {
+        this.state.id = this.state.currentUser.userID;
+        const result = await fetch(`https://10kftdb.azurewebsites.net/api/Users/${this.state.id}`);
+        const json = await result.json();
+        this.setState({
+            data: json
+        });
+        this.state.geoResult.place_name = this.state.data.userAddressStreet;
+    }
 
     render() {
         return (
@@ -49,25 +36,48 @@ class EditHostPersonal extends React.Component {
                 </PageHeader>
                 <Formik
                     initialValues={{
-                        firstName: this.state.firstName,
-                        lastName: this.state.lastName,
-                        phoneNumber: this.state.phoneNumber,
-                        email: this.state.email,
-                        address: this.state.address,
-                        city: this.state.city,
-                        heardAbout: this.state.heardAbout,
-                    }}
+                                     "credentialUserName": this.state.data.credentialUserName,
+                                     "userPassword": this.state.data.userPassword,
+                                     "userFirstName": this.state.data.userFirstName, 
+                                     "userLastName": this.state.data.userLastName,
+                                     "userPhoneNumber": this.state.data.userPhoneNumber,
+                                     "userEmailAddress": this.state.data.userEmailAddress,
+                                     "userAddressStreetNumber" : this.state.userAddressStreetNumber,	
+                                     "userAddressStreet" : this.state.userAddressStreet,
+                                     "userAddressUnitNumber" : this.state.userAddressUnitNumber,
+                                     "userAddressCity" : this.state.userAddressCity,
+                                     "userAddressProvince" : this.state.userAddressProvince,
+                                     "userAddressCountry" : this.state.userAddressCountry,
+                                     "howDidYouHearFromUs": this.state.howDidYouHearFromUs,
+                                     "tenantDateOfBirth": this.state.tenantDateOfBirth,
+                                     "tenantGender": this.state.tenantGender,
+                                     "tenantNationality": this.state.tenantNationality,
+                                     "tenantReasonForStay": this.state.tenantReasonForStay,
+                                     "tenantIsAdmin": false,
+                                     "tenantIsLandlord": true,
+                                     "tenantIsTenant": false }}
                     onSubmit={(values, { setSubmitting }) => {
-                        /* // submitting event here.
-                        auth.login(values.username, values.password)
-                            .then(
-                                user => {
-                                    this.props.history.push("/dashboard")
-                                },
-                                error => {
-                                    console.log(error)
-                                }
-                            ) */
+
+                        if(this.state.geoResult.text !== null) {
+                            values.userAddressStreet = this.state.geoResult.place_name;
+                            values.userAddressCity = this.state.geoResult.context[2].text;
+                            values.userAddressProvince = this.state.geoResult.context[3].text;
+                            values.userAddressCountry = this.state.geoResult.context[4].text;
+                        }
+                        fetch(`https://10kftdb.azurewebsites.net/api/Users/edit/${this.state.id}`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(values, null, 2),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log('Success:', data);
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
                         console.log(JSON.stringify(values, null, 2));
                     }}
                     validationSchema={Yup.object().shape({
