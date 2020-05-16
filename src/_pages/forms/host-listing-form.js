@@ -34,8 +34,8 @@ class HostListingForm extends React.Component {
                 </PageHeader>
                 <Formik
                     initialValues={{
-                        userID: this.state.currentUser.userID,
-                        isAvailable: false,
+                        userID: 5,
+                        isAvailable: true,
                         latitude: null,
                         longitude: null,
                         availableStartDate: "",
@@ -60,6 +60,9 @@ class HostListingForm extends React.Component {
                     onSubmit={(values, { setSubmitting }) => {
 
                         values.street = this.state.geoResult.place_name;
+                        values.city = this.state.geoResult.context[2].text;
+                        values.province = this.state.geoResult.context[3].text;
+                        values.country = this.state.geoResult.context[4].text;
                         values.longitude = this.state.geoResult.center[0];
                         values.latitude = this.state.geoResult.center[1];
                         if (values.pets === "yes") {
@@ -207,20 +210,20 @@ class HostListingForm extends React.Component {
                                             <Field
                                                 component={RadioButton}
                                                 name="roomType"
-                                                id="Single Room"
+                                                id="single"
                                                 label="Single Room"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="roomType"
-                                                id="Double Room"
+                                                id="double"
                                                 label="Double Room"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="roomType"
-                                                id="En Suite"
-                                                label="En Suite"
+                                                id="studio"
+                                                label="Suite"
                                             />
                                         </RadioButtonGroup>
                                         {errors.roomType && touched.roomType && (
@@ -254,7 +257,7 @@ class HostListingForm extends React.Component {
                                             <Field
                                                 component={RadioButton}
                                                 name="washroomType"
-                                                id="enSuite"
+                                                id="private ensuite"
                                                 content="En Suite"
                                                 label="En Suite"
                                             />
@@ -290,7 +293,7 @@ class HostListingForm extends React.Component {
                                             <Field
                                                 component={RadioButton}
                                                 name="genderPreference"
-                                                id="Any"
+                                                id="any"
                                                 content="Any"
                                                 label="Any"
                                             />
@@ -414,7 +417,7 @@ class HostListingForm extends React.Component {
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="propertyImageData">Attach Images Of The Room (Hold select while you choose all your images)</label>
+                                        <label htmlFor="propertyImageData">Attach Images Of The Room (Hold Ctrl while you choose all your images)</label>
                                         <Base64Converter
                                             multiple={true}
                                             onDone={this.getFiles.bind(this)}
@@ -447,4 +450,4 @@ class HostListingForm extends React.Component {
     }
 }
 
-export default HostListingForm
+export default HostListingForm;
