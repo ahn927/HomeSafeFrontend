@@ -14,20 +14,25 @@ class EditGuestForm extends React.Component {
     state = {
         currentUser: auth.currentUserValue,
         data: {},
-        id: null
+        id: this.props.match.params.userID,
+        dob: null,
     };
 
     async componentDidMount() {
         // let { id } = useParams();
-        this.state.id = this.state.currentUser.userID;
-        const result = await fetch(`https://10kftdb.azurewebsites.net/api/Users/${this.state.id}`);
+        console.log('id: ', this.props)
+        //this.state.id = this.state.currentUser.userID;
+        const result = await fetch(`https://10kftdb.azurewebsites.net/api/users/${this.state.id}`);
         const json = await result.json();
         this.setState({
             // userId: id,
             // user: tempData //TODO: Replace this line by fetch call to backend.
             data: json
         });
-    }
+        console.log('data', this.state.data)
+        console.log('dob: ', this.state.data.tenantDateOfBirth)
+        this.setState({ dob: this.state.data.tenantDateOfBirth.substring(0,10)})
+    } 
 
     handleChange = date => {
         this.setState({
@@ -43,6 +48,7 @@ class EditGuestForm extends React.Component {
                     text='Edit A Guest' >
                 </PageHeader>
                 <Formik
+                    enableReinitialize
                     initialValues={{
                         "credentialUserName": this.state.data.credentialUserName,
                         "userPassword": this.state.data.userPassword,
@@ -50,17 +56,17 @@ class EditGuestForm extends React.Component {
                         "userLastName": this.state.data.userLastName,
                         "userPhoneNumber": this.state.data.userPhoneNumber,
                         "userEmailAddress": this.state.data.userEmailAddress,
-                        "userAddressStreetNumber": this.state.userAddressStreetNumber,
-                        "userAddressStreet": this.state.userAddressStreet,
-                        "userAddressUnitNumber": this.state.userAddressUnitNumber,
-                        "userAddressCity": this.state.userAddressCity,
-                        "userAddressProvince": this.state.userAddressProvince,
-                        "userAddressCountry": this.state.userAddressCountry,
-                        "howDidYouHearFromUs": this.state.howDidYouHearFromUs,
-                        "tenantDateOfBirth": this.state.tenantDateOfBirth,
-                        "tenantGender": this.state.tenantGender,
-                        "tenantNationality": this.state.tenantNationality,
-                        "tenantReasonForStay": this.state.tenantReasonForStay,
+                        "userAddressStreetNumber": this.state.data.userAddressStreetNumber,
+                        "userAddressStreet": this.state.data.userAddressStreet,
+                        "userAddressUnitNumber": this.state.data.userAddressUnitNumber,
+                        "userAddressCity": this.state.data.userAddressCity,
+                        "userAddressProvince": this.state.data.userAddressProvince,
+                        "userAddressCountry": this.state.data.userAddressCountry,
+                        "howDidYouHearFromUs": this.state.data.howDidYouHearFromUs,
+                        "tenantDateOfBirth": this.state.dob,
+                        "tenantGender": this.state.data.tenantGender,
+                        "tenantNationality": this.state.data.tenantNationality,
+                        "tenantReasonForStay": this.state.data.tenantReasonForStay,
                         "tenantIsAdmin": false,
                         "tenantIsLandlord": false,
                         "tenantIsTenant": true
@@ -85,15 +91,6 @@ class EditGuestForm extends React.Component {
                         console.log(JSON.stringify(values, null, 2));
                     }}
                     validationSchema={Yup.object().shape({
-                        credentialUserName: Yup.string()
-                            .required("Required")
-                            .min(4, "Minimum of 4 characters.")
-                            .max(20, "Maximum of 20 characters."),
-                        userPassword: Yup.string()
-                            .required("Required")
-                            .min(4, "Minimum of 4 characters.")
-                            .max(20, "Maximum of 20 characters.")
-                            .matches(/(?=.*[0-9])/, "Password must contain a number."),
                         userFirstName: Yup.string()
                             .required("Required")
                             .matches(/([A-Za-z]*)/, "Name must be only letters."),
@@ -136,40 +133,6 @@ class EditGuestForm extends React.Component {
                         return (
                             <div>
                                 <Form onSubmit={handleSubmit}>
-                                    <div>
-                                        <label htmlFor="credentialUserName">User Name</label>
-                                        <input
-                                            name="credentialUserName"
-                                            type="text"
-                                            placeholder="Enter your first name"
-                                            value={values.credentialUserName}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            className={errors.credentialUserName && touched.credentialUserName && "error"} />
-                                        {errors.credentialUserName && touched.credentialUserName && (
-                                            <Label basic color='red' pointing>
-                                                {errors.credentialUserName}
-                                            </Label>
-                                        )}
-                                    </div>
-                                    <Divider />
-                                    <div>
-                                        <label htmlFor="userPassword">Password</label>
-                                        <input
-                                            name="userPassword"
-                                            type="text"
-                                            placeholder="Enter your first name"
-                                            value={values.userPassword}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            className={errors.userPassword && touched.userPassword && "error"} />
-                                        {errors.userPassword && touched.userPassword && (
-                                            <Label basic color='red' pointing>
-                                                {errors.userPassword}
-                                            </Label>
-                                        )}
-                                    </div>
-                                    <Divider />
                                     <div>
                                         <label htmlFor="userFirstName">First Name</label>
                                         <input
@@ -270,21 +233,18 @@ class EditGuestForm extends React.Component {
                                                 component={RadioButton}
                                                 name="tenantGender"
                                                 id="male"
-                                                content="Male"
                                                 label="Male"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="tenantGender"
                                                 id="female"
-                                                content="Female"
                                                 label="Female"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="tenantGender"
                                                 id="other"
-                                                content="Other"
                                                 label="Other"
                                             />
                                         </RadioButtonGroup>

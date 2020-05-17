@@ -18,18 +18,23 @@ class EditHostListing extends React.Component {
         },
         currentUser: auth.currentUserValue,
         data: {},
-        id: null
+        id: null,
+        startDate: null,
+        endDate: null
     }
 
     async componentDidMount() {
-        this.state.id = this.state.currentUser.userID;
-        const result = await fetch(`10kftdb.azurewebsites.net/api/properties/search/${this.state.id}`);
+        console.log('props: ', this.props)
+        this.state.id = this.props.match.params.userID;
+        console.log('id: ', this.state.id)
+        const result = await fetch(`https://10kftdb.azurewebsites.net/api/properties/search/${this.state.id}`);
         const json = await result.json();
         this.getFiles.bind(this.state.images);
         this.state.geoResult.place_name = this.state.address;
         this.setState({
             data: json
         });
+        console.log('data: ', this.state.data)
         this.state.geoResult.place_name = this.state.data.street;
         if (this.state.data.pets)
             this.state.data.pets = "yes";
@@ -37,11 +42,15 @@ class EditHostListing extends React.Component {
             this.state.data.pets = "no";
         if (this.state.data.wifiAndUtilitiesIncuded)
             this.state.data.wifiAndUtilitiesIncuded = "yes";
+        
+        this.setState({ startDate: this.state.data.availableStartDate.substring(0,10)})
+        this.setState({ endDate: this.state.data.availableEndDate.substring(0,10)})
+        this.getFiles(this.state.data.propertyImageData)
+        
     }
 
     getFiles(files) {
         this.setState({ files: files })
-        this.values.images.push(files.base64)
     }
 
     render() {
@@ -52,16 +61,17 @@ class EditHostListing extends React.Component {
                     text='Edit A Room' >
                 </PageHeader>
                 <Formik
+                    enableReinitialize
                     initialValues={{
                         userID: this.state.currentUser.userID,
                         isAvailable: this.state.data.isAvailable,
                         latitude: this.state.data.latitude,
                         longitude: this.state.data.longitude,
-                        availableStartDate: this.state.data.availableStartDate,
-                        availableEndDate: this.state.data.availableEndDate,
+                        availableStartDate: this.state.startDate,
+                        availableEndDate: this.state.endDate,
                         hostDescription: this.state.data.hostDescription,
                         propertyDescription: this.state.data.propertyDescription,
-                        neighbourhoodDescription: this.state.data.neighbourhood,
+                        neighbourhoodDescription: this.state.data.neighbourhoodDescription,
                         roomType: this.state.data.roomType,
                         washroomType: this.state.data.washroomType,
                         genderPreference: this.state.data.genderPreference,
@@ -111,25 +121,25 @@ class EditHostListing extends React.Component {
                         console.log(JSON.stringify(values, null, 2));
                     }}
                     validationSchema={Yup.object().shape({
-                        host: Yup.string()
+                        hostDescription: Yup.string()
                             .matches(/([A-Za-z0-9.,]*)/, "Invalid character.[A-Za-z0-9,.]"),
-                        neighbourhood: Yup.string()
+                        neighbourhoodDescription: Yup.string()
                             .matches(/([A-Za-z0-9.,]*)/, "Invalid character.[A-Za-z0-9,.]"),
-                        house: Yup.string()
+                        propertyDescription: Yup.string()
                             .matches(/([A-Za-z0-9.,]*)/, "Invalid character.[A-Za-z0-9,.]"),
                         roomType: Yup.string()
                             .required("Required"),
-                        washroomAvail: Yup.string()
+                        washroomType: Yup.string()
                             .required("Required"),
-                        gendersAccepted: Yup.string()
+                        genderPreference: Yup.string()
                             .required("Required"),
                         pets: Yup.string()
                             .required("Required."),
-                        startDate: Yup.string()
+                        availableStartDate: Yup.string()
                             .required("Required"),
-                        endDate: Yup.string()
+                        availableEndDate: Yup.string()
                             .required("Required"),
-                        nearestSchool: Yup.string()
+                        closestSchool: Yup.string()
                             .required("Required.")
                     })}
                 >
@@ -149,60 +159,60 @@ class EditHostListing extends React.Component {
                             <div>
                                 <Form onSubmit={handleSubmit}>
                                     <div>
-                                        <label htmlFor="host">Describe Yourself(The Host)</label>
+                                        <label htmlFor="hostDescription">Describe Yourself(The Host)</label>
                                         <input
-                                            name="host"
+                                            name="hostDescription"
                                             type="text"
                                             placeholder="Enter a description about yourself"
-                                            value={values.host}
+                                            value={values.hostDescription}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            className={errors.host && touched.host && "error"} />
-                                        {errors.host && touched.host && (
+                                            className={errors.hostDescription && touched.hostDescription && "error"} />
+                                        {errors.hostDescription && touched.hostDescription && (
                                             <Label basic color='red' pointing>
-                                                {errors.host}
+                                                {errors.hostDescription}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="neighbourhood">Describe the Neighbourhood</label>
+                                        <label htmlFor="neighbourhoodDescription">Describe the Neighbourhood</label>
                                         <input
-                                            name="neighbourhood"
+                                            name="neighbourhoodDescription"
                                             type="text"
                                             placeholder="Enter a description of the neighbourhood"
-                                            value={values.lastName}
+                                            value={values.neighbourhoodDescription}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            className={errors.lastName && touched.lastName && "error"}
+                                            className={errors.neighbourhoodDescription && touched.neighbourhoodDescription && "error"}
                                         />
-                                        {errors.lastName && touched.lastName && (
+                                        {errors.neighbourhoodDescription && touched.neighbourhoodDescription && (
                                             <Label basic color='red' pointing>
-                                                {errors.lastName}
+                                                {errors.neighbourhoodDescription}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="house">Describe the House</label>
+                                        <label htmlFor="propertyDescription">Describe the House</label>
                                         <input
-                                            name="house"
+                                            name="propertyDescription"
                                             type="text"
                                             placeholder="Enter a description of your house"
-                                            value={values.house}
+                                            value={values.propertyDescription}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            className={errors.house && touched.house && "error"}
+                                            className={errors.propertyDescription && touched.propertyDescription && "error"}
                                         />
-                                        {errors.house && touched.house && (
+                                        {errors.propertyDescription && touched.propertyDescription && (
                                             <Label basic color='red' pointing>
-                                                {errors.house}
+                                                {errors.propertyDescription}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="address">Address</label>
+                                        <label htmlFor="userAddressStreet">Address</label>
                                         <Search handleOnSelect={(result) => {
                                             console.log('result', result)
                                             this.setState({ geoResult: result })
@@ -249,73 +259,73 @@ class EditHostListing extends React.Component {
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="washroomAvail">Type of Washroom Offered</label>
+                                        <label htmlFor="washroomType">Type of Washroom Offered</label>
                                         <RadioButtonGroup
-                                            id="washroomAvail"
-                                            value={values.washroomAvail}
-                                            touched={touched.washroomAvail}
+                                            id="washroomType"
+                                            value={values.washroomType}
+                                            touched={touched.washroomType}
                                         >
                                             <Field
                                                 component={RadioButton}
-                                                name="washroomAvail"
+                                                name="washroomType"
                                                 id="shared"
                                                 content="Shared"
                                                 label="Shared"
                                             />
                                             <Field
                                                 component={RadioButton}
-                                                name="washroomAvail"
+                                                name="washroomType"
                                                 id="private"
                                                 content="Private"
                                                 label="Private"
                                             />
                                             <Field
                                                 component={RadioButton}
-                                                name="washroomAvail"
+                                                name="washroomType"
                                                 id="enSuite"
                                                 content="En Suite"
                                                 label="En Suite"
                                             />
                                         </RadioButtonGroup>
-                                        {errors.washroomAvail && touched.washroomAvail && (
+                                        {errors.washroomType && touched.washroomType && (
                                             <Label basic color='red' pointing>
-                                                {errors.washroomAvail}
+                                                {errors.washroomType}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="gendersAccepted">Which Genders Are Accepted</label>
+                                        <label htmlFor="genderPreference">Which Genders Are Accepted</label>
                                         <RadioButtonGroup
-                                            id="gendersAccepted"
-                                            value={values.gendersAccepted}
-                                            touched={touched.gendersAccepted}
+                                            id="genderPreference"
+                                            value={values.genderPreference}
+                                            touched={touched.genderPreference}
                                         >
                                             <Field
                                                 component={RadioButton}
-                                                name="gendersAccepted"
+                                                name="genderPreference"
                                                 id="male"
                                                 content="Male"
                                                 label="Male"
                                             />
                                             <Field
                                                 component={RadioButton}
-                                                name="gendersAccepted"
+                                                name="genderPreference"
                                                 id="female"
                                                 content="Female"
                                                 label="Female"
                                             />
                                             <Field
                                                 component={RadioButton}
-                                                name="gendersAccepted"
+                                                name="genderPreference"
                                                 id="Any"
                                                 content="Any"
                                                 label="Any"
                                             />
                                         </RadioButtonGroup>
-                                        {errors.gendersAccepted && touched.gendersAccepted && (
+                                        {errors.genderPreference && touched.genderPreference && (
                                             <Label basic color='red' pointing>
-                                                {errors.gendersAccepted}
+                                                {errors.genderPreference}
                                             </Label>
                                         )}
                                     </div>
@@ -350,54 +360,54 @@ class EditHostListing extends React.Component {
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="startDate">Date Room Is Available</label><br />
+                                        <label htmlFor="availableStartDate">Date Room Is Available</label><br />
                                         <input
-                                            name="startDate"
+                                            name="availableStartDate"
                                             type="date"
                                             placeholder={(new Date()).toDateString()}
-                                            value={values.startDate}
+                                            value={values.availableStartDate}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            className={errors.startDate && touched.startDate && "error"}
+                                            className={errors.availableStartDate && touched.availableStartDate && "error"}
                                         />
-                                        {errors.startDate && touched.startDate && (
+                                        {errors.availableStartDate && touched.availableStartDate && (
                                             <Label basic color='red' pointing>
-                                                {errors.startDate}
+                                                {errors.availableStartDate}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="endDate">Date When Stay Ends</label><br />
+                                        <label htmlFor="availableEndDate">Date When Stay Ends</label><br />
                                         <input
-                                            name="endDate"
+                                            name="availableEndDate"
                                             type="date"
                                             placeholder={(new Date()).toDateString()}
-                                            value={values.endDate}
+                                            value={values.availableEndDate}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            className={errors.endDate && touched.endDate && "error"}
+                                            className={errors.availableEndDate && touched.availableEndDate && "error"}
                                         />
-                                        {errors.endDate && touched.endDate && (
+                                        {errors.availableEndDate && touched.availableEndDate && (
                                             <Label basic color='red' pointing>
-                                                {errors.endDate}
+                                                {errors.availableEndDate}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="nearestSchool">What is the Nearest School</label>
+                                        <label htmlFor="closestSchool">What is the Nearest School</label>
                                         <input
-                                            name="nearestSchool"
+                                            name="closestSchool"
                                             type="text"
                                             placeholder="Enter the closest school and the ETA"
-                                            value={values.nearestSchool}
+                                            value={values.closestSchool}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            className={errors.nearestSchool && touched.nearestSchool && "error"} />
-                                        {errors.nearestSchool && touched.nearestSchool && (
+                                            className={errors.closestSchool && touched.closestSchool && "error"} />
+                                        {errors.closestSchool && touched.closestSchool && (
                                             <Label basic color='red' pointing>
-                                                {errors.nearestSchool}
+                                                {errors.closestSchool}
                                             </Label>
                                         )}
                                     </div>
@@ -407,10 +417,10 @@ class EditHostListing extends React.Component {
                                         <Base64Converter
                                             multiple={true}
                                             onDone={this.getFiles.bind(this)}
-                                            value={values.images} />
+                                            value={values.propertyImageData} />
                                         <div id="imageContainer">
                                             {this.state.files.map((file, i) => {
-                                                values.images.push(file.base64)
+                                                values.propertyImageData.push(file.base64)
                                                 return <img key={i} src={file.base64} style={{ maxWidth: 250 }} />
                                             })}
                                             <img src="" />

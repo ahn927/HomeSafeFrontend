@@ -13,19 +13,22 @@ class EditHostPersonal extends React.Component {
     state = {
         currentUser: auth.currentUserValue,
         data: {},
-        geoResult: null,
-        id: null
-    };
-
+        geoResult: {
+            place_name: ""
+        },
+        id: this.props.match.params.propertyID
+    }
+    
     async componentDidMount() {
-        this.state.id = this.state.currentUser.userID;
-        const result = await fetch(`https://10kftdb.azurewebsites.net/api/Users/${this.state.id}`);
+        console.log('id: ', this.state.id)
+        const result = await fetch(`https://10kftdb.azurewebsites.net/api/users/${this.state.id}`);
         const json = await result.json();
         this.setState({
             data: json
         });
+        console.log('data: ', this.props)
         this.state.geoResult.place_name = this.state.data.userAddressStreet;
-    }
+    } 
 
     render() {
         return (
@@ -35,6 +38,7 @@ class EditHostPersonal extends React.Component {
                     text='Edit A Host' >
                 </PageHeader>
                 <Formik
+                    enableReinitialize
                     initialValues={{
                         "credentialUserName": this.state.data.credentialUserName,
                         "userPassword": this.state.data.userPassword,
@@ -42,17 +46,17 @@ class EditHostPersonal extends React.Component {
                         "userLastName": this.state.data.userLastName,
                         "userPhoneNumber": this.state.data.userPhoneNumber,
                         "userEmailAddress": this.state.data.userEmailAddress,
-                        "userAddressStreetNumber": this.state.userAddressStreetNumber,
-                        "userAddressStreet": this.state.userAddressStreet,
-                        "userAddressUnitNumber": this.state.userAddressUnitNumber,
-                        "userAddressCity": this.state.userAddressCity,
-                        "userAddressProvince": this.state.userAddressProvince,
-                        "userAddressCountry": this.state.userAddressCountry,
-                        "howDidYouHearFromUs": this.state.howDidYouHearFromUs,
-                        "tenantDateOfBirth": this.state.tenantDateOfBirth,
-                        "tenantGender": this.state.tenantGender,
-                        "tenantNationality": this.state.tenantNationality,
-                        "tenantReasonForStay": this.state.tenantReasonForStay,
+                        "userAddressStreetNumber": this.state.data.userAddressStreetNumber,
+                        "userAddressStreet": this.state.data.userAddressStreet,
+                        "userAddressUnitNumber": this.state.data.userAddressUnitNumber,
+                        "userAddressCity": this.state.data.userAddressCity,
+                        "userAddressProvince": this.state.data.userAddressProvince,
+                        "userAddressCountry": this.state.data.userAddressCountry,
+                        "howDidYouHearFromUs": this.state.data.howDidYouHearFromUs,
+                        "tenantDateOfBirth": this.state.data.tenantDateOfBirth,
+                        "tenantGender": this.state.data.tenantGender,
+                        "tenantNationality": this.state.data.tenantNationality,
+                        "tenantReasonForStay": this.state.data.tenantReasonForStay,
                         "tenantIsAdmin": false,
                         "tenantIsLandlord": true,
                         "tenantIsTenant": false
@@ -82,24 +86,24 @@ class EditHostPersonal extends React.Component {
                         console.log(JSON.stringify(values, null, 2));
                     }}
                     validationSchema={Yup.object().shape({
-                        firstName: Yup.string()
+                        userFirstName: Yup.string()
                             .required("Required")
                             .matches(/([A-Za-z]*)/, "Name must be only letters."),
-                        lastName: Yup.string()
+                        userLastName: Yup.string()
                             .required("Required")
                             .matches(/([A-Za-z]*)/, "Name must be only letters."),
-                        phoneNumber: Yup.string()
+                        userPhoneNumber: Yup.string()
                             .required("Required")
                             .matches(/(^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$)/, "Must be a valid phone number."),
-                        email: Yup.string()
+                        userEmailAddress: Yup.string()
                             .required("Required")
                             .email(),
-                        address: Yup.string()
+                        userAddressStreet: Yup.string()
                             .required("Required")
                             .matches(/()/, "Must be a valid address."),
-                        city: Yup.string()
+                        userAddressCity: Yup.string()
                             .required("Required"),
-                        heardAbout: Yup.string()
+                        howDidYouHearFromUs: Yup.string()
                             .required("Must state where you heard about this service."),
                     })}
                 >
@@ -119,78 +123,78 @@ class EditHostPersonal extends React.Component {
                             <div>
                                 <Form onSubmit={handleSubmit}>
                                     <div>
-                                        <label htmlFor="firstName">First Name</label>
+                                        <label htmlFor="userFirstName">First Name</label>
                                         <input
-                                            name="firstName"
+                                            name="userFirstName"
                                             type="text"
                                             placeholder="Enter your first name"
-                                            value={values.firstName}
+                                            value={values.userFirstName}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            className={errors.firstName && touched.firstName && "error"} />
-                                        {errors.firstName && touched.firstName && (
+                                            className={errors.userFirstName && touched.userFirstName && "error"} />
+                                        {errors.userFirstName && touched.userFirstName && (
                                             <Label basic color='red' pointing>
-                                                {errors.firstName}
+                                                {errors.userFirstName}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="lastName">Last Name</label>
+                                        <label htmlFor="userLastName">Last Name</label>
                                         <input
-                                            name="lastName"
+                                            name="userLastName"
                                             type="text"
                                             placeholder="Enter your last name"
-                                            value={values.lastName}
+                                            value={values.userLastName}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            className={errors.lastName && touched.lastName && "error"}
+                                            className={errors.userLastName && touched.userLastName && "error"}
                                         />
-                                        {errors.lastName && touched.lastName && (
+                                        {errors.userLastName && touched.userLastName && (
                                             <Label basic color='red' pointing>
-                                                {errors.lastName}
+                                                {errors.userLastName}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="phoneNumber">Phone Number</label>
+                                        <label htmlFor="userPhoneNumber">Phone Number</label>
                                         <input
-                                            name="phoneNumber"
+                                            name="userPhoneNumber"
                                             type="text"
                                             placeholder="Enter your phone number"
-                                            value={values.phoneNumber}
+                                            value={values.userPhoneNumber}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            className={errors.phoneNumber && touched.phoneNumber && "error"}
+                                            className={errors.userPhoneNumber && touched.userPhoneNumber && "error"}
                                         />
-                                        {errors.phoneNumber && touched.phoneNumber && (
+                                        {errors.userPhoneNumber && touched.userPhoneNumber && (
                                             <Label basic color='red' pointing>
-                                                {errors.phoneNumber}
+                                                {errors.userPhoneNumber}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="email">Email</label>
+                                        <label htmlFor="userEmailAddress">Email</label>
                                         <input
-                                            name="email"
+                                            name="userEmailAddress"
                                             type="text"
                                             placeholder="Enter your email"
-                                            value={values.email}
+                                            value={values.userEmailAddress}
                                             onChange={handleChange}
                                             onBlur={handleBlur}
-                                            className={errors.email && touched.email && "error"}
+                                            className={errors.userEmailAddress && touched.userEmailAddress && "error"}
                                         />
-                                        {errors.email && touched.email && (
+                                        {errors.userEmailAddress && touched.userEmailAddress && (
                                             <Label basic color='red' pointing>
-                                                {errors.email}
+                                                {errors.userEmailAddress}
                                             </Label>
                                         )}
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="address">Address</label>
+                                        <label htmlFor="userAddressStreet">Address</label>
                                         <Search handleOnSelect={(result) => {
                                             console.log('result', result)
                                             this.setState({ geoResult: result })
@@ -201,36 +205,36 @@ class EditHostPersonal extends React.Component {
                                     </div>
                                     <Divider />
                                     <div>
-                                        <label htmlFor="heardAbout">How Did You Hear Of Us</label>
+                                        <label htmlFor="howDidYouHearFromUs">How Did You Hear Of Us</label>
                                         <RadioButtonGroup
-                                            id="heardAbout"
-                                            value={values.heardAbout}
-                                            touched={touched.heardAbout}
+                                            id="howDidYouHearFromUs"
+                                            value={values.howDidYouHearFromUs}
+                                            touched={touched.howDidYouHearFromUs}
                                         >
                                             <Field
                                                 component={RadioButton}
-                                                name="heardAbout"
+                                                name="howDidYouHearFromUs"
                                                 id="online"
                                                 content="Online"
                                                 label="Online"
                                             />
                                             <Field
                                                 component={RadioButton}
-                                                name="heardAbout"
+                                                name="howDidYouHearFromUs"
                                                 id="wordOfMouth"
                                                 content="Word Of Mouth"
                                                 label="Word Of Mouth"
                                             />
                                             <Field
                                                 component={RadioButton}
-                                                name="heardAbout"
+                                                name="howDidYouHearFromUs"
                                                 id="facebook"
                                                 content="Facebook"
                                                 label="Facebook"
                                             />
                                             <Field
                                                 component={RadioButton}
-                                                name="heardAbout"
+                                                name="howDidYouHearFromUs"
                                                 id="instagram"
                                                 content="Instagram"
                                                 label="Instagram"
