@@ -36,7 +36,7 @@ class HostListingForm extends React.Component {
                 </PageHeader>
                 <Formik
                     initialValues={{
-                        userID: 5,
+                        userID: this.state.currentUser.userID,
                         isAvailable: true,
                         latitude: null,
                         longitude: null,
