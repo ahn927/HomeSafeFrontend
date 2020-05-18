@@ -248,7 +248,6 @@ class EditHostPersonal extends React.Component {
                                         )}
                                     </div>
                                     <Divider />
-                                    {auth.isAdmin &&
                                         <div>
                                             <label htmlFor="isVerifiedByStaff">Verified</label>
                                             <RadioButtonGroup
@@ -277,7 +276,6 @@ class EditHostPersonal extends React.Component {
                                                 </Label>
                                             )}
                                         </div>
-                                    }
                                     <Divider />
                                     <Button type="submit" disabled={isSubmitting}>
                                         Submit
