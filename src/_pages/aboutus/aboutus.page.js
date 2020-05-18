@@ -29,25 +29,27 @@ class Aboutus extends React.Component {
                     </PageHeader>
                     <Grid container stackable verticalAlign='middle'>
                         <Grid.Row>
-                            <Grid.Column width={8}>
+                            <Grid.Column width={16}>
                                 <Header as='h3' style={{ fontSize: '2em' }}>
-                                    What is Lorem Ipsum?
+                                    {/* What is Lorem Ipsum? */}
                                 </Header>
                                 <p style={{ fontSize: '1.33em' }}>
-                                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                                    </p>
-                                <Header as='h3' style={{ fontSize: '2em' }}>
+                                    Our story began with one goal, to provide students and young professionals access to affordable housing offered by vetted hosts.
+                                    Half of our team own their own homes, so we understand that homeownership costs in the Lower Mainland are expensive and ever growing. After seeing inconsistent (and at times disastrous) results from traditional short-term rentals options, we knew there was a better alternative. We wanted a reliable way to rent a room in our home to vetted and respectful guests, with no hidden fees, so we worked to make that happen.
+                                    <br /><br />The rest of our team are students and young professionals. After getting tired of renting low quality housing at record high prices, we set out to create a platform that could give us access to what we needed: a nice room provided by a friendly host at a price we could actually afford. Enter HomeSafe, a user friendly site that can show you room listings close by your campus or office, and the best part is all rooms are provided by vetted hosts at fixed, below market rates.
+                                    <br /><br />Having experience on both sides of the owner/renter equation has provided us the insight to deliver a win-win outcome by allowing homeowners to increase their monthly cash flow while providing students and young professionals access to secure and affordable housing. So whether you are a prospective host or guest welcome, and get HomeSafe.
+                                </p>
+                                {/* <Header as='h3' style={{ fontSize: '2em' }}>
                                     Where can I get some
                                 </Header>
                                 <p style={{ fontSize: '1.33em' }}>
                                     Lorem Ipsum is simply dummy text of the printing and typesetting industry.
                                     Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                                </p>
+                                </p> */}
                             </Grid.Column>
-                            <Grid.Column floated='right' width={6}>
+                            {/* <Grid.Column floated='right' width={6}>
                                 <Image bordered rounded size='large' src={images.TEMPLATE_IMAGE} />
-                            </Grid.Column>
+                            </Grid.Column> */}
                         </Grid.Row>
                         <Grid.Row>
                             <Grid.Column textAlign='center'>
@@ -57,7 +59,7 @@ class Aboutus extends React.Component {
                     </Grid>
                 </Segment>
 
-                <Segment style={{ padding: '0em' }} vertical>
+                {/* <Segment style={{ padding: '0em' }} vertical>
                     <Grid celled='internally' columns='equal' stackable>
                         <Grid.Row textAlign='center'>
                             <Grid.Column style={{ paddingBottom: '5em', paddingTop: '5em' }}>
@@ -77,12 +79,12 @@ class Aboutus extends React.Component {
                             </Grid.Column>
                         </Grid.Row>
                     </Grid>
-                </Segment>
+                </Segment> */}
 
                 <Segment style={{ padding: '8em 0em' }} vertical>
                     <Container text>
                         <Header as='h3' style={{ fontSize: '2em' }}>
-                            Lorem Ipsum Lorem Ipsum
+                            Become A Host
                         </Header>
                         <p style={{ fontSize: '1.33em' }}>
                             Lorem Ipsum is simply dummy text of the printing and typesetting industry.

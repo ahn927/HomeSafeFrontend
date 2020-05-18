@@ -44,8 +44,9 @@ class App extends React.Component {
 
         return (
             <div className="App">
+                <Navbar ></Navbar>
                 <Container>
-                    <Navbar></Navbar>
+
                     <Switch>
                         <Route exact path={routes.HOME} component={HomePage} />
                         <Route exact path={routes.LOGIN} component={LoginPage} />

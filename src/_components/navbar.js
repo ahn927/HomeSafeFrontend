@@ -23,8 +23,8 @@ class Navbar extends React.Component {
         const { activeItem } = this.state
         let currentUser = this.state.currentUser
         return (
-            <div className='my-2'>
-                <Menu stackable size='large'>
+            <div className='my-2 mx-3' style={{ minWidth: '820px' }}>
+                <Menu stackable size='large' inverted>
                     <Menu.Item
                         header
                         name='HomeSafe'

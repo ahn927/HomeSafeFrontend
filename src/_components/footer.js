@@ -38,10 +38,10 @@ class Footer extends React.Component {
                             </Grid.Column>
                             <Grid.Column width={7}>
                                 <Header as='h4' inverted>
-                                    Footer Header
+                                    Home Safe
                                 </Header>
                                 <p>
-                                    Extra space for a call to action inside the footer that could help re-engage users.
+                                    Peace of mind for you, and your wallet. Browse affordable room listings by vetted hosts.
                                 </p>
                             </Grid.Column>
                         </Grid.Row>
