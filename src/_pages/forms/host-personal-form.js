@@ -53,7 +53,8 @@ class HostPersonalForm extends React.Component {
                         "tenantReasonForStay": "",
                         "isAdmin": false,
                         "isLandlord": true,
-                        "isTenant": false
+                        "isTenant": false,
+                        "isVerifiedByStaff": false
                     }}
                     onSubmit={(values, { setSubmitting }) => {
 
