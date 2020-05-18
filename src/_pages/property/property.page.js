@@ -193,7 +193,7 @@ class PropertyPage extends React.Component {
                             <Card.Content>
                                 <List divided relaxed>
                                     {property.wifiAndUtilitiesIncluded && this.renderListItem('wifi', 'Utilities Provided')}
-                                    {!property.wifiAndUtilitiesIncluded && this.renderListItem('wifi', 'Utilities Not Provided')}
+                                    {!property.wifiAndUtilitiesIncluded && this.renderListItem('wifi', 'Utilities Provided')}
                                 </List>
                             </Card.Content>
                         </Card>

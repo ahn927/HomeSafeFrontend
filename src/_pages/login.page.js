@@ -9,7 +9,7 @@ class LoginPage extends React.Component {
 
     render() {
         return (
-            <div className="LoginPage">
+            <div className="LoginPage mt-5 pt-3">
                 <h1>Login page</h1>
                 <Formik
                     initialValues={{ username: "", password: "" }}

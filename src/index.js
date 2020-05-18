@@ -46,28 +46,29 @@ class App extends React.Component {
             <div className="App">
                 <Navbar ></Navbar>
                 <Container>
+                    <div style={{ minHeight: '70vh' }}>
+                        <Switch>
+                            <Route exact path={routes.HOME} component={HomePage} />
+                            <Route exact path={routes.LOGIN} component={LoginPage} />
+                            <Route exact path={routes.LISTING} component={ListingPage} />
+                            <Route exact path={routes.PROPERTY + '/:id'} component={PropertyPage} />
+                            <Route exact path={routes.ABOUTUS} component={AboutUsPage} />
+                            <Route exact path={routes.FAQ} component={FaqPage} />
+                            <Route exact path={routes.REVIEWS} component={ReviewPage} />
+                            <Route exact path={routes.BECOME_HOST} component={HostPersonalForm} />
+                            <Route exact path={routes.HOSTLISTING} component={HostListingForm} />
+                            <Route exact path={routes.GUESTPERSONAL} component={GuestForm} />
+                            <Route exact path={routes.EDIT_HOST} component={EditHostPersonal} />
+                            <Route exact path={routes.EDITLISTING} component={EditHostListing} />
+                            <Route exact path={routes.EDITGUEST} component={EditGuest} />
 
-                    <Switch>
-                        <Route exact path={routes.HOME} component={HomePage} />
-                        <Route exact path={routes.LOGIN} component={LoginPage} />
-                        <Route exact path={routes.LISTING} component={ListingPage} />
-                        <Route exact path={routes.PROPERTY + '/:id'} component={PropertyPage} />
-                        <Route exact path={routes.ABOUTUS} component={AboutUsPage} />
-                        <Route exact path={routes.FAQ} component={FaqPage} />
-                        <Route exact path={routes.REVIEWS} component={ReviewPage} />
-                        <Route exact path={routes.BECOME_HOST} component={HostPersonalForm} />
-                        <Route exact path={routes.HOSTLISTING} component={HostListingForm} />
-                        <Route exact path={routes.GUESTPERSONAL} component={GuestForm} />
-                        <Route exact path={routes.EDIT_HOST} component={EditHostPersonal} />
-                        <Route exact path={routes.EDITLISTING} component={EditHostListing} />
-                        <Route exact path={routes.EDITGUEST} component={EditGuest} />
-
-                        <ProtectedRoute
-                            exact
-                            path={routes.DASHBOARD}
-                            component={dashboardPage} />
-                        <Route path="*" component={() => "404 NOT FOUND"} />
-                    </Switch>
+                            <ProtectedRoute
+                                exact
+                                path={routes.DASHBOARD}
+                                component={dashboardPage} />
+                            <Route path="*" component={() => "404 NOT FOUND"} />
+                        </Switch>
+                    </div>
                 </Container>
                 <Footer></Footer>
             </div>
