@@ -76,11 +76,11 @@ export default class StaffPageSortableTableUsers extends Component {
                         </Table.Row>
                     </Table.Header>
                     <Table.Body>
-                        {_.map(data, ({ userID, userFirstName, userLastName, isAdmin, isLandLord, isTenant }) => (
+                        {_.map(data, ({ userID, userFirstName, userLastName, isAdmin, isLandlord, isTenant }) => (
                             <Table.Row key={userID}>
                                 <Table.Cell>{userFirstName}</Table.Cell>
                                 <Table.Cell>{userLastName}</Table.Cell>
-                                <Table.Cell>{isAdmin && 'Staff'} {isLandLord && 'Host'} {isTenant && 'Tenant'}</Table.Cell>
+                                <Table.Cell>{isAdmin && 'Staff'} {isLandlord && 'Host'} {isTenant && 'Tenant'}</Table.Cell>
 
                                 <Table.Cell>
                                     {
@@ -89,7 +89,7 @@ export default class StaffPageSortableTableUsers extends Component {
                                         <Button size='tiny' href={'/forms/guest/edit/' + userID}>Edit</Button>
                                     }
                                     {
-                                        isLandLord
+                                        isLandlord
                                         &&
                                         <Button size='tiny' href={'/forms/host-personal/edit/' + userID}>Edit</Button>
                                     }
