@@ -71,7 +71,7 @@ class HostPersonalForm extends React.Component {
                             .then(response => response.json())
                             .then(data => {
                                 console.log('Success:', data);
-                                history.push(routes.DASHBOARD)
+                                history.push(routes.LOGIN)
                             })
                             .catch((error) => {
                                 console.error('Error:', error);

@@ -285,6 +285,7 @@ class PropertyPage extends React.Component {
                         console.log('render modal', 'no logged in')
                     }
                     else if (!auth.currentUserValue.isTenant) {
+                        console.log(auth.currentUserValue)
                         this.setState({ bookError: { message: 'You need a tenant account to book a room.', loginBtn: false, registerBtn: true } })
                         console.log('render modal', 'no tenant')
                     }

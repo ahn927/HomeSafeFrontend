@@ -8,7 +8,7 @@ import PropertyCard from './propertyCard'
 class PropertyList extends React.Component {
     state = {
         properties: this.props.properties,
-        currentPage: 2,
+        currentPage: 1,
         propertiesPerPage: 5,
         selectedProperty: null,
         cards: []

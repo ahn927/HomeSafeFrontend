@@ -32,6 +32,8 @@ class ListingPage extends React.Component {
     };
 
     async updateSearch(searchValue, geoResult) {
+        this.setState({ data: null });
+
         fetch(`https://10kftdb.azurewebsites.net/api/Properties/searchproperty/${searchValue.maxRent}/${searchValue.minRent}/${searchValue.checkinDate}/${searchValue.checkoutDate}/any/any/${searchValue.gender}/2/${searchValue.city}/${geoResult.center[1]}/${geoResult.center[0]}/`
             , {
                 method: 'Get',
@@ -42,7 +44,7 @@ class ListingPage extends React.Component {
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
-                this.setState({ data })
+                this.setState({ data: data });
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -60,8 +62,6 @@ class ListingPage extends React.Component {
                     console.log('error', error)
                 }
             )
-
-
     }
 
     render() {

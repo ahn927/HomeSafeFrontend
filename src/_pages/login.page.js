@@ -18,6 +18,7 @@ class LoginPage extends React.Component {
                         auth.login(values.username, values.password)
                             .then(
                                 user => {
+                                    console.log(this.props.history)
                                     this.props.history.goBack().goBack()
                                     window.location.reload();
                                 },
