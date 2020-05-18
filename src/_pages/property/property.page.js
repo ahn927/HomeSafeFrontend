@@ -87,10 +87,11 @@ class PropertyPage extends React.Component {
                 .then(response => response.json())
                 .then(data => {
                     console.log('Success: ', data);
-
+                    window.alert('Tenant Accepted');
                 })
                 .catch((error) => {
                     console.error('Error: ', error);
+                    window.alert(error);
                 });
         }
     };

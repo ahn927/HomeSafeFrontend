@@ -161,7 +161,7 @@ class dashboardPage extends React.Component {
                             <Grid.Column>
                                 {item('Last Name', userInfo.userLastName)}
                                 {item('Phone Number', userInfo.userPhoneNumber)}
-                                {currentUser.isTenant || true ? item('Reason to Stay', userInfo.tenantReasonForStay) : null}
+                                {/* {currentUser.isTenant || true ? item('Reason to Stay', userInfo.tenantReasonForStay) : null} */}
 
                             </Grid.Column>
                         </Grid.Row>
