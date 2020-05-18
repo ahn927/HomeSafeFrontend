@@ -57,9 +57,9 @@ class EditHostPersonal extends React.Component {
                         "tenantGender": this.state.data.tenantGender,
                         "tenantNationality": this.state.data.tenantNationality,
                         "tenantReasonForStay": this.state.data.tenantReasonForStay,
-                        "tenantIsAdmin": false,
-                        "tenantIsLandlord": true,
-                        "tenantIsTenant": false,
+                        "isAdmin": false,
+                        "isLandlord": true,
+                        "isTenant": false,
                         "isVerifiedByStaff": this.state.data.isVerifiedByStaff
                     }}
                     onSubmit={(values, { setSubmitting }) => {
@@ -70,8 +70,8 @@ class EditHostPersonal extends React.Component {
                             values.userAddressProvince = this.state.geoResult.context[3].text;
                             values.userAddressCountry = this.state.geoResult.context[4].text;
                         }
-                        fetch(`https://10kftdb.azurewebsites.net/api/Users/edit/${this.state.id}`, {
-                            method: 'POST',
+                        fetch(`https://10kftdb.azurewebsites.net/api/users/edit/${this.state.id}`, {
+                            method: 'PUT',
                             headers: {
                                 'Content-Type': 'application/json',
                             },

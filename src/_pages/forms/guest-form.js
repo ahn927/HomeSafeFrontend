@@ -50,9 +50,9 @@ class GuestForm extends React.Component {
                         "tenantGender": "",
                         "tenantNationality": "",
                         "tenantReasonForStay": "",
-                        "tenantIsAdmin": false,
-                        "tenantIsLandlord": false,
-                        "tenantIsTenant": true
+                        "isAdmin": false,
+                        "isLandlord": false,
+                        "isTenant": true
                     }}
                     onSubmit={(values, { setSubmitting }) => {
                         // submitting event here.
@@ -155,7 +155,7 @@ class GuestForm extends React.Component {
                                         <label htmlFor="userPassword">Password</label>
                                         <input
                                             name="userPassword"
-                                            type="text"
+                                            type="password"
                                             placeholder="Enter your first name"
                                             value={values.userPassword}
                                             onChange={handleChange}
