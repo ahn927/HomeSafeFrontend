@@ -2,6 +2,7 @@ import _ from 'lodash'
 import React, { Component } from 'react'
 import { Table, Button } from 'semantic-ui-react'
 import * as routes from '../../_constants/routes'
+import auth from '../../_services/auth'
 
 export default class StaffPageSortableTableUsers extends Component {
 
@@ -82,7 +83,16 @@ export default class StaffPageSortableTableUsers extends Component {
                                 <Table.Cell>{isAdmin && 'Staff'} {isLandLord && 'Host'} {isTenant && 'Tenant'}</Table.Cell>
 
                                 <Table.Cell>
-                                    <Button size='tiny' href={'/forms/guest/edit/' + userID}>Edit</Button>
+                                    {
+                                        isTenant
+                                        &&
+                                        <Button size='tiny' href={'/forms/guest/edit/' + userID}>Edit</Button>
+                                    }
+                                    {
+                                        isLandLord
+                                        &&
+                                        <Button size='tiny' href={'/forms/host-personal/edit/' + userID}>Edit</Button>
+                                    }
                                 </Table.Cell>
 
                             </Table.Row>

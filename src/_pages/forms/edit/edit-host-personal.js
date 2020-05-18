@@ -18,7 +18,7 @@ class EditHostPersonal extends React.Component {
         },
         id: this.props.match.params.propertyID
     }
-    
+
     async componentDidMount() {
         console.log('id: ', this.state.id)
         const result = await fetch(`https://10kftdb.azurewebsites.net/api/users/${this.state.id}`);
@@ -28,7 +28,7 @@ class EditHostPersonal extends React.Component {
         });
         console.log('data: ', this.props)
         this.state.geoResult.place_name = this.state.data.userAddressStreet;
-    } 
+    }
 
     render() {
         return (
@@ -59,7 +59,8 @@ class EditHostPersonal extends React.Component {
                         "tenantReasonForStay": this.state.data.tenantReasonForStay,
                         "tenantIsAdmin": false,
                         "tenantIsLandlord": true,
-                        "tenantIsTenant": false
+                        "tenantIsTenant": false,
+                        "isVerifiedByStaff": this.state.data.isVerifiedByStaff
                     }}
                     onSubmit={(values, { setSubmitting }) => {
 
@@ -246,6 +247,37 @@ class EditHostPersonal extends React.Component {
                                             </Label>
                                         )}
                                     </div>
+                                    <Divider />
+                                    {auth.isAdmin &&
+                                        <div>
+                                            <label htmlFor="isVerifiedByStaff">Verified</label>
+                                            <RadioButtonGroup
+                                                id="isVerifiedByStaff"
+                                                value={values.isVerifiedByStaff}
+                                                touched={touched.isVerifiedByStaff}
+                                            >
+                                                <Field
+                                                    component={RadioButton}
+                                                    name="isVerifiedByStaff"
+                                                    id="true"
+                                                    content="true"
+                                                    label="Verified"
+                                                />
+                                                <Field
+                                                    component={RadioButton}
+                                                    name="isVerifiedByStaff"
+                                                    id="false"
+                                                    content="false"
+                                                    label="Not Verified"
+                                                />
+                                            </RadioButtonGroup>
+                                            {errors.isVerifiedByStaff && touched.isVerifiedByStaff && (
+                                                <Label basic color='red' pointing>
+                                                    {errors.isVerifiedByStaff}
+                                                </Label>
+                                            )}
+                                        </div>
+                                    }
                                     <Divider />
                                     <Button type="submit" disabled={isSubmitting}>
                                         Submit
