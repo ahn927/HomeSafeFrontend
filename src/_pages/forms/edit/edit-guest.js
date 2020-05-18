@@ -67,13 +67,13 @@ class EditGuestForm extends React.Component {
                         "tenantGender": this.state.data.tenantGender,
                         "tenantNationality": this.state.data.tenantNationality,
                         "tenantReasonForStay": this.state.data.tenantReasonForStay,
-                        "tenantIsAdmin": false,
-                        "tenantIsLandlord": false,
-                        "tenantIsTenant": true
+                        "isAdmin": false,
+                        "isLandlord": false,
+                        "isTenant": true
                     }}
                     onSubmit={(values, { setSubmitting }) => {
 
-                        fetch(`https://10kftdb.azurewebsites.net/api/Users/${this.state.id}`, {
+                        fetch(`https://10kftdb.azurewebsites.net/api/users/edit/${this.state.id}`, {
                             method: 'PUT',
                             headers: {
                                 'Content-Type': 'application/json',

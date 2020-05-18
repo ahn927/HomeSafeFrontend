@@ -51,9 +51,9 @@ class HostPersonalForm extends React.Component {
                         "tenantGender": "",
                         "tenantNationality": "",
                         "tenantReasonForStay": "",
-                        "tenantIsAdmin": false,
-                        "tenantIsLandlord": true,
-                        "tenantIsTenant": false
+                        "isAdmin": false,
+                        "isLandlord": true,
+                        "isTenant": false
                     }}
                     onSubmit={(values, { setSubmitting }) => {
 
@@ -140,7 +140,7 @@ class HostPersonalForm extends React.Component {
                                         <label htmlFor="userPassword">Password</label>
                                         <input
                                             name="userPassword"
-                                            type="text"
+                                            type="password"
                                             placeholder="Enter your first name"
                                             value={values.userPassword}
                                             onChange={handleChange}
