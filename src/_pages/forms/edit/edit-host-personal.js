@@ -70,6 +70,10 @@ class EditHostPersonal extends React.Component {
                             values.userAddressProvince = this.state.geoResult.context[3].text;
                             values.userAddressCountry = this.state.geoResult.context[4].text;
                         }
+                        if(values.isVerifiedByStaff === "true")
+                            values.isVerifiedByStaff = true;
+                        else
+                            values.isVerifiedByStaff = false;
                         fetch(`https://10kftdb.azurewebsites.net/api/users/edit/${this.state.id}`, {
                             method: 'PUT',
                             headers: {

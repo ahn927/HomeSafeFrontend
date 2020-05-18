@@ -73,9 +73,8 @@ class HostListingForm extends React.Component {
                         else {
                             values.pets = false;
                         }
-                        if (values.wifiAndUtilitiesIncuded === "yes") {
-                            values.wifiAndUtilitiesIncuded = true;
-                        }
+                        values.wifiAndUtilitiesIncuded = true;
+
                         fetch('https://10kftdb.azurewebsites.net/api/properties/create/', {
                             method: 'POST',
                             mode: 'cors',
