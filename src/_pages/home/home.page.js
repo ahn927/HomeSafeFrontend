@@ -36,9 +36,9 @@ class HomePage extends React.Component {
                         </Header>
                         <p style={{ fontSize: '1.33em' }}>
                         <br/>
-                        BROWSE from our selection of secure affordable listings.<br/><br/>
-                        BOOK your room, a request will be sent to the host and approved within 24hrs.<br/><br/>
-                        ENJOY your stay!<br/>
+                        <span className='font-weight-bold'>BROWSE</span> from our selection of secure affordable listings.<br/><br/>
+                        <span className='font-weight-bold'>BOOK</span> your room, a request will be sent to the host and approved within 24hrs.<br/><br/>
+                        <span className='font-weight-bold'>ENJOY</span> your stay!<br/>
                         </p>
                     </Grid.Column>
                 </Grid.Row>
