@@ -7,6 +7,8 @@ import Search from '../../../_components/map/search'
 import RadioButton from '../helper/radio-button'
 import RadioButtonGroup from '../helper/radio-group'
 import auth from '../../../_services/auth';
+import history from '../../../history'
+import * as routes from '../../../_constants/routes'
 
 class EditHostPersonal extends React.Component {
 
@@ -26,6 +28,7 @@ class EditHostPersonal extends React.Component {
         this.setState({
             data: json
         });
+        console.log(this.state.data)
         console.log('data: ', this.props)
         this.state.geoResult.place_name = this.state.data.userAddressStreet;
     }
@@ -65,15 +68,24 @@ class EditHostPersonal extends React.Component {
                     onSubmit={(values, { setSubmitting }) => {
 
                         if (this.state.geoResult.text !== null) {
-                            values.userAddressStreet = this.state.geoResult.place_name;
-                            values.userAddressCity = this.state.geoResult.context[2].text;
-                            values.userAddressProvince = this.state.geoResult.context[3].text;
-                            values.userAddressCountry = this.state.geoResult.context[4].text;
+                            console.log(this.state.geoResult)
+                            if (this.state.geoResult.context) {
+                                values.userAddressStreet = this.state.geoResult.place_name;
+                                values.userAddressCity = this.state.geoResult.context[2].text;
+                                values.userAddressProvince = this.state.geoResult.context[3].text;
+                                values.userAddressCountry = this.state.geoResult.context[4].text;
+                            } else {
+                                values.userAddressStreet = this.state.data.userAddressStreet;
+                                values.userAddressCity = this.state.data.userAddressCity
+                                values.userAddressProvince = this.state.data.userAddressProvince
+                                values.userAddressCountry = this.state.data.userAddressCountry
+                            }
                         }
-                        if(values.isVerifiedByStaff === "true")
+                        if (values.isVerifiedByStaff === "true")
                             values.isVerifiedByStaff = true;
                         else
                             values.isVerifiedByStaff = false;
+                        console.log('look here', values)
                         fetch(`https://10kftdb.azurewebsites.net/api/users/edit/${this.state.id}`, {
                             method: 'PUT',
                             headers: {
@@ -84,6 +96,7 @@ class EditHostPersonal extends React.Component {
                             .then(response => response.json())
                             .then(data => {
                                 console.log('Success:', data);
+                                // history.push(routes.DASHBOARD)
                             })
                             .catch((error) => {
                                 console.error('Error:', error);
@@ -252,34 +265,34 @@ class EditHostPersonal extends React.Component {
                                         )}
                                     </div>
                                     <Divider />
-                                        <div>
-                                            <label htmlFor="isVerifiedByStaff">Verified</label>
-                                            <RadioButtonGroup
-                                                id="isVerifiedByStaff"
-                                                value={values.isVerifiedByStaff}
-                                                touched={touched.isVerifiedByStaff}
-                                            >
-                                                <Field
-                                                    component={RadioButton}
-                                                    name="isVerifiedByStaff"
-                                                    id="true"
-                                                    content="true"
-                                                    label="Verified"
-                                                />
-                                                <Field
-                                                    component={RadioButton}
-                                                    name="isVerifiedByStaff"
-                                                    id="false"
-                                                    content="false"
-                                                    label="Not Verified"
-                                                />
-                                            </RadioButtonGroup>
-                                            {errors.isVerifiedByStaff && touched.isVerifiedByStaff && (
-                                                <Label basic color='red' pointing>
-                                                    {errors.isVerifiedByStaff}
-                                                </Label>
-                                            )}
-                                        </div>
+                                    <div>
+                                        <label htmlFor="isVerifiedByStaff">Verified</label>
+                                        <RadioButtonGroup
+                                            id="isVerifiedByStaff"
+                                            value={values.isVerifiedByStaff}
+                                            touched={touched.isVerifiedByStaff}
+                                        >
+                                            <Field
+                                                component={RadioButton}
+                                                name="isVerifiedByStaff"
+                                                id="true"
+                                                content="true"
+                                                label="Verified"
+                                            />
+                                            <Field
+                                                component={RadioButton}
+                                                name="isVerifiedByStaff"
+                                                id="false"
+                                                content="false"
+                                                label="Not Verified"
+                                            />
+                                        </RadioButtonGroup>
+                                        {errors.isVerifiedByStaff && touched.isVerifiedByStaff && (
+                                            <Label basic color='red' pointing>
+                                                {errors.isVerifiedByStaff}
+                                            </Label>
+                                        )}
+                                    </div>
                                     <Divider />
                                     <Button type="submit" disabled={isSubmitting}>
                                         Submit
