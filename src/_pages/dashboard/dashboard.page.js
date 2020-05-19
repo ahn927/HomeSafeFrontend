@@ -59,7 +59,7 @@ class dashboardPage extends React.Component {
                     icon={null}
                     text='Host Dashboard' >
                 </PageHeader>
-                {
+                {/* {
                     currentUser.isVerifiedByStaff ?
                         (<Message
                             color='blue'>
@@ -77,7 +77,7 @@ class dashboardPage extends React.Component {
                     </p>
                         </Message>
                         )
-                }
+                } */}
                 {this.renderUserInfo()}
                 <HostPageSortableTable properties={userInfo.properties}></HostPageSortableTable>
             </div>
