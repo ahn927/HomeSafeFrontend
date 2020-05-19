@@ -16,7 +16,8 @@ class EditHostPersonal extends React.Component {
         geoResult: {
             place_name: ""
         },
-        id: this.props.match.params.propertyID
+        id: this.props.match.params.propertyID,
+        sId: 0
     }
 
     async componentDidMount() {
@@ -24,10 +25,12 @@ class EditHostPersonal extends React.Component {
         const result = await fetch(`https://10kftdb.azurewebsites.net/api/users/${this.state.id}`);
         const json = await result.json();
         this.setState({
-            data: json
+            data: json,
+            sId: Number(this.state.id)
         });
         console.log('data: ', this.props)
         this.state.geoResult.place_name = this.state.data.userAddressStreet;
+        console.log("id: ", this.state.sId)
     }
 
     render() {
@@ -40,6 +43,7 @@ class EditHostPersonal extends React.Component {
                 <Formik
                     enableReinitialize
                     initialValues={{
+                        "userID": this.state.sId,
                         "credentialUserName": this.state.data.credentialUserName,
                         "userPassword": this.state.data.userPassword,
                         "userFirstName": this.state.data.userFirstName,
@@ -54,26 +58,20 @@ class EditHostPersonal extends React.Component {
                         "userAddressCountry": this.state.data.userAddressCountry,
                         "howDidYouHearFromUs": this.state.data.howDidYouHearFromUs,
                         "tenantDateOfBirth": this.state.data.tenantDateOfBirth,
-                        "tenantGender": this.state.data.tenantGender,
+                        "tenantGender": "",
                         "tenantNationality": this.state.data.tenantNationality,
                         "tenantReasonForStay": this.state.data.tenantReasonForStay,
                         "isAdmin": false,
                         "isLandlord": true,
                         "isTenant": false,
-                        "isVerifiedByStaff": this.state.data.isVerifiedByStaff
+                        "isVerifiedByStaff": true
                     }}
                     onSubmit={(values, { setSubmitting }) => {
 
-                        if (this.state.geoResult.text !== null) {
-                            values.userAddressStreet = this.state.geoResult.place_name;
-                            values.userAddressCity = this.state.geoResult.context[2].text;
-                            values.userAddressProvince = this.state.geoResult.context[3].text;
-                            values.userAddressCountry = this.state.geoResult.context[4].text;
-                        }
-                        if(values.isVerifiedByStaff === "true")
+                        if(values.isVerifiedByStaff === "false")
+                            values.isVerifiedByStaff = false;   
+                        else 
                             values.isVerifiedByStaff = true;
-                        else
-                            values.isVerifiedByStaff = false;
                         fetch(`https://10kftdb.azurewebsites.net/api/users/edit/${this.state.id}`, {
                             method: 'PUT',
                             headers: {
@@ -89,6 +87,8 @@ class EditHostPersonal extends React.Component {
                                 console.error('Error:', error);
                             });
                         console.log(JSON.stringify(values, null, 2));
+                        this.props.history.goBack().goBack()
+                        window.location.reload();
                     }}
                     validationSchema={Yup.object().shape({
                         userFirstName: Yup.string()
@@ -219,29 +219,25 @@ class EditHostPersonal extends React.Component {
                                             <Field
                                                 component={RadioButton}
                                                 name="howDidYouHearFromUs"
-                                                id="online"
-                                                content="Online"
+                                                id="Online"
                                                 label="Online"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="howDidYouHearFromUs"
-                                                id="wordOfMouth"
-                                                content="Word Of Mouth"
+                                                id="Word Of Mouth"
                                                 label="Word Of Mouth"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="howDidYouHearFromUs"
-                                                id="facebook"
-                                                content="Facebook"
+                                                id="Facebook"
                                                 label="Facebook"
                                             />
                                             <Field
                                                 component={RadioButton}
                                                 name="howDidYouHearFromUs"
-                                                id="instagram"
-                                                content="Instagram"
+                                                id="Instagram"
                                                 label="Instagram"
                                             />
                                         </RadioButtonGroup>
